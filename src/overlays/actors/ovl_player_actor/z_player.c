@@ -50,7 +50,7 @@
 #include "play_state.h"
 #include "save.h"
 #include "skin_matrix.h"
-
+#include "mod_constants.h"
 #include "assets/objects/gameplay_keep/player_anim_headers.h"
 #include "assets/objects/gameplay_keep/hover_boots_circle.h"
 #include "assets/objects/gameplay_keep/gameplay_keep_0x33910.h"

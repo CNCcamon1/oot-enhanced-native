@@ -25,6 +25,7 @@ docs/doxygen/
 ctx.c
 tools/*dSYM/
 graphs/
+*.Identifier
 
 # Per-user configuration
 # If you want to use your own gitignore rules without modifying this file:

@@ -27,7 +27,7 @@
 #include "play_state.h"
 #include "save.h"
 #include "skin_matrix.h"
-
+#include "mod_constants.h"
 #include "overlays/actors/ovl_Arms_Hook/z_arms_hook.h"
 #include "overlays/actors/ovl_En_Part/z_en_part.h"
 

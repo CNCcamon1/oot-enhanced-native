@@ -53,6 +53,7 @@
 #include "versions.h"
 #include "vi_mode.h"
 #include "thread.h"
+#include "mod_constants.h"
 
 #define RSP_DONE_MSG 667
 #define RDP_DONE_MSG 668
@@ -86,7 +87,7 @@ void Sched_SwapFrameBufferImpl(CfbInfo* cfbInfo) {
     if (cfbInfo->swapBuffer != NULL) {
         // Register the swapbuffer to display on next VI
         osViSwapBuffer(cfbInfo->swapBuffer);
-        cfbInfo->updateTimer = cfbInfo->updateRate;
+        cfbInfo->updateTimer = cfbInfo->updateRate * R_UPDATE_RATE_MULTIPLIER;
         SCHED_DEBUG_PRINTF("osViSwapBuffer %08x %08x %08x\n", osViGetCurrentFramebuffer(), osViGetNextFramebuffer(),
                            (cfbInfo != NULL) ? cfbInfo->swapBuffer : NULL);
 
