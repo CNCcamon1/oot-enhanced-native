@@ -1,4 +1,4 @@
 #ifndef MOD_CONSTANTS
-#define R_UPDATE_RATE_MULTIPLIER 0.333333f
-#define R_UPDATE_RATE_MULTIPLIER_INV 3
+// R_UPDATE_RATE_MULTIPLIER removed -- framebuffer now always swaps every VI for 60 FPS rendering.
+// R_UPDATE_RATE (SREG 30) is kept at value 3 for game logic speed scaling (* 0.5f compensation).
 #endif

@@ -334,7 +334,7 @@ void Graph_TaskSet00(GraphicsContext* gfxCtx) {
         cfb->yScale = gfxCtx->yScale;
 #endif
         cfb->unk_10 = 0;
-        cfb->updateRate = R_UPDATE_RATE;
+        cfb->updateRate = 3;  // Always 3 -- game logic speed scaling
 
         scTask->framebuffer = cfb;
     }
