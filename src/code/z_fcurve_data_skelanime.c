@@ -35,6 +35,7 @@
 #include "actor.h"
 #include "curve.h"
 #include "play_state.h"
+#include "mod_constants.h"
 
 void SkelCurve_Clear(SkelCurve* skelCurve) {
     skelCurve->limbCount = 0;
@@ -117,7 +118,7 @@ s32 SkelCurve_Update(PlayState* play, SkelCurve* skelCurve) {
     constantData = SEGMENTED_TO_VIRTUAL(animation->constantData);
     jointData = *skelCurve->jointTable;
 
-    skelCurve->curFrame += skelCurve->playSpeed * R_UPDATE_RATE * 0.5f;
+    skelCurve->curFrame += skelCurve->playSpeed * R_UPDATE_RATE * 0.5f * R_UPDATE_RATE_MULTIPLIER_INV;
 
     if (((skelCurve->playSpeed >= 0.0f) && (skelCurve->curFrame > skelCurve->endFrame)) ||
         ((skelCurve->playSpeed < 0.0f) && (skelCurve->curFrame < skelCurve->endFrame))) {

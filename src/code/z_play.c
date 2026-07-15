@@ -967,8 +967,10 @@ void Play_Update(PlayState* this, int updateLogic) {
 
             if (!isPaused && (IREG(72) == 0)) {
                 PLAY_LOG(3580);
+                if(updateLogic == 1){
+                    this->gameplayFrames++;
+                }
 
-                this->gameplayFrames++;
                 Rumble_SetUpdateEnabled(true);
 
                 if (this->actorCtx.freezeFlashTimer && (this->actorCtx.freezeFlashTimer-- < 5)) {
@@ -1000,7 +1002,7 @@ void Play_Update(PlayState* this, int updateLogic) {
 
                     PLAY_LOG(3637);
 
-                    if (!this->haltAllActors && updateLogic == 1) {
+                    if (!this->haltAllActors) {
                         Actor_UpdateAll(this, &this->actorCtx, 1);
                     }
                     if(updateLogic == 1){
