@@ -31,7 +31,7 @@
 #include "play_state.h"
 #include "player.h"
 #include "save.h"
-
+#include "mod_constants.h"
 #include "assets/objects/gameplay_keep/eff_lightning.h"
 #include "assets/objects/gameplay_keep/eff_shockwave.h"
 #include "assets/objects/gameplay_keep/raindrop_model.h"
@@ -376,7 +376,7 @@ void Environment_Init(PlayState* play2, EnvironmentContext* envCtx, s32 unused) 
     envCtx->lightBlendRateOverride = LIGHT_BLENDRATE_OVERRIDE_NONE;
 
     envCtx->sceneTimeSpeed = 0;
-    gTimeSpeed = envCtx->sceneTimeSpeed;
+    gTimeSpeed = envCtx->sceneTimeSpeed * R_UPDATE_RATE_MULTIPLIER;
 
 #if DEBUG_FEATURES
     R_ENV_TIME_SPEED_OLD = gTimeSpeed;
@@ -942,9 +942,9 @@ void Environment_Update(PlayState* play, EnvironmentContext* envCtx, LightContex
     if (pauseCtx->state == PAUSE_STATE_OFF) {
         if (!IS_PAUSED(&play->pauseCtx)) {
             if (play->skyboxId == SKYBOX_NORMAL_SKY) {
-                play->skyboxCtx.rot.y -= 0.001f;
+                play->skyboxCtx.rot.y -= 0.001f * R_UPDATE_RATE_MULTIPLIER;
             } else if (play->skyboxId == SKYBOX_CUTSCENE_MAP) {
-                play->skyboxCtx.rot.y -= 0.005f;
+                play->skyboxCtx.rot.y -= 0.005f * R_UPDATE_RATE_MULTIPLIER;
             }
         }
 

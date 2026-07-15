@@ -18,7 +18,7 @@
 #include "play_state.h"
 #include "player.h"
 #include "save.h"
-
+#include "mod_constants.h"
 #include "assets/objects/gameplay_keep/eff_fire.h"
 #include "assets/objects/object_spot00_objects/object_spot00_objects.h"
 
@@ -251,7 +251,7 @@ void BgSpot00Hanebasi_Update(Actor* thisx, PlayState* play) {
                     tmp = CLOCK_TIME(20, 0) + 1 + 0x10000;
                 }
 
-                gTimeSpeed = (tmp - gSaveContext.save.dayTime) * (1.0f / 350.0f);
+                gTimeSpeed = (tmp - gSaveContext.save.dayTime) * (1.0f / 350.0f) * R_UPDATE_RATE_MULTIPLIER;
             }
 
             dayTime = gSaveContext.save.dayTime;
@@ -285,7 +285,7 @@ void BgSpot00Hanebasi_DrawTorches(Actor* thisx, PlayState* play2) {
     for (i = 0; i < 2; i++) {
         gSPSegment(POLY_XLU_DISP++, 0x08,
                    Gfx_TwoTexScroll(play->state.gfxCtx, G_TX_RENDERTILE, 0, 0, 32, 64, 1, 0,
-                                    ((play->gameplayFrames + i) * -20) & 0x1FF, 32, 128));
+                                    ((play->gameplayFrames / R_UPDATE_RATE_MULTIPLIER_INV + i) * -20) & 0x1FF, 32, 128));
 
         Matrix_Translate((i == 0) ? 260.0f : -260.0f, 128.0f, 690.0f, MTXMODE_NEW);
         Matrix_RotateY(angle, MTXMODE_APPLY);

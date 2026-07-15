@@ -15,7 +15,7 @@
 #include "player.h"
 #include "save.h"
 #include "scene.h"
-
+#include "mod_constants.h"
 SceneCmdHandlerFunc sSceneCmdHandlers[SCENE_CMD_ID_MAX];
 RomFile sNaviQuestHintFiles[];
 
@@ -389,7 +389,7 @@ BAD_RETURN(s32) Scene_CommandTimeSettings(PlayState* play, SceneCmd* cmd) {
     }
 
     if (gSaveContext.sunsSongState == SUNSSONG_INACTIVE) {
-        gTimeSpeed = play->envCtx.sceneTimeSpeed;
+        gTimeSpeed = play->envCtx.sceneTimeSpeed * R_UPDATE_RATE_MULTIPLIER;
     }
 
     play->envCtx.sunPos.x = -(Math_SinS(((void)0, gSaveContext.save.dayTime) - CLOCK_TIME(12, 0)) * 120.0f) * 25.0f;
