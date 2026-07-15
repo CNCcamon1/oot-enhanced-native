@@ -720,7 +720,7 @@ void Actor_PlaySfx_FlaggedTimer(Actor* actor, s32 timer);
 s32 func_8002F9EC(struct PlayState* play, Actor* actor, struct CollisionPoly* poly, s32 bgId, Vec3f* pos);
 void Actor_DisableLens(struct PlayState* play);
 void Actor_InitContext(struct PlayState* play, ActorContext* actorCtx, struct ActorEntry* playerEntry);
-void Actor_UpdateAll(struct PlayState* play, ActorContext* actorCtx);
+void Actor_UpdateAll(struct PlayState* play, ActorContext* actorCtx, int updateLogic);
 s32 Actor_CullingVolumeTest(struct PlayState* play, Actor* actor, Vec3f* projPos, f32 projW);
 void Actor_DrawAll(struct PlayState* play, ActorContext* actorCtx);
 void Actor_KillAllWithMissingObject(struct PlayState* play, ActorContext* actorCtx);

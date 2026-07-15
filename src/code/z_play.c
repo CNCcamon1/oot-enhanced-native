@@ -546,7 +546,7 @@ void Play_Init(GameState* thisx) {
 #endif
 }
 
-void Play_Update(PlayState* this) {
+void Play_Update(PlayState* this, int updateLogic) {
     Input* input = this->state.input;
     s32 isPaused;
     s32 pad1;
@@ -1000,23 +1000,25 @@ void Play_Update(PlayState* this) {
 
                     PLAY_LOG(3637);
 
-                    if (!this->haltAllActors) {
-                        Actor_UpdateAll(this, &this->actorCtx);
+                    if (!this->haltAllActors && updateLogic == 1) {
+                        Actor_UpdateAll(this, &this->actorCtx, 1);
+                    }
+                    if(updateLogic == 1){
+                        PLAY_LOG(3643);
+                        Cutscene_UpdateManual(this, &this->csCtx);
+
+                        PLAY_LOG(3648);
+                        Cutscene_UpdateScripted(this, &this->csCtx);
+
+                        PLAY_LOG(3651);
+                        Effect_UpdateAll(this);
+
+                        PLAY_LOG(3657);
+                        EffectSs_UpdateAll(this);
+
+                        PLAY_LOG(3662);
                     }
 
-                    PLAY_LOG(3643);
-                    Cutscene_UpdateManual(this, &this->csCtx);
-
-                    PLAY_LOG(3648);
-                    Cutscene_UpdateScripted(this, &this->csCtx);
-
-                    PLAY_LOG(3651);
-                    Effect_UpdateAll(this);
-
-                    PLAY_LOG(3657);
-                    EffectSs_UpdateAll(this);
-
-                    PLAY_LOG(3662);
                 }
             } else {
                 Rumble_SetUpdateEnabled(false);
@@ -1065,7 +1067,7 @@ void Play_Update(PlayState* this) {
                 PLAY_LOG(3733);
                 Message_Update(this);
             }
-
+            
             PLAY_LOG(3737);
 
             PLAY_LOG(3742);
@@ -1093,7 +1095,7 @@ skip:
     PLAY_LOG(3801);
 
     //! @bug If frame advancing or during tile transitions, isPaused will be used uninitialized.
-    if (!isPaused || gDebugCamEnabled) {
+    if ((!isPaused || gDebugCamEnabled)) {
         s32 i;
 
         this->nextCamId = this->activeCamId;
@@ -1441,7 +1443,7 @@ void Play_Main(GameState* thisx) {
     }
 
     if (!DEBUG_FEATURES || (R_HREG_MODE != HREG_MODE_PLAY) || R_PLAY_RUN_UPDATE) {
-        Play_Update(this);
+        Play_Update(this, thisx->frames % 3 == 0);
     }
 
     PLAY_LOG(4583);

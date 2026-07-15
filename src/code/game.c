@@ -297,8 +297,8 @@ void GameState_Update(GameState* gameState) {
     GraphicsContext* gfxCtx = gameState->gfxCtx;
 
     GameState_SetFrameBuffer(gfxCtx);
-
     gameState->main(gameState);
+
 
 #if PLATFORM_N64
     if (D_80121212 != 0) {

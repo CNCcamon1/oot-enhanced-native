@@ -2393,7 +2393,7 @@ u32 sCategoryFreezeMasks[ACTORCAT_MAX] = {
     PLAYER_STATE1_TALKING | PLAYER_STATE1_DEAD | PLAYER_STATE1_28,
 };
 
-void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
+void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx, int updateLogic) {
     s32 i;
     Actor* actor;
     Player* player;
