@@ -51,7 +51,7 @@ MIPS_BINUTILS_PREFIX ?=
 N64_EMULATOR ?=
 # Set to override game region in the ROM header (options: JP, US, EU). This can be used to build a fake US version
 # of the debug ROM for better emulator compatibility, or to build US versions of NTSC N64 ROMs.
-# REGION ?= US
+REGION ?= US
 # Set to enable debug features regardless of ROM version.
 # Note that by enabling debug features on non-debug ROM versions, some debug ROM specific assets will not be included.
 # This means the debug test scenes and some debug graphics in the elf_msg actors will not work as expected.
@@ -88,7 +88,7 @@ else ifeq ($(VERSION),pal-1.0)
   REVISION := 0
 else ifeq ($(VERSION),ntsc-1.2)
   REGIONAL_CHECKSUM := 1
-  REGION ?= JP
+  REGION ?= US
   PLATFORM := N64
   DEBUG_FEATURES ?= 0
   BUILD_CREATOR := zelda@srd44
