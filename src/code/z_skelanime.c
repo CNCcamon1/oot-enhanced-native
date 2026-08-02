@@ -1177,7 +1177,7 @@ s32 LinkAnimation_Update(PlayState* play, SkelAnime* skelAnime) {
  */
 s32 LinkAnimation_Morph(PlayState* play, SkelAnime* skelAnime) {
     f32 prevMorphWeight = skelAnime->morphWeight;
-    f32 updateRate = R_UPDATE_RATE * 0.5f;
+    f32 updateRate = R_UPDATE_RATE * 0.5f * R_UPDATE_RATE_MULTIPLIER;
 
     skelAnime->morphWeight -= skelAnime->morphRate * updateRate;
 
@@ -1198,7 +1198,7 @@ void LinkAnimation_AnimateFrame(PlayState* play, SkelAnime* skelAnime) {
     AnimTaskQueue_AddLoadPlayerFrame(play, skelAnime->animation, skelAnime->curFrame, skelAnime->limbCount,
                                      skelAnime->jointTable);
     if (skelAnime->morphWeight != 0) {
-        f32 updateRate = R_UPDATE_RATE * 0.5f;
+        f32 updateRate = R_UPDATE_RATE * 0.5f * R_UPDATE_RATE_MULTIPLIER;
 
         skelAnime->morphWeight -= skelAnime->morphRate * updateRate;
         if (skelAnime->morphWeight <= 0.0f) {
@@ -1214,7 +1214,7 @@ void LinkAnimation_AnimateFrame(PlayState* play, SkelAnime* skelAnime) {
  * Advances a Link animation that loops over its full length
  */
 s32 LinkAnimation_Loop(PlayState* play, SkelAnime* skelAnime) {
-    f32 updateRate = R_UPDATE_RATE * 0.5f;
+    f32 updateRate = R_UPDATE_RATE * 0.5f * R_UPDATE_RATE_MULTIPLIER;
 
     skelAnime->curFrame += skelAnime->playSpeed * updateRate;
     if (skelAnime->curFrame < 0.0f) {
@@ -1230,7 +1230,7 @@ s32 LinkAnimation_Loop(PlayState* play, SkelAnime* skelAnime) {
  * Advances a Link animation that stops at endFrame and returns true when it is reached.
  */
 s32 LinkAnimation_Once(PlayState* play, SkelAnime* skelAnime) {
-    f32 updateRate = R_UPDATE_RATE * 0.5f;
+    f32 updateRate = R_UPDATE_RATE * 0.5f * R_UPDATE_RATE_MULTIPLIER;
 
     if (skelAnime->curFrame == skelAnime->endFrame) {
         LinkAnimation_AnimateFrame(play, skelAnime);
@@ -1431,7 +1431,7 @@ s32 Animation_OnFrameImpl(SkelAnime* skelAnime, f32 frame, f32 updateRate) {
  * Checks if the current Link animation has reached the specified frame
  */
 s32 LinkAnimation_OnFrame(SkelAnime* skelAnime, f32 frame) {
-    f32 updateRate = R_UPDATE_RATE * 0.5f;
+    f32 updateRate = R_UPDATE_RATE * 0.5f * R_UPDATE_RATE_MULTIPLIER;
 
     return Animation_OnFrameImpl(skelAnime, frame, updateRate);
 }

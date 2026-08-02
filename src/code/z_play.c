@@ -1073,7 +1073,9 @@ void Play_Update(PlayState* this, int updateLogic) {
             PLAY_LOG(3737);
 
             PLAY_LOG(3742);
-            Interface_Update(this);
+            if(updateLogic == 1){
+                Interface_Update(this);
+            }
 
             PLAY_LOG(3765);
             AnimTaskQueue_Update(this, &this->animTaskQueue);

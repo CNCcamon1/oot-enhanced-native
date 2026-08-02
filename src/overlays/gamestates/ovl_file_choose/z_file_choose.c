@@ -33,7 +33,7 @@
 #include "sram.h"
 #include "ss_sram.h"
 #include "view.h"
-
+#include "mod_constants.h"
 #if OOT_PAL_N64
 #include "assets/objects/object_mag/object_mag.h"
 #endif
@@ -2122,8 +2122,9 @@ void FileSelect_Main(GameState* thisx) {
     }
 
     this->emptyFileTextAlpha = 0;
-
-    FileSelect_PulsateCursor(&this->state);
+    if(thisx->frames % R_UPDATE_RATE_MULTIPLIER_INV == 0){
+        FileSelect_PulsateCursor(&this->state);
+    }
     sFileSelectUpdateFuncs[this->menuMode](&this->state);
     sFileSelectDrawFuncs[this->menuMode](&this->state);
 

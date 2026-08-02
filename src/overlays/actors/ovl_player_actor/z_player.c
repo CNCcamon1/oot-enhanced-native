@@ -8025,7 +8025,7 @@ s32 func_8084021C(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
 }
 
 void func_8084029C(Player* this, f32 arg1) {
-    f32 updateScale = R_UPDATE_RATE * 0.5f;
+    f32 updateScale = R_UPDATE_RATE * 0.5f * R_UPDATE_RATE_MULTIPLIER;
 
     arg1 *= updateScale;
     if (arg1 < -7.25) {
@@ -8450,7 +8450,7 @@ void func_80841138(Player* this, PlayState* play) {
     if (this->unk_864 < 1.0f) {
         s32 pad;
 
-        temp1 = R_UPDATE_RATE * 0.5f;
+        temp1 = R_UPDATE_RATE * 0.5f * R_UPDATE_RATE_MULTIPLIER;
         func_8084029C(this, REG(35) / 1000.0f);
         LinkAnimation_LoadToJoint(play, &this->skelAnime,
                                   GET_PLAYER_ANIM(PLAYER_ANIMGROUP_back_walk, this->modelAnimType), this->unk_868);
@@ -8756,7 +8756,7 @@ void func_80841EE4(Player* this, PlayState* play) {
     if (this->unk_864 < 1.0f) {
         s32 pad;
 
-        temp1 = R_UPDATE_RATE * 0.5f;
+        temp1 = R_UPDATE_RATE * 0.5f * R_UPDATE_RATE_MULTIPLIER;
 
         func_8084029C(this, REG(35) / 1000.0f);
         LinkAnimation_LoadToJoint(play, &this->skelAnime, GET_PLAYER_ANIM(PLAYER_ANIMGROUP_walk, this->modelAnimType),
@@ -10157,7 +10157,7 @@ s32 func_80845964(PlayState* play, Player* this, CsCmdActorCue* cue, f32 arg3, s
     }
 
     if (arg5 != 2) {
-        f32 sp34 = R_UPDATE_RATE * 0.5f;
+        f32 sp34 = R_UPDATE_RATE * 0.5f * R_UPDATE_RATE_MULTIPLIER;
         f32 selfDistX = cue->endPos.x - this->actor.world.pos.x;
         f32 selfDistZ = cue->endPos.z - this->actor.world.pos.z;
         f32 sp28 = sqrtf(SQ(selfDistX) + SQ(selfDistZ)) / sp34;
@@ -14933,7 +14933,7 @@ void Player_Action_80850C68(Player* this, PlayState* play) {
         // skeleton has 22 limbs (including the root limb) so we need 134 bytes of space, plus 8 bytes of margin for
         // the 16-byte alignment operation.
         static u64 D_80858AD8[18];
-        f32 updateScale = R_UPDATE_RATE * 0.5f;
+        f32 updateScale = R_UPDATE_RATE * 0.5f * R_UPDATE_RATE_MULTIPLIER;
 
         this->skelAnime.curFrame += this->skelAnime.playSpeed * updateScale;
         if (this->skelAnime.curFrame >= this->skelAnime.animLength) {

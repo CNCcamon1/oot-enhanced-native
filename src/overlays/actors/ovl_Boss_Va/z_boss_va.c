@@ -25,7 +25,7 @@
 #include "effect.h"
 #include "play_state.h"
 #include "save.h"
-
+#include "mod_constants.h"
 #include "assets/objects/gameplay_keep/gameplay_keep_0x55DB0.h"
 #include "assets/objects/object_bv/object_bv.h"
 
@@ -1971,7 +1971,7 @@ void BossVa_ZapperAttack(BossVa* this, PlayState* play) {
         s16 sp54;
         f32 sp50;
 
-        sp74 = R_UPDATE_RATE * 0.5f;
+        sp74 = R_UPDATE_RATE * 0.5f * R_UPDATE_RATE_MULTIPLIER;
         sp8E = 0x4650;
 
         boomTarget = boomerang->moveTo;
