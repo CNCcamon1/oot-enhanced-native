@@ -46,7 +46,7 @@
 #include "player.h"
 #include "save.h"
 #include "vis.h"
-
+#include "mod_constants.h"
 #pragma increment_block_number "gc-eu:224 gc-eu-mq:224 gc-jp:224 gc-jp-ce:224 gc-jp-mq:224 gc-us:224 gc-us-mq:224" \
                                "ique-cn:224 ntsc-1.0:240 ntsc-1.1:240 ntsc-1.2:240 pal-1.0:240 pal-1.1:240"
 
@@ -1072,8 +1072,8 @@ void Play_Update(PlayState* this, int updateLogic) {
             
             PLAY_LOG(3737);
 
-            PLAY_LOG(3742);
             if(updateLogic == 1){
+                PLAY_LOG(3742);
                 Interface_Update(this);
             }
 
@@ -1087,7 +1087,7 @@ void Play_Update(PlayState* this, int updateLogic) {
             Letterbox_Update(R_UPDATE_RATE);
 
             PLAY_LOG(3783);
-            TransitionFade_Update(&this->transitionFadeFlash, R_UPDATE_RATE);
+            TransitionFade_Update(&this->transitionFadeFlash, (R_UPDATE_RATE * R_UPDATE_RATE_MULTIPLIER));
         } else {
             goto skip;
         }

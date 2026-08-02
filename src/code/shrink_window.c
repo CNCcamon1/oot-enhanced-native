@@ -1,6 +1,7 @@
 #include "letterbox.h"
 #include "printf.h"
 #include "regs.h"
+#include "mod_constants.h"
 
 typedef enum LetterboxState {
     /* 0 */ LETTERBOX_STATE_IDLE,
@@ -59,9 +60,9 @@ void Letterbox_Update(s32 updateRate) {
     s32 step;
 
     if (updateRate == 3) {
-        step = 10;
+        step = 10 * R_UPDATE_RATE_MULTIPLIER;
     } else {
-        step = 30 / updateRate;
+        step = 30 / updateRate * R_UPDATE_RATE_MULTIPLIER;
     }
 
     if (sLetterboxSize < sLetterboxSizeTarget) {

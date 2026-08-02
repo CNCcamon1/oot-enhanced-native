@@ -20,7 +20,7 @@
 #include "play_state.h"
 #include "player.h"
 #include "save.h"
-
+#include "mod_constants.h"
 #include "assets/objects/object_demo_kekkai/object_demo_kekkai.h"
 #include "assets/objects/gameplay_keep/eff_lightning.h"
 #include "assets/objects/gameplay_keep/sun_textures.h"
@@ -483,7 +483,7 @@ void ObjectKankyo_Fairies(ObjectKankyo* this, PlayState* play) {
 void ObjectKankyo_Update(Actor* thisx, PlayState* play) {
     ObjectKankyo* this = (ObjectKankyo*)thisx;
 
-    this->actionFunc(this, play);
+        this->actionFunc(this, play);
 }
 
 void ObjectKankyo_Draw(Actor* thisx, PlayState* play) {
