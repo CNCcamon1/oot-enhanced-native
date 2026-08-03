@@ -711,13 +711,6 @@ beginseg
 endseg
 
 beginseg
-    name "ovl_En_Vase"
-    compress
-    flags OVERLAY
-    include "$(BUILD_DIR)/src/overlays/actors/ovl_En_Vase/z_en_vase.o"
-endseg
-
-beginseg
     name "ovl_En_Ta"
     compress
     flags OVERLAY
@@ -2572,13 +2565,6 @@ beginseg
     compress
     flags OVERLAY
     include "$(BUILD_DIR)/src/overlays/effects/ovl_Effect_Ss_Sibuki/z_eff_ss_sibuki.o"
-endseg
-
-beginseg
-    name "ovl_Effect_Ss_Sibuki2"
-    compress
-    flags OVERLAY
-    include "$(BUILD_DIR)/src/overlays/effects/ovl_Effect_Ss_Sibuki2/z_eff_ss_sibuki2.o"
 endseg
 
 beginseg

@@ -29,7 +29,6 @@
 #include "overlays/effects/ovl_Effect_Ss_Hahen/z_eff_ss_hahen.h"
 #include "overlays/effects/ovl_Effect_Ss_Stick/z_eff_ss_stick.h"
 #include "overlays/effects/ovl_Effect_Ss_Sibuki/z_eff_ss_sibuki.h"
-#include "overlays/effects/ovl_Effect_Ss_Sibuki2/z_eff_ss_sibuki2.h"
 #include "overlays/effects/ovl_Effect_Ss_G_Magma2/z_eff_ss_g_magma2.h"
 #include "overlays/effects/ovl_Effect_Ss_Stone1/z_eff_ss_stone1.h"
 #include "overlays/effects/ovl_Effect_Ss_HitMark/z_eff_ss_hitmark.h"
@@ -700,19 +699,6 @@ void EffectSsSibuki_SpawnBurst(PlayState* play, Vec3f* pos) {
     for (i = 0; i < KREG(19) + 30; i++) {
         EffectSsSibuki_Spawn(play, pos, &zeroVec, &zeroVec, i / (KREG(27) + 6), randDirection, KREG(18) + 40);
     }
-}
-
-// EffectSsSibuki2 Spawn Functions
-
-// unused
-void EffectSsSibuki2_Spawn(PlayState* play, Vec3f* pos, Vec3f* velocity, Vec3f* accel, s16 scale) {
-    EffectSsSibuki2InitParams initParams;
-
-    Math_Vec3f_Copy(&initParams.pos, pos);
-    Math_Vec3f_Copy(&initParams.velocity, velocity);
-    Math_Vec3f_Copy(&initParams.accel, accel);
-    initParams.scale = scale;
-    EffectSs_Spawn(play, EFFECT_SS_SIBUKI2, 128, &initParams);
 }
 
 // EffectSsGMagma2 Spawn Functions

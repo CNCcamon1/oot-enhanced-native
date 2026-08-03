@@ -50,7 +50,6 @@
 #include "eff_shockwave.h"
 #include "eff_bubble.h"
 #include "eff_fire_footprint.h"
-#include "unused_bubbles.h"
 #include "lens_mask_tex.h"
 #include "eff_hitmark.h"
 #include "gameplay_keep_0x21810.h"
@@ -75,9 +74,6 @@
 #include "gameplay_keep_0x38FB0.h"
 #if OOT_NTSC
 #include "gameplay_keep_ntsc_0x39850.h"
-#include "unused_bomb_icon_model_ntsc.h"
-#include "unused_heart_icon_model_ntsc.h"
-#include "unused_arrow_icon_model_ntsc.h"
 #endif
 #include "gLargerCubeCol.h"
 #include "liftable_rock_model.h"
@@ -98,7 +94,6 @@
 #include "gameplay_keep_0x3B1E0.h"
 #if OOT_NTSC
 #include "gameplay_keep_ntsc_0x3C610.h"
-#include "unused_heart_container_icon_model_ntsc.h"
 #endif
 #include "rectangular_sign_model.h"
 #include "directional_sign_model.h"
@@ -108,7 +103,6 @@
 #endif
 #include "drop_recovery_heart_tex.h"
 #if OOT_NTSC
-#include "unused_heart_piece_icon_tex_ntsc.h"
 #endif
 #include "item_drop_dl.h"
 #include "gameplay_keep_0x3F140.h"

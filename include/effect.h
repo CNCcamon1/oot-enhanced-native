@@ -388,7 +388,6 @@ void EffectSsStick_Spawn(struct PlayState* play, Vec3f* pos, s16 yaw);
 void EffectSsSibuki_Spawn(struct PlayState* play, Vec3f* pos, Vec3f* velocity, Vec3f* accel, s16 moveDelay,
                           s16 direction, s16 scale);
 void EffectSsSibuki_SpawnBurst(struct PlayState* play, Vec3f* pos);
-void EffectSsSibuki2_Spawn(struct PlayState* play, Vec3f* pos, Vec3f* velocity, Vec3f* accel, s16 scale);
 void EffectSsGMagma2_Spawn(struct PlayState* play, Vec3f* pos, Color_RGBA8* primColor, Color_RGBA8* envColor,
                            s16 updateRate, s16 drawMode, s16 scale);
 void EffectSsStone1_Spawn(struct PlayState* play, Vec3f* pos, s32 arg2);
