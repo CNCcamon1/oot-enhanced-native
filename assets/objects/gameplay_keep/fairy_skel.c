@@ -60,10 +60,6 @@ Vtx gGlowCircleSmallVtx[] = {
 #include "assets/objects/gameplay_keep/gGlowCircleSmallVtx.inc.c"
 };
 
-u64 gUnusedFairyWingTex[TEX_LEN(u64, gUnusedFairyWingTex_WIDTH, gUnusedFairyWingTex_HEIGHT, 16)] = {
-#include "assets/objects/gameplay_keep/gUnusedFairyWingTex.rgba16.inc.c"
-};
-
 StandardLimb gFairySkelLimb_0 = {
 #include "assets/objects/gameplay_keep/gFairySkelLimb_0.inc.c"
 };

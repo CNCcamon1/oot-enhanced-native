@@ -4,6 +4,5 @@
 #include "ultra64.h"
 
 extern Vtx gTreeStumpVtx[];
-extern Gfx gTreeStumpDL[34];
 
 #endif

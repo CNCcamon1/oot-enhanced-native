@@ -85,7 +85,7 @@ static CollisionHeader* sColHeaders[] = {
 
 static Gfx* sDLists[] = {
     gFlatBlockDL,    gFlatBlockDL,   gFlatBlockDL, gFlatRotBlockDL,    gFlatRotBlockDL,    gSmallCubeDL,
-    gHookshotPostDL, gGrassBladesDL, gTreeStumpDL, gSignRectangularDL, gSignDirectionalDL, gBoulderFragmentsDL,
+    gHookshotPostDL, gSignRectangularDL, gSignDirectionalDL, gBoulderFragmentsDL,
 };
 
 void EnAObj_SetupAction(EnAObj* this, EnAObjActionFunc actionFunc) {

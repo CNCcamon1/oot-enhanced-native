@@ -1637,8 +1637,7 @@ void AudioOcarina_CheckSongsWithoutMusicStaff(void) {
     }
 }
 
-// This unused argument is used in Majora's Mask as a u8
-void AudioOcarina_PlayControllerInput(u8 unused) {
+void AudioOcarina_PlayControllerInput() {
     u32 ocarinaBtnsHeld;
 
     // Prevents two different ocarina notes from being played on two consecutive frames
@@ -1739,15 +1738,6 @@ void AudioOcarina_PlayControllerInput(u8 unused) {
             Audio_StopSfxById(NA_SE_OC_OCARINA);
         }
     }
-}
-
-/**
- * Directly enable the ocarina to receive input without
- * properly resetting it based on an ocarina instrument id
- * Unused.
- */
-void AudioOcarina_EnableInput(u8 inputEnabled) {
-    sIsOcarinaInputEnabled = inputEnabled;
 }
 
 /**
