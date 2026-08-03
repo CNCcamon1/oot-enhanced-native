@@ -314,10 +314,12 @@ void Matrix_RotateZYX(s16 x, s16 y, s16 z, u8 mode) {
     f32 temp2;
     f32 sin;
     f32 cos;
+    f32x2 sincos;
 
     if (mode == MTXMODE_APPLY) {
-        sin = Math_SinS(z);
-        cos = Math_CosS(z);
+        sincos = Math_SinCosS(z);
+        sin = sincos.data[0];
+        cos = sincos.data[1];
 
         temp1 = cmf->xx;
         temp2 = cmf->xy;
@@ -340,8 +342,9 @@ void Matrix_RotateZYX(s16 x, s16 y, s16 z, u8 mode) {
         cmf->wy = temp2 * cos - temp1 * sin;
 
         if (y != 0) {
-            sin = Math_SinS(y);
-            cos = Math_CosS(y);
+            sincos = Math_SinCosS(y);
+            sin = sincos.data[0];
+            cos = sincos.data[1];
 
             temp1 = cmf->xx;
             temp2 = cmf->xz;
@@ -365,8 +368,9 @@ void Matrix_RotateZYX(s16 x, s16 y, s16 z, u8 mode) {
         }
 
         if (x != 0) {
-            sin = Math_SinS(x);
-            cos = Math_CosS(x);
+            sincos = Math_SinCosS(x);
+            sin = sincos.data[0];
+            cos = sincos.data[1];
 
             temp1 = cmf->xy;
             temp2 = cmf->xz;
@@ -400,8 +404,9 @@ void Matrix_RotateZYX(s16 x, s16 y, s16 z, u8 mode) {
  */
 void Matrix_TranslateRotateZYX(Vec3f* translation, Vec3s* rotation) {
     MtxF* cmf = sCurrentMatrix;
-    f32 sin = Math_SinS(rotation->z);
-    f32 cos = Math_CosS(rotation->z);
+    f32x2 sincos = Math_SinCosS(rotation->z);
+    f32 sin = sincos.data[0];
+    f32 cos = sincos.data[1];
     f32 temp1;
     f32 temp2;
 
@@ -430,8 +435,9 @@ void Matrix_TranslateRotateZYX(Vec3f* translation, Vec3s* rotation) {
     cmf->wy = temp2 * cos - temp1 * sin;
 
     if (rotation->y != 0) {
-        sin = Math_SinS(rotation->y);
-        cos = Math_CosS(rotation->y);
+        sincos = Math_SinCosS(rotation->y);
+        sin = sincos.data[0];
+        cos = sincos.data[1];
 
         temp1 = cmf->xx;
         temp2 = cmf->xz;
@@ -455,8 +461,9 @@ void Matrix_TranslateRotateZYX(Vec3f* translation, Vec3s* rotation) {
     }
 
     if (rotation->x != 0) {
-        sin = Math_SinS(rotation->x);
-        cos = Math_CosS(rotation->x);
+        sincos = Math_SinCosS(rotation->x);
+        sin = sincos.data[0];
+        cos = sincos.data[1];
 
         temp1 = cmf->xy;
         temp2 = cmf->xz;
@@ -486,10 +493,12 @@ void Matrix_TranslateRotateZYX(Vec3f* translation, Vec3s* rotation) {
  */
 void Matrix_SetTranslateRotateYXZ(f32 translateX, f32 translateY, f32 translateZ, Vec3s* rot) {
     MtxF* cmf = sCurrentMatrix;
-    f32 temp1 = Math_SinS(rot->y);
-    f32 temp2 = Math_CosS(rot->y);
+    f32x2 temp0 = Math_SinCosS(rot->y);
+    f32 temp1 = temp0.data[0];
+    f32 temp2 = temp0.data[1];
     f32 cos;
     f32 sin;
+    f32x2 sincos;
 
     cmf->xx = temp2;
     cmf->zx = -temp1;
@@ -502,8 +511,9 @@ void Matrix_SetTranslateRotateYXZ(f32 translateX, f32 translateY, f32 translateZ
     cmf->ww = 1.0f;
 
     if (rot->x != 0) {
-        sin = Math_SinS(rot->x);
-        cos = Math_CosS(rot->x);
+        sincos = Math_SinCosS(rot->x);
+        sin = sincos.data[0];
+        cos = sincos.data[1];
 
         cmf->zz = temp2 * cos;
         cmf->zy = temp2 * sin;
@@ -521,8 +531,9 @@ void Matrix_SetTranslateRotateYXZ(f32 translateX, f32 translateY, f32 translateZ
     }
 
     if (rot->z != 0) {
-        sin = Math_SinS(rot->z);
-        cos = Math_CosS(rot->z);
+        sincos = Math_SinCosS(rot->z);
+        sin = sincos.data[0];
+        cos = sincos.data[1];
 
         temp1 = cmf->xx;
         temp2 = cmf->xy;

@@ -994,8 +994,9 @@ void Actor_UpdatePos(Actor* actor) {
  * Update actor's velocity accounting for gravity (without dropping below minimum y velocity)
  */
 void Actor_UpdateVelocityXZGravity(Actor* actor) {
-    actor->velocity.x = actor->speed * Math_SinS(actor->world.rot.y);
-    actor->velocity.z = actor->speed * Math_CosS(actor->world.rot.y);
+    f32x2 sincos = Math_SinCosS(actor->world.rot.y);
+    actor->velocity.x = actor->speed * sincos.data[0];
+    actor->velocity.z = actor->speed * sincos.data[1];
 
     actor->velocity.y += actor->gravity * R_UPDATE_RATE_MULTIPLIER;
 
@@ -1018,11 +1019,13 @@ void Actor_MoveXZGravity(Actor* actor) {
  * Update actor's velocity without gravity.
  */
 void Actor_UpdateVelocityXYZ(Actor* actor) {
-    f32 speedXZ = actor->speed * Math_CosS(actor->world.rot.x);
+    f32x2 sincosx = Math_SinCosS(actor->world.rot.x);
+    f32x2 sincosy = Math_SinCosS(actor->world.rot.y);
+    f32 speedXZ = actor->speed * sincosx.data[1];
 
-    actor->velocity.x = speedXZ * Math_SinS(actor->world.rot.y);
-    actor->velocity.y = actor->speed * Math_SinS(actor->world.rot.x);
-    actor->velocity.z = speedXZ * Math_CosS(actor->world.rot.y);
+    actor->velocity.x = speedXZ * sincosy.data[0];
+    actor->velocity.y = actor->speed * sincosx.data[0];
+    actor->velocity.z = speedXZ * sincosy.data[1];
 }
 
 /**
@@ -1040,8 +1043,9 @@ void Actor_MoveXYZ(Actor* actor) {
  * Only the actor's world pitch is factored in, with positive pitch moving downwards.
  */
 void Actor_SetProjectileSpeed(Actor* actor, f32 speedXYZ) {
-    actor->speed = speedXYZ * Math_CosS(actor->world.rot.x);
-    actor->velocity.y = speedXYZ * -Math_SinS(actor->world.rot.x);
+    f32x2 sincos = Math_SinCosS(actor->world.rot.x);
+    actor->speed = speedXYZ * sincos.data[1];
+    actor->velocity.y = speedXYZ * -sincos.data[0];
 }
 
 void Actor_UpdatePosByAnimation(Actor* actor, SkelAnime* skelAnime) {
@@ -1112,8 +1116,9 @@ void Actor_WorldToActorCoords(Actor* actor, Vec3f* dest, Vec3f* pos) {
     f32 deltaX;
     f32 deltaZ;
 
-    cosY = Math_CosS(actor->shape.rot.y);
-    sinY = Math_SinS(actor->shape.rot.y);
+    f32x2 sincos = Math_SinCosS(actor->shape.rot.y);
+    cosY = sincos.data[1];
+    sinY = sincos.data[0];
     deltaX = pos->x - actor->world.pos.x;
     deltaZ = pos->z - actor->world.pos.z;
 
@@ -3874,9 +3879,10 @@ Actor* Actor_GetProjectileActor(PlayState* play, Actor* refActor, f32 radius) {
                 (((ArmsHook*)actor)->timer == 0)) {
                 actor = actor->next;
             } else {
-                delta.x = (actor->speed * 10.0f) * Math_SinS(actor->world.rot.y);
+                f32x2 sincos = Math_SinCosS(actor->world.rot.y);
+                delta.x = (actor->speed * 10.0f) * sincos.data[0];
                 delta.y = actor->velocity.y + (actor->gravity * 10.0f);
-                delta.z = (actor->speed * 10.0f) * Math_CosS(actor->world.rot.y);
+                delta.z = (actor->speed * 10.0f) * sincos.data[1];
 
                 spA8.x = actor->world.pos.x + delta.x;
                 spA8.y = actor->world.pos.y + delta.y;
@@ -3988,12 +3994,14 @@ s16 Actor_TestFloorInDirection(Actor* actor, PlayState* play, f32 distance, s16 
     f32 dx;
     f32 dz;
     Vec3f prevActorPos;
+    f32x2 sincos;
 
     Math_Vec3f_Copy(&prevActorPos, &actor->world.pos);
     prevBgCheckFlags = actor->bgCheckFlags;
 
-    dx = distance * Math_SinS(angle);
-    dz = distance * Math_CosS(angle);
+    sincos = Math_SinCosS(angle);
+    dx = distance * sincos.data[0];
+    dz = distance * sincos.data[1];
     actor->world.pos.x += dx;
     actor->world.pos.z += dz;
 

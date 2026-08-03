@@ -129,12 +129,9 @@ Vec3f DebugCamera_AddVecGeoToVec3f(Vec3f* a, VecGeo* geo) {
  * Calculates a new Up vector from the pitch, yaw, roll
  */
 Vec3f DebugCamera_CalcUpFromPitchYawRoll(s16 pitch, s16 yaw, s16 roll) {
-    f32 sinP = Math_SinS(pitch);
-    f32 cosP = Math_CosS(pitch);
-    f32 sinY = Math_SinS(yaw);
-    f32 cosY = Math_CosS(yaw);
-    f32 sinR = Math_SinS(-roll);
-    f32 cosR = Math_CosS(-roll);
+    f32x2 sincosP = Math_SinCosS(pitch);
+    f32x2 sincosY = Math_SinCosS(yaw);
+    f32x2 sincosR = Math_SinCosS(-roll);
     Vec3f up;
     Vec3f baseUp;
     Vec3f u;
@@ -143,27 +140,27 @@ Vec3f DebugCamera_CalcUpFromPitchYawRoll(s16 pitch, s16 yaw, s16 roll) {
     Vec3f rollMtxRow3;
 
     // Axis to roll around
-    u.x = cosP * sinY;
-    u.y = sinP;
-    u.z = cosP * cosY;
+    u.x = sincosP.data[1] * sincosY.data[0];
+    u.y = sincosP.data[0];
+    u.z = sincosP.data[1] * sincosY.data[1];
 
     // Up without roll
-    baseUp.x = -sinP * sinY;
-    baseUp.y = cosP;
-    baseUp.z = -sinP * cosY;
+    baseUp.x = -sincosP.data[0] * sincosY.data[0];
+    baseUp.y = sincosP.data[1];
+    baseUp.z = -sincosP.data[0] * sincosY.data[1];
 
     // Matrix to apply the roll to the Up vector without roll
-    rollMtxRow1.x = ((1.0f - SQ(u.x)) * cosR) + SQ(u.x);
-    rollMtxRow1.y = ((1.0f - cosR) * (u.x * u.y)) - (u.z * sinR);
-    rollMtxRow1.z = ((1.0f - cosR) * (u.z * u.x)) + (u.y * sinR);
+    rollMtxRow1.x = ((1.0f - SQ(u.x)) * sincosR.data[1]) + SQ(u.x);
+    rollMtxRow1.y = ((1.0f - sincosR.data[1]) * (u.x * u.y)) - (u.z * sincosR.data[0]);
+    rollMtxRow1.z = ((1.0f - sincosR.data[1]) * (u.z * u.x)) + (u.y * sincosR.data[0]);
 
-    rollMtxRow2.x = ((1.0f - cosR) * (u.x * u.y)) + (u.z * sinR);
-    rollMtxRow2.y = ((1.0f - SQ(u.y)) * cosR) + SQ(u.y);
-    rollMtxRow2.z = ((1.0f - cosR) * (u.y * u.z)) - (u.x * sinR);
+    rollMtxRow2.x = ((1.0f - sincosR.data[1]) * (u.x * u.y)) + (u.z * sincosR.data[0]);
+    rollMtxRow2.y = ((1.0f - SQ(u.y)) * sincosR.data[1]) + SQ(u.y);
+    rollMtxRow2.z = ((1.0f - sincosR.data[1]) * (u.y * u.z)) - (u.x * sincosR.data[0]);
 
-    rollMtxRow3.x = ((1.0f - cosR) * (u.z * u.x)) - (u.y * sinR);
-    rollMtxRow3.y = ((1.0f - cosR) * (u.y * u.z)) + (u.x * sinR);
-    rollMtxRow3.z = ((1.0f - SQ(u.z)) * cosR) + SQ(u.z);
+    rollMtxRow3.x = ((1.0f - sincosR.data[1]) * (u.z * u.x)) - (u.y * sincosR.data[0]);
+    rollMtxRow3.y = ((1.0f - sincosR.data[1]) * (u.y * u.z)) + (u.x * sincosR.data[0]);
+    rollMtxRow3.z = ((1.0f - SQ(u.z)) * sincosR.data[1]) + SQ(u.z);
 
     // rollMtx * baseUp
     up.x = DOTXYZ(baseUp, rollMtxRow1);

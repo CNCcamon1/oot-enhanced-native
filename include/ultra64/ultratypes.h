@@ -24,6 +24,9 @@ typedef volatile s64 vs64;
 typedef float  f32;
 typedef double f64;
 
+typedef struct f32x2 {
+    f32 data[2]
+} f32x2;
 
 typedef float MtxF_t[4][4];
 typedef union MtxF {
