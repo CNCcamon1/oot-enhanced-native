@@ -12,6 +12,7 @@
     include "$(BUILD_DIR)/src/libultra/gu/sqrtf.o"
     include "$(BUILD_DIR)/src/libultra/gu/cosf.o"
     include "$(BUILD_DIR)/src/libultra/gu/coss.o"
+    include "$(BUILD_DIR)/src/libultra/gu/sincoss.o"
     include "$(BUILD_DIR)/src/libultra/gu/lookat.o"
     include "$(BUILD_DIR)/src/libultra/gu/lookathil.o"
     include "$(BUILD_DIR)/src/libultra/gu/ortho.o"

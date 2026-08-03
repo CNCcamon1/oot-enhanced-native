@@ -14,9 +14,9 @@ SHELL = /usr/bin/env bash
 -include .make_options.mk
 
 # If COMPARE is 1, check the output md5sum after building. Set to 0 when modding.
-COMPARE ?= 1
+COMPARE ?= 0
 # If NON_MATCHING is 1, define the NON_MATCHING C flag when building. Set to 1 when modding.
-NON_MATCHING ?= 0
+NON_MATCHING ?= 1
 # If ORIG_COMPILER is 1, compile with QEMU_IRIX and the original compiler.
 ORIG_COMPILER ?= 0
 # If COMPILER is "gcc", compile with GCC instead of IDO.
@@ -39,7 +39,7 @@ COMPILER ?= ido
 #   gc-eu-mq       GameCube Europe/PAL Master Quest
 #   gc-jp-ce       GameCube Japan (Collector's Edition disc)
 #   ique-cn        iQue Player (Simplified Chinese)
-VERSION ?= gc-eu-mq-dbg
+VERSION ?= ntsc-1.2
 # Number of threads to extract and compress with.
 N_THREADS ?= $(shell nproc)
 # If DEBUG_OBJECTS is 1, produce additional debugging files such as objdump output or raw binaries for assets

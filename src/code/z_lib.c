@@ -47,6 +47,14 @@ f32 Math_SinS(s16 angle) {
 }
 
 /**
+ * @param angle binang
+ * @return sin(angle)
+ */
+f32x2 Math_SinCosS(s16 angle) {
+    return sincoss(angle);
+}
+
+/**
  * Changes pValue by step (scaled by the update rate) towards target, setting it equal when the target is reached.
  * Returns true when target is reached, false otherwise.
  */

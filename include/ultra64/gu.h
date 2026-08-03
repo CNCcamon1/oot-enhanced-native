@@ -29,7 +29,7 @@ s16 sins(u16 angle);
 
 f32 cosf(f32 angle);
 s16 coss(u16 angle);
-
+f32x2 sincoss(u16 angle);
 extern f32 __libm_qnan_f;
 
 #endif

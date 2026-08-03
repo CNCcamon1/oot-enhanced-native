@@ -4,7 +4,6 @@
  * @param angle binang
  * @return cos(angle)*0x7FFF
  */
-const f32 pi2 = (3.1415926*3.1415926);
 
 s16 coss(u16 angle) {
     s16 value;
@@ -24,9 +23,9 @@ s16 coss(u16 angle) {
     }
 
     //Convert from u16 to floating-point radians
-    x2 = pi2 * ((f32)angle * (f32)angle)/(SHT_MAX*SHT_MAX);
+    x2 = (GU_PI*GU_PI) * ((f32)angle * (f32)angle)/(SHT_MAX*SHT_MAX);
     //Calculate the approximation
-    value = (s16)((pi2 - (4.0f * x2))/(pi2 + (x2)) * SHT_MAX);
+    value = (s16)(((GU_PI*GU_PI) - (4.0f * x2))/((GU_PI*GU_PI) + (x2)) * SHT_MAX);
     //Apply sign-flipping if needed
     value = flipSign ? -value : value;
     return value;

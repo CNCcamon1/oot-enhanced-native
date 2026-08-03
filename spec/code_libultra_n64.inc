@@ -39,6 +39,7 @@
     include "$(BUILD_DIR)/src/libultra/io/visetspecial.o"
 #endif
     include "$(BUILD_DIR)/src/libultra/gu/coss.o"
+    include "$(BUILD_DIR)/src/libultra/gu/sincoss.o"
     include "$(BUILD_DIR)/src/libultra/os/settime.o"
     include "$(BUILD_DIR)/src/libultra/io/visetevent.o"
     include "$(BUILD_DIR)/src/libultra/gu/us2dex.o"
