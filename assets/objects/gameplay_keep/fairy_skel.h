@@ -21,9 +21,6 @@ extern Gfx gGlowCircleTextureLoadDL[8];
 extern Gfx gGlowCircleDL[4];
 extern Gfx gGlowCircleSmallDL[45];
 extern Vtx gGlowCircleSmallVtx[];
-#define gUnusedFairyWingTex_WIDTH 32
-#define gUnusedFairyWingTex_HEIGHT 64
-extern u64 gUnusedFairyWingTex[TEX_LEN(u64, gUnusedFairyWingTex_WIDTH, gUnusedFairyWingTex_HEIGHT, 16)];
 extern StandardLimb gFairySkelLimb_0;
 extern StandardLimb gFairySkelLimb_1;
 extern StandardLimb gFairySkelLimb_2;

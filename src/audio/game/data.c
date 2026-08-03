@@ -39,18 +39,13 @@ Vec3f gSfxDefaultPos = { 0.0f, 0.0f, 0.0f };
 // Does not alter or change frequency or volume
 f32 gSfxDefaultFreqAndVolScale = 1.0f;
 
-s32 D_801333E4 = 0; // unused
-
 // Adds no reverb to the existing reverb
 s8 gSfxDefaultReverb = 0;
-
-s32 D_801333EC = 0; // unused
 
 #if DEBUG_FEATURES
 u8 D_801333F0 = 0;
 u8 gAudioSfxSwapOff = 0;
 u8 D_801333F8 = 0;
-s32 D_801333FC = 0; // unused
 #endif
 
 u8 gSeqCmdWritePos = 0;
@@ -71,5 +66,3 @@ u8 gSoundOutputModes[] = {
 u8 gAudioSpecId = 0;
 
 u8 D_80133418 = 0;
-
-u8 D_8016F0E0[0xA0]; // unused

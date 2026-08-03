@@ -4,6 +4,5 @@
 #include "ultra64.h"
 
 extern Vtx gGrassBladesVtx[];
-extern Gfx gGrassBladesDL[21];
 
 #endif
