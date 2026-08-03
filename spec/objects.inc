@@ -50,7 +50,6 @@ beginseg
     include "$(BUILD_DIR)/assets/objects/gameplay_keep/eff_shockwave.o"
     include "$(BUILD_DIR)/assets/objects/gameplay_keep/eff_bubble.o"
     include "$(BUILD_DIR)/assets/objects/gameplay_keep/eff_fire_footprint.o"
-    include "$(BUILD_DIR)/assets/objects/gameplay_keep/unused_bubbles.o"
     include "$(BUILD_DIR)/assets/objects/gameplay_keep/lens_mask_tex.o"
     include "$(BUILD_DIR)/assets/objects/gameplay_keep/eff_hitmark.o"
     include "$(BUILD_DIR)/assets/objects/gameplay_keep/gameplay_keep_0x21810.o"
@@ -75,9 +74,6 @@ beginseg
     include "$(BUILD_DIR)/assets/objects/gameplay_keep/gameplay_keep_0x38FB0.o"
 #if OOT_NTSC
     include "$(BUILD_DIR)/assets/objects/gameplay_keep/gameplay_keep_ntsc_0x39850.o"
-    include "$(BUILD_DIR)/assets/objects/gameplay_keep/unused_bomb_icon_model_ntsc.o"
-    include "$(BUILD_DIR)/assets/objects/gameplay_keep/unused_heart_icon_model_ntsc.o"
-    include "$(BUILD_DIR)/assets/objects/gameplay_keep/unused_arrow_icon_model_ntsc.o"
 #endif
     include "$(BUILD_DIR)/assets/objects/gameplay_keep/gLargerCubeCol.o"
     include "$(BUILD_DIR)/assets/objects/gameplay_keep/liftable_rock_model.o"
@@ -98,7 +94,6 @@ beginseg
     include "$(BUILD_DIR)/assets/objects/gameplay_keep/gameplay_keep_0x3B1E0.o"
 #if OOT_NTSC
     include "$(BUILD_DIR)/assets/objects/gameplay_keep/gameplay_keep_ntsc_0x3C610.o"
-    include "$(BUILD_DIR)/assets/objects/gameplay_keep/unused_heart_container_icon_model_ntsc.o"
 #endif
     include "$(BUILD_DIR)/assets/objects/gameplay_keep/rectangular_sign_model.o"
     include "$(BUILD_DIR)/assets/objects/gameplay_keep/directional_sign_model.o"
@@ -108,7 +103,6 @@ beginseg
 #endif
     include "$(BUILD_DIR)/assets/objects/gameplay_keep/drop_recovery_heart_tex.o"
 #if OOT_NTSC
-    include "$(BUILD_DIR)/assets/objects/gameplay_keep/unused_heart_piece_icon_tex_ntsc.o"
 #endif
     include "$(BUILD_DIR)/assets/objects/gameplay_keep/item_drop_dl.o"
     include "$(BUILD_DIR)/assets/objects/gameplay_keep/gameplay_keep_0x3F140.o"
@@ -1063,14 +1057,6 @@ beginseg
     compress
     romalign 0x1000
     include "$(BUILD_DIR)/assets/objects/object_trap/object_trap.o"
-    number 6
-endseg
-
-beginseg
-    name "object_vase"
-    compress
-    romalign 0x1000
-    include "$(BUILD_DIR)/assets/objects/object_vase/gUnusedVaseDL.o"
     number 6
 endseg
 
