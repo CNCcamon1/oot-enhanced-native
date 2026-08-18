@@ -1132,7 +1132,7 @@ void Play_DrawOverlayElements(PlayState* this) {
         KaleidoScopeCall_Draw(this);
     }
 
-    if (gSaveContext.gameMode == GAMEMODE_NORMAL) {
+    if (gSaveContext.gameMode == GAMEMODE_NORMAL || true) {
         Interface_Draw(this);
     }
 
@@ -1413,7 +1413,6 @@ Play_Draw_skip:
             Skybox_UpdateMatrix(&this->skyboxCtx, this->view.eye.x, this->view.eye.y, this->view.eye.z);
         }
     }
-
     Camera_Finish(GET_ACTIVE_CAM(this));
 
     CLOSE_DISPS(gfxCtx, "../z_play.c", 4508);

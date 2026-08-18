@@ -4871,19 +4871,22 @@ void func_800359B8(Actor* actor, s16 arg1, Vec3s* arg2) {
         f32 sp24;
         CollisionPoly* floorPoly;
         s32 pad;
+        f32x2 sincos;
 
         floorPoly = actor->floorPoly;
         floorPolyNormalX = COLPOLY_GET_NORMAL(floorPoly->normal.x);
         floorPolyNormalY = COLPOLY_GET_NORMAL(floorPoly->normal.y);
         floorPolyNormalZ = COLPOLY_GET_NORMAL(floorPoly->normal.z);
 
-        sp38 = Math_SinS(arg1);
-        sp34 = Math_CosS(arg1);
+        sincos = Math_SinCosS(arg1);
+        sp38 = sincos.data[0];
+        sp34 = sincos.data[1];
         sp28 = (-(floorPolyNormalX * sp38) - (floorPolyNormalZ * sp34));
         arg2->x = -RAD_TO_BINANG(Math_FAtan2F(sp28 * floorPolyNormalY, 1.0f));
 
-        sp2C = Math_SinS(arg1 - 16375);
-        sp30 = Math_CosS(arg1 - 16375);
+        sincos = Math_SinCosS(arg1 - 16375);
+        sp2C = sincos.data[0];
+        sp30 = sincos.data[1];
         sp24 = (-(floorPolyNormalX * sp2C) - (floorPolyNormalZ * sp30));
         arg2->z = -RAD_TO_BINANG(Math_FAtan2F(sp24 * floorPolyNormalY, 1.0f));
     }

@@ -481,6 +481,8 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
         if (sGraphPrevUpdateEndTime != 0) {
             gGraphUpdatePeriod = timeNow - sGraphPrevUpdateEndTime;
         }
+        //gameState->gfxCtx->unk_008[0] = (u8)(1.0f / ((f32)OS_CYCLES_TO_USEC(gGraphUpdatePeriod) / 1000000.0f));
+        gameState->gfxCtx->unk_008[0] = (u8)(((f32)OS_CYCLES_TO_USEC(gGraphUpdatePeriod)) / 1000.0f);
         sGraphPrevUpdateEndTime = timeNow;
     }
 

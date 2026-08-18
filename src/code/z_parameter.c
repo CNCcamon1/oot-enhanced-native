@@ -3297,7 +3297,7 @@ void Interface_Draw(PlayState* play) {
                           PRIMITIVE, 0);
 
         interfaceCtx->counterDigits[0] = interfaceCtx->counterDigits[1] = 0;
-        interfaceCtx->counterDigits[2] = gSaveContext.save.info.playerData.rupees;
+        interfaceCtx->counterDigits[2] = play->state.gfxCtx->unk_008[0];
 
         if ((interfaceCtx->counterDigits[2] > 9999) || (interfaceCtx->counterDigits[2] < 0)) {
             interfaceCtx->counterDigits[2] &= 0xDDD;
