@@ -649,10 +649,6 @@ void Sched_Notify(Scheduler* sc) {
 void Sched_ThreadEntry(void* arg) {
     OSMesg msg = NULL;
     Scheduler* sc = (Scheduler*)arg;
-    OSTime lastFrameTime = osGetTime();
-    OSTime currentFrameTime = osGetTime();
-    u8 currFps = 0;
-    u32 frameDur = 0;
     while (true) {
         SCHED_DEBUG_PRINTF(T("%08d:待機中\n", "%08d: standby\n"), (u32)OS_CYCLES_TO_USEC(osGetTime()));
 
@@ -678,13 +674,6 @@ void Sched_ThreadEntry(void* arg) {
 
         switch (((OSScMsg*)msg)->type) {
             case OS_SC_RETRACE_MSG:
-                currentFrameTime = osGetTime();
-                frameDur = (u32)OS_CYCLES_TO_USEC(currentFrameTime) - (u32)OS_CYCLES_TO_USEC(lastFrameTime);
-                lastFrameTime = currentFrameTime;
-                currFps = (u8)(1.0f / ((f32)frameDur / 1000000.0f));
-                if (sc->curBuf != NULL) {
-                    sc->curBuf->unk_10 = currFps;
-                }
                 Sched_HandleRetrace(sc);
                 continue;
 

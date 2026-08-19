@@ -334,7 +334,7 @@ void Graph_TaskSet00(GraphicsContext* gfxCtx) {
         cfb->yScale = gfxCtx->yScale;
 #endif
         cfb->unk_10 = 0;
-        cfb->updateRate = R_UPDATE_RATE;
+        cfb->updateRate = THREE;
 
         scTask->framebuffer = cfb;
     }
@@ -482,7 +482,7 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
             gGraphUpdatePeriod = timeNow - sGraphPrevUpdateEndTime;
         }
         //gameState->gfxCtx->unk_008[0] = (u8)(1.0f / ((f32)OS_CYCLES_TO_USEC(gGraphUpdatePeriod) / 1000000.0f));
-        gameState->gfxCtx->unk_008[0] = (u8)(((f32)OS_CYCLES_TO_USEC(gGraphUpdatePeriod)) / 1000.0f);
+        R_UPDATE_RATE = (((f32)OS_CYCLES_TO_USEC(gGraphUpdatePeriod)) / 1000.0f) / 50.0f;
         sGraphPrevUpdateEndTime = timeNow;
     }
 

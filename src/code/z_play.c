@@ -770,7 +770,7 @@ void Play_Update(PlayState* this, int updateLogic) {
 
                         this->transitionTrigger = TRANS_TRIGGER_OFF;
                     } else {
-                        this->transitionCtx.update(&this->transitionCtx.instanceData, R_UPDATE_RATE);
+                        this->transitionCtx.update(&this->transitionCtx.instanceData, THREE);
                     }
                     break;
             }
@@ -1084,10 +1084,10 @@ void Play_Update(PlayState* this, int updateLogic) {
             SfxSource_UpdateAll(this);
 
             PLAY_LOG(3777);
-            Letterbox_Update(R_UPDATE_RATE);
+            Letterbox_Update(THREE);
 
             PLAY_LOG(3783);
-            TransitionFade_Update(&this->transitionFadeFlash, (R_UPDATE_RATE * R_UPDATE_RATE_MULTIPLIER));
+            TransitionFade_Update(&this->transitionFadeFlash, (THREE * R_UPDATE_RATE_MULTIPLIER));
         } else {
             goto skip;
         }
@@ -1132,7 +1132,7 @@ void Play_DrawOverlayElements(PlayState* this) {
         KaleidoScopeCall_Draw(this);
     }
 
-    if (gSaveContext.gameMode == GAMEMODE_NORMAL || true) {
+    if (gSaveContext.gameMode == GAMEMODE_NORMAL) {
         Interface_Draw(this);
     }
 

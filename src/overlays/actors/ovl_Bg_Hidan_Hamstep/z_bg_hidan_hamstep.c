@@ -21,7 +21,7 @@
 #include "versions.h"
 #include "z_lib.h"
 #include "play_state.h"
-
+#include "mod_constants.h"
 #include "assets/objects/object_hidan_objects/object_hidan_objects.h"
 
 #define FLAGS 0
@@ -276,7 +276,7 @@ void func_80888694(BgHidanHamstep* this, BgHidanHamstep* parent) {
 
 void func_80888734(BgHidanHamstep* this) {
     BgHidanHamstep* parent = (BgHidanHamstep*)this->dyna.actor.parent;
-    f32 frameDivisor = R_UPDATE_RATE * 0.5f;
+    f32 frameDivisor = THREE * 0.5f;
 
     if (parent != NULL) {
         this->dyna.actor.velocity.y = parent->dyna.actor.velocity.y;

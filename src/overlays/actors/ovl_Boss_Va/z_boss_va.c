@@ -1971,7 +1971,7 @@ void BossVa_ZapperAttack(BossVa* this, PlayState* play) {
         s16 sp54;
         f32 sp50;
 
-        sp74 = R_UPDATE_RATE * 0.5f * R_UPDATE_RATE_MULTIPLIER;
+        sp74 = THREE * 0.5f * R_UPDATE_RATE_MULTIPLIER;
         sp8E = 0x4650;
 
         boomTarget = boomerang->moveTo;

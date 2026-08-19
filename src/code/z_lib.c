@@ -6,6 +6,7 @@
 #include "sys_math.h"
 #include "rand.h"
 #include "sfx.h"
+#include "mod_constants.h"
 
 /**
  * memset: sets `len` bytes to `val` starting at address `dest`.
@@ -60,7 +61,7 @@ f32x2 Math_SinCosS(s16 angle) {
  */
 s32 Math_ScaledStepToS(s16* pValue, s16 target, s16 step) {
     if (step != 0) {
-        f32 updateScale = R_UPDATE_RATE * 0.5f;
+        f32 updateScale = THREE * 0.5f;
 
         if ((s16)(*pValue - target) > 0) {
             step = -step;

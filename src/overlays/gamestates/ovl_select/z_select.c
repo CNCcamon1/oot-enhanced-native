@@ -28,6 +28,7 @@
 #include "play_state.h"
 #include "save.h"
 #include "sram.h"
+#include "mod_constants.h"
 
 void MapSelect_LoadTitle(MapSelectState* this) {
     this->state.running = false;
@@ -388,13 +389,13 @@ void MapSelect_UpdateMenu(MapSelectState* this) {
                 this->timerUp = 20;
                 this->lockUp = true;
                 SFX_PLAY_CENTERED(NA_SE_IT_SWORD_IMPACT);
-                this->verticalInput = R_UPDATE_RATE;
+                this->verticalInput = THREE;
             }
         }
 
         if (CHECK_BTN_ALL(input->cur.button, BTN_DUP) && this->timerUp == 0) {
             SFX_PLAY_CENTERED(NA_SE_IT_SWORD_IMPACT);
-            this->verticalInput = R_UPDATE_RATE * 3;
+            this->verticalInput = THREE * 3;
         }
 
         if (CHECK_BTN_ALL(input->press.button, BTN_DDOWN)) {
@@ -405,23 +406,23 @@ void MapSelect_UpdateMenu(MapSelectState* this) {
                 this->timerDown = 20;
                 this->lockDown = true;
                 SFX_PLAY_CENTERED(NA_SE_IT_SWORD_IMPACT);
-                this->verticalInput = -R_UPDATE_RATE;
+                this->verticalInput = -THREE;
             }
         }
 
         if (CHECK_BTN_ALL(input->cur.button, BTN_DDOWN) && (this->timerDown == 0)) {
             SFX_PLAY_CENTERED(NA_SE_IT_SWORD_IMPACT);
-            this->verticalInput = -R_UPDATE_RATE * 3;
+            this->verticalInput = -THREE * 3;
         }
 
         if (CHECK_BTN_ALL(input->press.button, BTN_DLEFT) || CHECK_BTN_ALL(input->cur.button, BTN_DLEFT)) {
             SFX_PLAY_CENTERED(NA_SE_IT_SWORD_IMPACT);
-            this->verticalInput = R_UPDATE_RATE;
+            this->verticalInput = THREE;
         }
 
         if (CHECK_BTN_ALL(input->press.button, BTN_DRIGHT) || CHECK_BTN_ALL(input->cur.button, BTN_DRIGHT)) {
             SFX_PLAY_CENTERED(NA_SE_IT_SWORD_IMPACT);
-            this->verticalInput = -R_UPDATE_RATE;
+            this->verticalInput = -THREE;
         }
     }
 
