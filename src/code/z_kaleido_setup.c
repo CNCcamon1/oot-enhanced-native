@@ -8,6 +8,7 @@
 #include "audio.h"
 #include "play_state.h"
 #include "save.h"
+#include "mod_constants.h"
 
 /*
  * The following three arrays are effectively unused.
@@ -119,7 +120,7 @@ void KaleidoSetup_Update(PlayState* play) {
 
         if (pauseCtx->state == PAUSE_STATE_WAIT_LETTERBOX) {
             R_PAUSE_PAGES_Y_ORIGIN_2 = PAUSE_PAGES_Y_ORIGIN_2_LOWER;
-            R_UPDATE_RATE = 2;
+            R_UPDATE_RATE = TWOTHIRDS;
 
             if (Letterbox_GetSizeTarget() != 0) {
                 Letterbox_SetSizeTarget(0);

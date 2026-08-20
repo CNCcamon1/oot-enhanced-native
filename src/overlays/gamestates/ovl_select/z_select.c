@@ -728,7 +728,7 @@ void MapSelect_Init(GameState* thisx) {
         this->pageDownIndex = dREG(82);
     }
 
-    R_UPDATE_RATE = 1;
+    R_UPDATE_RATE = THIRD;
 
     {
         u32 size = (uintptr_t)_z_select_staticSegmentRomEnd - (uintptr_t)_z_select_staticSegmentRomStart;

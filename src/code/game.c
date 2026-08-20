@@ -31,6 +31,7 @@
 #include "game.h"
 #include "play_state.h"
 #include "vis.h"
+#include "mod_constants.h"
 
 #pragma increment_block_number "gc-eu:0 gc-eu-mq:0 gc-jp:0 gc-jp-ce:0 gc-jp-mq:0 gc-us:0 gc-us-mq:0"
 
@@ -491,7 +492,7 @@ void GameState_Init(GameState* gameState, GameStateFunc init, GraphicsContext* g
     startTime = endTime;
     GameState_InitArena(gameState, 0x100000);
 
-    R_UPDATE_RATE = 3;
+    R_UPDATE_RATE = ONE;
     init(gameState);
     endTime = osGetTime();
     PRINTF(T("init 処理時間 %d us\n", "init processing time %d us\n"), OS_CYCLES_TO_USEC(endTime - startTime));

@@ -2,4 +2,7 @@
 #define R_UPDATE_RATE_MULTIPLIER 0.333333f
 #define R_UPDATE_RATE_MULTIPLIER_INV 3
 #define THREE 3
+#define THIRD 10922
+#define TWOTHIRDS 21845
+#define ONE 32767
 #endif

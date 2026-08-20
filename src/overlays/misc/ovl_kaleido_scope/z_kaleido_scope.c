@@ -27,7 +27,7 @@
 #include "play_state.h"
 #include "player.h"
 #include "save.h"
-
+#include "mod_constants.h"
 #include "assets/textures/icon_item_static/icon_item_static.h"
 #include "assets/textures/icon_item_24_static/icon_item_24_static.h"
 #if OOT_NTSC
@@ -4641,7 +4641,7 @@ void KaleidoScope_Update(PlayState* play) {
                 if (interfaceCtx->unk_244 >= 255) {
                     interfaceCtx->unk_244 = 255;
                     pauseCtx->state = PAUSE_STATE_OFF;
-                    R_UPDATE_RATE = 3;
+                    R_UPDATE_RATE = THIRD;
                     R_PAUSE_BG_PRERENDER_STATE = PAUSE_BG_PRERENDER_OFF;
                     func_800981B8(&play->objectCtx);
                     func_800418D0(&play->colCtx, play);
@@ -4701,7 +4701,7 @@ void KaleidoScope_Update(PlayState* play) {
 
         case PAUSE_STATE_RESUME_GAMEPLAY:
             pauseCtx->state = PAUSE_STATE_OFF;
-            R_UPDATE_RATE = 3;
+            R_UPDATE_RATE = THIRD;
             R_PAUSE_BG_PRERENDER_STATE = PAUSE_BG_PRERENDER_OFF;
 
             func_800981B8(&play->objectCtx);

@@ -6,6 +6,7 @@
 #include "segment_symbols.h"
 #include "dma.h"
 #include "play_state.h"
+#include "mod_constants.h"
 
 void Sample_HandleStateChange(SampleState* this) {
     if (CHECK_BTN_ALL(this->state.input[0].press.button, BTN_START)) {
@@ -95,7 +96,7 @@ void Sample_Init(GameState* thisx) {
 
     this->state.main = Sample_Main;
     this->state.destroy = Sample_Destroy;
-    R_UPDATE_RATE = 1;
+    R_UPDATE_RATE = THIRD;
     Sample_SetupView(this);
     Sample_LoadTitleStatic(this);
     SREG(37) = 0;

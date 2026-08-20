@@ -13,6 +13,7 @@
 #include "save.h"
 #include "sram.h"
 #include "view.h"
+#include "mod_constants.h"
 
 void TitleSetup_SetupTitleScreen(TitleSetupState* this) {
     gSaveContext.gameMode = GAMEMODE_TITLE_SCREEN;
@@ -42,7 +43,7 @@ void TitleSetup_Destroy(GameState* thisx) {
 void TitleSetup_Init(GameState* thisx) {
     TitleSetupState* this = (TitleSetupState*)thisx;
 
-    R_UPDATE_RATE = 1;
+    R_UPDATE_RATE = THIRD;
     Matrix_Init(&this->state);
     View_Init(&this->view, this->state.gfxCtx);
     this->state.main = TitleSetup_Main;

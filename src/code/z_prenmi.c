@@ -6,6 +6,7 @@
 #include "terminal.h"
 #include "versions.h"
 #include "vi_mode.h"
+#include "mod_constants.h"
 
 void func_80092320(PreNMIState* this) {
     this->state.running = false;
@@ -72,5 +73,5 @@ void PreNMI_Init(GameState* thisx) {
     this->timer = 30;
     this->unk_A8 = 10;
 
-    R_UPDATE_RATE = 1;
+    R_UPDATE_RATE = THIRD;
 }

@@ -30,6 +30,7 @@
 #include "save.h"
 #include "play_state.h"
 #include "mod_constants.h"
+#include "sys_math.h"
 #define GFXPOOL_HEAD_MAGIC 0x1234
 #define GFXPOOL_TAIL_MAGIC 0x5678
 
@@ -334,7 +335,7 @@ void Graph_TaskSet00(GraphicsContext* gfxCtx) {
         cfb->yScale = gfxCtx->yScale;
 #endif
         cfb->unk_10 = 0;
-        cfb->updateRate = THREE;
+        cfb->updateRate = (s32)(((f32)R_UPDATE_RATE) / (UINT16_MAX/2) * 3);
 
         scTask->framebuffer = cfb;
     }
@@ -482,7 +483,7 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
             gGraphUpdatePeriod = timeNow - sGraphPrevUpdateEndTime;
         }
         //gameState->gfxCtx->unk_008[0] = (u8)(1.0f / ((f32)OS_CYCLES_TO_USEC(gGraphUpdatePeriod) / 1000000.0f));
-        R_UPDATE_RATE = (((f32)OS_CYCLES_TO_USEC(gGraphUpdatePeriod)) / 1000.0f) / 50.0f;
+        R_UPDATE_RATE = (u16)(((((f32)OS_CYCLES_TO_USEC(gGraphUpdatePeriod)) / 1000.0f) / 50.0f) * UINT16_MAX / 2);
         sGraphPrevUpdateEndTime = timeNow;
     }
 

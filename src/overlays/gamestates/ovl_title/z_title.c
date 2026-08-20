@@ -28,7 +28,7 @@
 #include "actor.h"
 #include "environment.h"
 #include "save.h"
-
+#include "mod_constants.h"
 #include "assets/textures/nintendo_rogo_static/nintendo_rogo_static.h"
 
 #if DEBUG_FEATURES
@@ -235,7 +235,7 @@ void ConsoleLogo_Init(GameState* thisx) {
     PRINTF("z_title.c\n");
     ASSERT(this->staticSegment != NULL, "this->staticSegment != NULL", "../z_title.c", 614);
     DMA_REQUEST_SYNC(this->staticSegment, (uintptr_t)_nintendo_rogo_staticSegmentRomStart, size, "../z_title.c", 615);
-    R_UPDATE_RATE = 1;
+    R_UPDATE_RATE = THIRD;
     Matrix_Init(&this->state);
     View_Init(&this->view, this->state.gfxCtx);
     this->state.main = ConsoleLogo_Main;
