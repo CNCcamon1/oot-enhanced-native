@@ -2122,9 +2122,7 @@ void FileSelect_Main(GameState* thisx) {
     }
 
     this->emptyFileTextAlpha = 0;
-    if(thisx->frames % R_UPDATE_RATE_MULTIPLIER_INV == 0){
-        FileSelect_PulsateCursor(&this->state);
-    }
+    FileSelect_PulsateCursor(&this->state);
     sFileSelectUpdateFuncs[this->menuMode](&this->state);
     sFileSelectDrawFuncs[this->menuMode](&this->state);
 

@@ -1087,7 +1087,7 @@ void Play_Update(PlayState* this, int updateLogic) {
             Letterbox_Update(THREE);
 
             PLAY_LOG(3783);
-            TransitionFade_Update(&this->transitionFadeFlash, (THREE * R_UPDATE_RATE_MULTIPLIER));
+            TransitionFade_Update(&this->transitionFadeFlash, (THREE * (f32)R_UPDATE_RATE / (UINT16_MAX/2)));
         } else {
             goto skip;
         }

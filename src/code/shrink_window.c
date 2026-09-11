@@ -60,9 +60,9 @@ void Letterbox_Update(s32 updateRate) {
     s32 step;
 
     if (updateRate == 3) {
-        step = 10 * R_UPDATE_RATE_MULTIPLIER;
+        step = 10 * (f32)R_UPDATE_RATE / (UINT16_MAX/2);
     } else {
-        step = 30 / updateRate * R_UPDATE_RATE_MULTIPLIER;
+        step = 30 / updateRate * (f32)R_UPDATE_RATE / (UINT16_MAX/2);
     }
 
     if (sLetterboxSize < sLetterboxSizeTarget) {

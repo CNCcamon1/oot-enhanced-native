@@ -118,7 +118,7 @@ s32 SkelCurve_Update(PlayState* play, SkelCurve* skelCurve) {
     constantData = SEGMENTED_TO_VIRTUAL(animation->constantData);
     jointData = *skelCurve->jointTable;
 
-    skelCurve->curFrame += skelCurve->playSpeed * THREE * 0.5f * R_UPDATE_RATE_MULTIPLIER_INV;
+    skelCurve->curFrame += skelCurve->playSpeed * 1.5f * (UINT16_MAX/2) / (f32)R_UPDATE_RATE;
 
     if (((skelCurve->playSpeed >= 0.0f) && (skelCurve->curFrame > skelCurve->endFrame)) ||
         ((skelCurve->playSpeed < 0.0f) && (skelCurve->curFrame < skelCurve->endFrame))) {

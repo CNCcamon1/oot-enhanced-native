@@ -3,6 +3,7 @@
 #include "camera.h"
 #include "cutscene_spline.h"
 #include "mod_constants.h"
+#include "regs.h"
 
 // The code in this file is very similar to a spline system used in Super Mario 64 for cutscene camera movement
 
@@ -53,17 +54,18 @@ s32 func_800BB2B4(Vec3f* pos, f32* roll, f32* fov, CutsceneCameraPoint* point, s
     func_800BB0A0(progress, pos, roll, fov, pointData[0], pointData[1], pointData[2], pointData[3]);
 
     if (point[*keyFrame + 1].nextPointFrame != 0) {
-        speed1 = 1.0f / point[*keyFrame + 1].nextPointFrame;
+        speed1 = (f32)R_UPDATE_RATE / (UINT16_MAX/2) * 1.0f / point[*keyFrame + 1].nextPointFrame;
     }
 
     if (point[*keyFrame + 2].nextPointFrame != 0) {
-        speed2 = 1.0f / point[*keyFrame + 2].nextPointFrame;
+        speed2 = (f32)R_UPDATE_RATE / (UINT16_MAX/2) * 1.0f / point[*keyFrame + 2].nextPointFrame;
     }
     advance = (*curFrame * (speed2 - speed1)) + speed1;
     if (advance < 0.0f) {
         advance = 0;
     }
-    *curFrame += (advance * R_UPDATE_RATE_MULTIPLIER);
+    //*curFrame += (advance * (f32)R_UPDATE_RATE / (UINT16_MAX/2));
+    *curFrame += (advance);
     if (*curFrame >= 1) {
         if (point[++*keyFrame + 3].continueFlag == CS_CAM_STOP) {
             *keyFrame = 0;

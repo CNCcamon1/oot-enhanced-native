@@ -983,7 +983,7 @@ void Actor_Destroy(Actor* actor, PlayState* play) {
  * Update actor's position factoring in velocity and collider displacement
  */
 void Actor_UpdatePos(Actor* actor) {
-    f32 speedRate = THREE * 0.5f * R_UPDATE_RATE_MULTIPLIER;
+    f32 speedRate = 1.5f * (f32)R_UPDATE_RATE / (UINT16_MAX/2);
 
     actor->world.pos.x += (actor->velocity.x * speedRate) + actor->colChkInfo.displacement.x;
     actor->world.pos.y += (actor->velocity.y * speedRate) + actor->colChkInfo.displacement.y;
@@ -998,7 +998,7 @@ void Actor_UpdateVelocityXZGravity(Actor* actor) {
     actor->velocity.x = actor->speed * sincos.data[0];
     actor->velocity.z = actor->speed * sincos.data[1];
 
-    actor->velocity.y += actor->gravity * R_UPDATE_RATE_MULTIPLIER;
+    actor->velocity.y += actor->gravity * (f32)R_UPDATE_RATE / (UINT16_MAX/2);
 
     if (actor->velocity.y < actor->minVelocityY) {
         actor->velocity.y = actor->minVelocityY;

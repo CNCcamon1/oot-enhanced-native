@@ -5,7 +5,7 @@
  */
 
 #include "z_bg_spot00_hanebasi.h"
-
+#include "regs.h"
 #include "libc64/qrand.h"
 #include "gfx.h"
 #include "gfx_setupdl.h"
@@ -251,7 +251,7 @@ void BgSpot00Hanebasi_Update(Actor* thisx, PlayState* play) {
                     tmp = CLOCK_TIME(20, 0) + 1 + 0x10000;
                 }
 
-                gTimeSpeed = (tmp - gSaveContext.save.dayTime) * (1.0f / 350.0f) * R_UPDATE_RATE_MULTIPLIER;
+                gTimeSpeed = (tmp - gSaveContext.save.dayTime) * (1.0f / 350.0f) * (f32)R_UPDATE_RATE / (UINT16_MAX/2);
             }
 
             dayTime = gSaveContext.save.dayTime;

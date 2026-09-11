@@ -87,7 +87,7 @@ void Sched_SwapFrameBufferImpl(CfbInfo* cfbInfo) {
     if (cfbInfo->swapBuffer != NULL) {
         // Register the swapbuffer to display on next VI
         osViSwapBuffer(cfbInfo->swapBuffer);
-        cfbInfo->updateTimer = cfbInfo->updateRate * R_UPDATE_RATE_MULTIPLIER;
+        cfbInfo->updateTimer = 0;
         SCHED_DEBUG_PRINTF("osViSwapBuffer %08x %08x %08x\n", osViGetCurrentFramebuffer(), osViGetNextFramebuffer(),
                            (cfbInfo != NULL) ? cfbInfo->swapBuffer : NULL);
 

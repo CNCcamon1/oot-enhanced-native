@@ -376,7 +376,7 @@ void Environment_Init(PlayState* play2, EnvironmentContext* envCtx, s32 unused) 
     envCtx->lightBlendRateOverride = LIGHT_BLENDRATE_OVERRIDE_NONE;
 
     envCtx->sceneTimeSpeed = 0;
-    gTimeSpeed = envCtx->sceneTimeSpeed * R_UPDATE_RATE_MULTIPLIER;
+    gTimeSpeed = envCtx->sceneTimeSpeed * (f32)R_UPDATE_RATE / (UINT16_MAX/2);
 
 #if DEBUG_FEATURES
     R_ENV_TIME_SPEED_OLD = gTimeSpeed;
@@ -942,9 +942,9 @@ void Environment_Update(PlayState* play, EnvironmentContext* envCtx, LightContex
     if (pauseCtx->state == PAUSE_STATE_OFF) {
         if (!IS_PAUSED(&play->pauseCtx)) {
             if (play->skyboxId == SKYBOX_NORMAL_SKY) {
-                play->skyboxCtx.rot.y -= 0.001f * R_UPDATE_RATE_MULTIPLIER;
+                play->skyboxCtx.rot.y -= 0.001f * (f32)R_UPDATE_RATE / (UINT16_MAX/2);
             } else if (play->skyboxId == SKYBOX_CUTSCENE_MAP) {
-                play->skyboxCtx.rot.y -= 0.005f * R_UPDATE_RATE_MULTIPLIER;
+                play->skyboxCtx.rot.y -= 0.005f * (f32)R_UPDATE_RATE / (UINT16_MAX/2);
             }
         }
 
