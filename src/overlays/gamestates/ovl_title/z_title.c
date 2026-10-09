@@ -31,30 +31,6 @@
 #include "mod_constants.h"
 #include "assets/textures/nintendo_rogo_static/nintendo_rogo_static.h"
 
-#if DEBUG_FEATURES
-void ConsoleLogo_PrintBuildInfo(Gfx** gfxP) {
-    Gfx* gfx;
-    GfxPrint* printer;
-
-    gfx = *gfxP;
-    gfx = Gfx_SetupDL_28(gfx);
-    printer = alloca(sizeof(GfxPrint));
-    GfxPrint_Init(printer);
-    GfxPrint_Open(printer, gfx);
-    GfxPrint_SetColor(printer, 255, 155, 255, 255);
-    GfxPrint_SetPos(printer, 9, 21);
-    GfxPrint_Printf(printer, "NOT MARIO CLUB VERSION");
-    GfxPrint_SetColor(printer, 255, 255, 255, 255);
-    GfxPrint_SetPos(printer, 7, 23);
-    GfxPrint_Printf(printer, "[Creator:%s]", gBuildCreator);
-    GfxPrint_SetPos(printer, 7, 24);
-    GfxPrint_Printf(printer, "[Date:%s]", gBuildDate);
-    gfx = GfxPrint_Close(printer);
-    GfxPrint_Destroy(printer);
-    *gfxP = gfx;
-}
-#endif
-
 void ConsoleLogo_Calc(ConsoleLogoState* this) {
 #if !PLATFORM_GC
     if ((this->coverAlpha == 0) && (this->visibleDuration != 0)) {
@@ -173,19 +149,6 @@ void ConsoleLogo_Main(GameState* thisx) {
     ConsoleLogo_Calc(this);
     ConsoleLogo_Draw(this);
 
-#if DEBUG_FEATURES
-    if (gIsCtrlr2Valid) {
-        Gfx* gfx = POLY_OPA_DISP;
-
-        ConsoleLogo_PrintBuildInfo(&gfx);
-        POLY_OPA_DISP = gfx;
-    }
-#endif
-
-#if PLATFORM_IQUE
-    this->exit = true;
-#endif
-
     if (this->exit) {
         gSaveContext.seqId = (u8)NA_BGM_DISABLED;
         gSaveContext.natureAmbienceId = 0xFF;
@@ -242,15 +205,11 @@ void ConsoleLogo_Init(GameState* thisx) {
     this->state.destroy = ConsoleLogo_Destroy;
     this->exit = false;
 
-#if OOT_VERSION < GC_US || PLATFORM_IQUE
     if (!(gPadMgr.validCtrlrsMask & 1)) {
         gSaveContext.fileNum = 0xFEDC;
     } else {
         gSaveContext.fileNum = 0xFF;
     }
-#else
-    gSaveContext.fileNum = 0xFF;
-#endif
 
     Sram_Alloc(&this->state, &this->sramCtx);
     this->ult = 0;

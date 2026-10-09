@@ -62,34 +62,6 @@ void func_80AE72D0(EnRl* this) {
     }
 }
 
-#if DEBUG_FEATURES
-void func_80AE7358(EnRl* this) {
-    Animation_Change(&this->skelAnime, &object_rl_Anim_000A3C, 1.0f, 0.0f,
-                     Animation_GetLastFrame(&object_rl_Anim_000A3C), ANIMMODE_LOOP, 0.0f);
-    this->action = 4;
-    this->drawConfig = 0;
-    this->alpha = 0;
-    this->lightBallSpawned = 0;
-    this->actor.shape.shadowAlpha = 0;
-    this->unk_19C = 0.0f;
-}
-
-void func_80AE73D8(EnRl* this, PlayState* play) {
-    static s32 D_80AE81AC = 0;
-
-    if (play->csCtx.state == CS_STATE_IDLE) {
-        if (D_80AE81AC) {
-            if (this->actor.params == 2) {
-                func_80AE7358(this);
-            }
-            D_80AE81AC = 0;
-        }
-    } else if (!D_80AE81AC) {
-        D_80AE81AC = 1;
-    }
-}
-#endif
-
 void func_80AE744C(EnRl* this, PlayState* play) {
     Actor_UpdateBgCheckInfo(play, &this->actor, 75.0f, 30.0f, 30.0f, UPDBGCHECKINFO_FLAG_0 | UPDBGCHECKINFO_FLAG_2);
 }
@@ -284,9 +256,6 @@ void func_80AE7BF8(EnRl* this, s32 arg1) {
 
 void func_80AE7C64(EnRl* this, PlayState* play) {
     func_80AE7954(this, play);
-#if DEBUG_FEATURES
-    func_80AE73D8(this, play);
-#endif
 }
 
 void func_80AE7C94(EnRl* this, PlayState* play) {
@@ -294,9 +263,6 @@ void func_80AE7C94(EnRl* this, PlayState* play) {
     EnRl_UpdateSkelAnime(this);
     func_80AE72D0(this);
     func_80AE79A4(this, play);
-#if DEBUG_FEATURES
-    func_80AE73D8(this, play);
-#endif
 }
 
 void func_80AE7CE8(EnRl* this, PlayState* play) {
@@ -306,9 +272,6 @@ void func_80AE7CE8(EnRl* this, PlayState* play) {
     animFinished = EnRl_UpdateSkelAnime(this);
     func_80AE72D0(this);
     func_80AE7BF8(this, animFinished);
-#if DEBUG_FEATURES
-    func_80AE73D8(this, play);
-#endif
 }
 
 void func_80AE7D40(EnRl* this, PlayState* play) {
@@ -316,9 +279,6 @@ void func_80AE7D40(EnRl* this, PlayState* play) {
     EnRl_UpdateSkelAnime(this);
     func_80AE72D0(this);
     func_80AE7AF8(this, play);
-#if DEBUG_FEATURES
-    func_80AE73D8(this, play);
-#endif
 }
 
 void func_80AE7D94(EnRl* this, PlayState* play) {

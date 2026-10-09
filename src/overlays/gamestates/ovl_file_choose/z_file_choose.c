@@ -1020,14 +1020,8 @@ void FileSelect_SetWindowContentVtx(GameState* thisx) {
             temp_t1 += 2;
 
             for (phi_a1 = 0; phi_a1 < 8; phi_a1++, phi_t2 += 4, phi_t0 += WREG(40)) {
-#if OOT_VERSION == PAL_1_1
-                fileNameChar = this->fileNames[phi_t5][phi_a1];
-                this->windowContentVtx[phi_t2].v.ob[0] = this->windowContentVtx[phi_t2 + 2].v.ob[0] =
-                    phi_t0 + 0x40 + WREG(41) + D_808124C0[fileNameChar];
-#else
                 this->windowContentVtx[phi_t2].v.ob[0] = this->windowContentVtx[phi_t2 + 2].v.ob[0] =
                     phi_t0 + 0x40 + WREG(41);
-#endif
                 this->windowContentVtx[phi_t2 + 1].v.ob[0] = this->windowContentVtx[phi_t2 + 3].v.ob[0] =
                     this->windowContentVtx[phi_t2].v.ob[0] + WREG(42);
                 this->windowContentVtx[phi_t2].v.ob[1] = this->windowContentVtx[phi_t2 + 1].v.ob[1] = temp_t1 - 3;
@@ -1160,9 +1154,7 @@ static s16 sQuestItemFlags[] = {
     QUEST_MEDALLION_WATER, QUEST_MEDALLION_SPIRIT, QUEST_MEDALLION_SHADOW, QUEST_MEDALLION_LIGHT,
 };
 
-#if (OOT_NTSC && OOT_VERSION < GC_JP_CE) || PLATFORM_IQUE
 static void* sSaveXTextures[] = { gFileSelSaveXJPNTex, gFileSelSaveXENGTex };
-#endif
 
 static s16 sNamePrimColors[2][3] = { { 255, 255, 255 }, { 100, 100, 100 } };
 
@@ -1865,17 +1857,6 @@ void FileSelect_FadeOut(GameState* thisx) {
  */
 void FileSelect_LoadGame(GameState* thisx) {
     FileSelectState* this = (FileSelectState*)thisx;
-
-#if DEBUG_FEATURES
-    if (this->buttonIndex == FS_BTN_SELECT_FILE_1) {
-        SFX_PLAY_CENTERED(NA_SE_SY_FSEL_DECIDE_L);
-        gSaveContext.fileNum = this->buttonIndex;
-        Sram_OpenSave(&this->sramCtx);
-        gSaveContext.gameMode = GAMEMODE_NORMAL;
-        SET_NEXT_GAMESTATE(&this->state, MapSelect_Init, MapSelectState);
-        this->state.running = false;
-    } else
-#endif
     {
         SFX_PLAY_CENTERED(NA_SE_SY_FSEL_DECIDE_L);
         gSaveContext.fileNum = this->buttonIndex;

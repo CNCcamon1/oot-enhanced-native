@@ -167,14 +167,10 @@ void func_80ABF0CC(EnOkarinaTag* this, PlayState* play) {
             if (play->sceneId == SCENE_WATER_TEMPLE) {
                 play->msgCtx.msgMode = MSGMODE_PAUSED;
             }
-#if OOT_VERSION < NTSC_1_1
-            play->msgCtx.ocarinaMode = OCARINA_MODE_04;
-#else
             if ((play->sceneId != SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC) &&
                 (play->sceneId != SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS)) {
                 play->msgCtx.ocarinaMode = OCARINA_MODE_04;
             }
-#endif
             Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
             this->actionFunc = func_80ABEF2C;
             return;

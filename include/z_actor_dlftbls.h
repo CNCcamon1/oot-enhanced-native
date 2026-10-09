@@ -7,11 +7,7 @@
 /**
  * @see ACTOROVL_ALLOC_ABSOLUTE
  */
-#if DEBUG_FEATURES
-#define ACTOROVL_ABSOLUTE_SPACE_SIZE 0x27A0
-#else
 #define ACTOROVL_ABSOLUTE_SPACE_SIZE 0x24E0
-#endif
 
 /**
  * The actor overlay should be allocated memory for when loading,

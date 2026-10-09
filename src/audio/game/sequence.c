@@ -107,13 +107,6 @@ void Audio_ProcessSeqCmd(u32 cmd) {
     f32 freqScaleTarget;
     s32 pad;
 
-#if DEBUG_FEATURES
-    if (gAudioDebugPrintSeqCmd && (cmd & SEQCMD_OP_MASK) != (SEQCMD_OP_SET_SEQPLAYER_IO << 28)) {
-        AudioDebug_ScrPrt("SEQ H", (cmd >> 16) & 0xFFFF);
-        AudioDebug_ScrPrt("    L", cmd & 0xFFFF);
-    }
-#endif
-
     op = cmd >> 28;
     seqPlayerIndex = (cmd & 0xF000000) >> 24;
 

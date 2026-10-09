@@ -1,6 +1,4 @@
-#if DEBUG_FEATURES
-    include "$(BUILD_DIR)/src/libultra/io/pfsfreeblocks.o"
-#endif
+
     include "$(BUILD_DIR)/src/libultra/mgu/scale.o"
     include "$(BUILD_DIR)/src/libultra/gu/sinf.o"
     include "$(BUILD_DIR)/src/libultra/gu/sins.o"
@@ -13,21 +11,12 @@
     include "$(BUILD_DIR)/src/libultra/io/sprawdma.o"
     include "$(BUILD_DIR)/src/libultra/io/sirawdma.o"
     include "$(BUILD_DIR)/src/libultra/io/sptaskyield.o"
-#if DEBUG_FEATURES
-    include "$(BUILD_DIR)/src/libultra/io/pfsreadwritefile.o"
-    include "$(BUILD_DIR)/src/libultra/io/pfsgetstatus.o"
-#endif
+
     include "$(BUILD_DIR)/src/libultra/mgu/mtxidentf.o"
     include "$(BUILD_DIR)/src/libultra/gu/lookat.o"
-#if DEBUG_FEATURES
-    include "$(BUILD_DIR)/src/libultra/io/pfsallocatefile.o"
-#endif
+
     include "$(BUILD_DIR)/src/libultra/os/stoptimer.o"
-#if DEBUG_FEATURES
-    include "$(BUILD_DIR)/src/libultra/io/contpfs.o"
-    include "$(BUILD_DIR)/src/libultra/mgu/mtxl2f.o"
-    include "$(BUILD_DIR)/src/libultra/io/pfsfindfile.o"
-#endif
+
     include "$(BUILD_DIR)/src/libultra/gu/sqrtf.o"
     include "$(BUILD_DIR)/src/libultra/os/afterprenmi.o"
     include "$(BUILD_DIR)/src/libultra/io/contquery.o"
@@ -46,26 +35,18 @@
     include "$(BUILD_DIR)/src/libultra/mgu/normalize.o"
     include "$(BUILD_DIR)/src/libultra/io/dpgetstat.o"
     include "$(BUILD_DIR)/src/libultra/io/dpsetstat.o"
-#if DEBUG_FEATURES
-    include "$(BUILD_DIR)/src/libultra/io/pfsdeletefile.o"
-#endif
+
     include "$(BUILD_DIR)/src/libultra/gu/ortho.o"
     include "$(BUILD_DIR)/src/libultra/gu/cosf.o"
     include "$(BUILD_DIR)/src/libultra/gu/libm_vals.o"
     include "$(BUILD_DIR)/src/libultra/gu/coss.o"
     include "$(BUILD_DIR)/src/libultra/gu/sincoss.o"
     include "$(BUILD_DIR)/src/libultra/io/visetevent.o"
-#if DEBUG_FEATURES
-    include "$(BUILD_DIR)/src/libultra/io/pfsisplug.o"
-#endif
+
     include "$(BUILD_DIR)/src/libultra/gu/us2dex.o"
     include "$(BUILD_DIR)/src/libultra/io/pfsselectbank.o"
     include "$(BUILD_DIR)/src/libultra/io/contsetch.o"
-#if DEBUG_FEATURES
-    include "$(BUILD_DIR)/src/libultra/io/pfsfilestate.o"
-    include "$(BUILD_DIR)/src/libultra/io/pfsinitpak.o"
-    include "$(BUILD_DIR)/src/libultra/io/pfschecker.o"
-#endif
+
     include "$(BUILD_DIR)/src/libultra/io/aigetlen.o"
     include "$(BUILD_DIR)/src/libultra/mgu/translate.o"
     include "$(BUILD_DIR)/src/libultra/io/contramwrite.o"

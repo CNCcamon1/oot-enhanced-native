@@ -26,71 +26,6 @@ typedef s32 (*ColChkLineFunc)(PlayState*, CollisionCheckContext*, Collider*, Vec
 
 #define SAC_ENABLE (1 << 0)
 
-#if DEBUG_FEATURES
-/**
- * Draws a red triangle with vertices vA, vB, and vC.
- */
-void Collider_DrawRedPoly(GraphicsContext* gfxCtx, Vec3f* vA, Vec3f* vB, Vec3f* vC) {
-    Collider_DrawPoly(gfxCtx, vA, vB, vC, 255, 0, 0);
-}
-
-/**
- * Draws the triangle with vertices vA, vB, and vC and with the specified color.
- */
-void Collider_DrawPoly(GraphicsContext* gfxCtx, Vec3f* vA, Vec3f* vB, Vec3f* vC, u8 r, u8 g, u8 b) {
-    Vtx* vtxTbl;
-    Vtx* vtx;
-    f32 nx;
-    f32 ny;
-    f32 nz;
-    f32 originDist;
-
-    OPEN_DISPS(gfxCtx, "../z_collision_check.c", 713);
-
-    gSPMatrix(POLY_OPA_DISP++, &gIdentityMtx, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-    gDPSetPrimColor(POLY_OPA_DISP++, 0x00, 0xFF, r, g, b, 50);
-    gDPPipeSync(POLY_OPA_DISP++);
-    gDPSetRenderMode(POLY_OPA_DISP++, G_RM_FOG_SHADE_A, G_RM_AA_ZB_OPA_SURF2);
-    gSPTexture(POLY_OPA_DISP++, 0, 0, 0, G_TX_RENDERTILE, G_OFF);
-    gDPPipeSync(POLY_OPA_DISP++);
-    gDPSetCombineLERP(POLY_OPA_DISP++, SHADE, 0, PRIMITIVE, 0, SHADE, 0, PRIMITIVE, 0, 0, 0, 0, COMBINED, 0, 0, 0,
-                      COMBINED);
-    gSPClearGeometryMode(POLY_OPA_DISP++, G_CULL_BOTH);
-    gSPSetGeometryMode(POLY_OPA_DISP++, G_LIGHTING);
-    gDPPipeSync(POLY_OPA_DISP++);
-
-    vtxTbl = GRAPH_ALLOC(gfxCtx, 3 * sizeof(Vtx));
-    ASSERT(vtxTbl != NULL, "vtx_tbl != NULL", "../z_collision_check.c", 726);
-
-    vtxTbl[0].n.ob[0] = vA->x;
-    vtxTbl[0].n.ob[1] = vA->y;
-    vtxTbl[0].n.ob[2] = vA->z;
-    vtxTbl[1].n.ob[0] = vB->x;
-    vtxTbl[1].n.ob[1] = vB->y;
-    vtxTbl[1].n.ob[2] = vB->z;
-    vtxTbl[2].n.ob[0] = vC->x;
-    vtxTbl[2].n.ob[1] = vC->y;
-    vtxTbl[2].n.ob[2] = vC->z;
-
-    Math3D_DefPlane(vA, vB, vC, &nx, &ny, &nz, &originDist);
-
-    for (vtx = vtxTbl; vtx < vtxTbl + 3; vtx++) {
-        vtx->n.flag = 0;
-        vtx->n.tc[0] = 0;
-        vtx->n.tc[1] = 0;
-        vtx->n.n[0] = (u8)(s32)nx & 0xFF;
-        vtx->n.n[1] = (u8)(s32)ny & 0xFF;
-        vtx->n.n[2] = (u8)(s32)nz & 0xFF;
-        vtx->n.a = 255;
-    }
-
-    gSPVertex(POLY_OPA_DISP++, vtxTbl, 3, 0);
-    gSP1Triangle(POLY_OPA_DISP++, 0, 1, 2, 0);
-
-    CLOSE_DISPS(gfxCtx, "../z_collision_check.c", 757);
-}
-#endif
-
 s32 Collider_InitBase(PlayState* play, Collider* col) {
     static Collider init = {
         NULL, NULL, NULL, NULL, AT_NONE, AC_NONE, OC1_NONE, OC2_NONE, COL_MATERIAL_HIT3, COLSHAPE_MAX,
@@ -1029,11 +964,6 @@ void CollisionCheck_InitContext(PlayState* play, CollisionCheckContext* colChkCt
     colChkCtx->sacFlags = 0;
     CollisionCheck_ClearContext(play, colChkCtx);
 
-#if DEBUG_FEATURES
-    AREG(21) = true;
-    AREG(22) = true;
-    AREG(23) = true;
-#endif
 }
 
 void CollisionCheck_DestroyContext(PlayState* play, CollisionCheckContext* colChkCtx) {
@@ -1082,87 +1012,6 @@ void CollisionCheck_EnableSAC(PlayState* play, CollisionCheckContext* colChkCtx)
 void CollisionCheck_DisableSAC(PlayState* play, CollisionCheckContext* colChkCtx) {
     colChkCtx->sacFlags &= ~SAC_ENABLE;
 }
-
-#if DEBUG_FEATURES
-/**
- * Draws a collider of any shape.
- * Math3D_DrawSphere and Math3D_DrawCylinder are noops, so JntSph and Cylinder are not drawn.
- */
-void Collider_Draw(PlayState* play, Collider* col) {
-    ColliderJntSph* jntSph;
-    ColliderCylinder* cyl;
-    ColliderTris* tris;
-    ColliderQuad* quad;
-    s32 i;
-
-    if (col == NULL) {
-        return;
-    }
-    switch (col->shape) {
-        case COLSHAPE_JNTSPH:
-            jntSph = (ColliderJntSph*)col;
-            for (i = 0; i < jntSph->count; i++) {
-                Math3D_DrawSphere(play, &jntSph->elements[i].dim.worldSphere);
-            }
-            break;
-
-        case COLSHAPE_CYLINDER:
-            cyl = (ColliderCylinder*)col;
-            Math3D_DrawCylinder(play, &cyl->dim);
-            break;
-
-        case COLSHAPE_TRIS:
-            tris = (ColliderTris*)col;
-            for (i = 0; i < tris->count; i++) {
-                Collider_DrawRedPoly(play->state.gfxCtx, &tris->elements[i].dim.vtx[0], &tris->elements[i].dim.vtx[1],
-                                     &tris->elements[i].dim.vtx[2]);
-            }
-            break;
-
-        case COLSHAPE_QUAD:
-            quad = (ColliderQuad*)col;
-            Collider_DrawRedPoly(play->state.gfxCtx, &quad->dim.quad[2], &quad->dim.quad[3], &quad->dim.quad[1]);
-            Collider_DrawRedPoly(play->state.gfxCtx, &quad->dim.quad[1], &quad->dim.quad[0], &quad->dim.quad[2]);
-            break;
-    }
-}
-
-/**
- * Draws collision if AREG(15) and other AREGs are set. AREG(21) draws AT colliders, AREG(22) draws AC colliders,
- * AREG(23) draws OC colliders, AREG(24) draws dynapolys, and AREG(25) draws bg polys
- */
-void CollisionCheck_DrawCollision(PlayState* play, CollisionCheckContext* colChkCtx) {
-    Collider* col;
-    s32 i;
-
-    if (AREG(15)) {
-        if (AREG(21)) {
-            for (i = 0; i < colChkCtx->colATCount; i++) {
-                Collider_Draw(play, colChkCtx->colAT[i]);
-            }
-        }
-        if (AREG(22)) {
-            for (i = 0; i < colChkCtx->colACCount; i++) {
-                Collider_Draw(play, colChkCtx->colAC[i]);
-            }
-        }
-        if (AREG(23)) {
-            for (i = 0; i < colChkCtx->colOCCount; i++) {
-                col = colChkCtx->colOC[i];
-                if (col->ocFlags1 & OC1_ON) {
-                    Collider_Draw(play, col);
-                }
-            }
-        }
-        if (AREG(24)) {
-            BgCheck_DrawDynaCollision(play, &play->colCtx);
-        }
-        if (AREG(25)) {
-            BgCheck_DrawStaticCollision(play, &play->colCtx);
-        }
-    }
-}
-#endif
 
 static ColChkResetFunc sATResetFuncs[] = {
     Collider_ResetJntSphAT,
@@ -2327,11 +2176,6 @@ void CollisionCheck_ATQuadVsACCyl(PlayState* play, CollisionCheckContext* colChk
     }
 }
 
-#if DEBUG_FEATURES
-static s8 sBssDummy3;
-static s8 sBssDummy4;
-#endif
-
 void CollisionCheck_ATTrisVsACTris(PlayState* play, CollisionCheckContext* colChkCtx, Collider* atCol,
                                    Collider* acCol) {
     static Vec3f hitPos;
@@ -3339,13 +3183,6 @@ void Collider_SetTrisDim(PlayState* play, ColliderTris* tris, s32 elemIndex, Col
     Collider_SetTrisElementDim(play, &trisElem->dim, src);
 }
 
-#if DEBUG_FEATURES
-// The two static Vec3f variables in the function below cross a block index rollover, causing a bss order swap.
-//! In order to replicate this behavior, we declare a certain amount of sBssDummy variables throughout the file, which
-//! we fit inside padding added by the compiler between structs like TriNorm and/or Vec3f, so they don't take space in
-//! bss.
-#endif
-
 /**
  * Updates the world spheres for all of the collider's JntSph elements attached to the specified limb
  */
@@ -3718,10 +3555,6 @@ u8 CollisionCheck_GetSwordDamage(s32 dmgFlags) {
     } else if (dmgFlags & DMG_JUMP_GIANT) {
         damage = 8;
     }
-
-#if DEBUG_FEATURES
-    KREG(7) = damage;
-#endif
 
     return damage;
 }

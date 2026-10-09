@@ -92,22 +92,6 @@ static u16 sStartingTextIds[] = {
     0x10A0, 0x10A1, 0x10A2, 0x10CA, 0x10CB, 0x10CC, 0x10CD, 0x10CE, 0x10CF, 0x10DC, 0x10DD,
 };
 
-#if DEBUG_FEATURES
-static char* sItemDebugTxt[] = {
-    T("デクの実売り            ", "Deku Nuts               "),
-    T("デクの棒売り            ", "Deku Sticks             "),
-    T("ハートの欠片売り        ", "Piece of Heart          "),
-    T("デクの種売り            ", "Deku Seeds              "),
-    T("デクの盾売り            ", "Deku Shield             "),
-    T("バクダン売り            ", "Bombs                   "),
-    T("矢売り                  ", "Arrows                  "),
-    T("赤のくすり売り          ", "Red Potion              "),
-    T("緑のくすり売り          ", "Green Potion            "),
-    T("デクの棒持てる数を増やす", "Deku Stick Upgrade      "),
-    T("デクの実持てる数を増やす", "Deku Nut Upgrade        "),
-};
-#endif
-
 static DnsItemEntry sItemDekuNuts = { 20, 5, GI_DEKU_NUTS_5_2, EnDns_CanBuyDekuNuts, EnDns_PayForDekuNuts };
 static DnsItemEntry sItemDekuSticks = { 15, 1, GI_DEKU_STICKS_1, EnDns_CanBuyDekuSticks, EnDns_PayPrice };
 static DnsItemEntry sItemHeartPiece = { 10, 1, GI_HEART_PIECE, EnDns_CanBuyPrice, EnDns_PayForHeartPiece };

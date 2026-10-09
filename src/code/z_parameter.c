@@ -4002,12 +4002,6 @@ void Interface_Draw(PlayState* play) {
         }
     }
 
-#if DEBUG_FEATURES
-    if (pauseCtx->debugState == PAUSE_DEBUG_STATE_FLAG_SET_OPEN) {
-        FlagSet_Update(play);
-    }
-#endif
-
     if (interfaceCtx->unk_244 != 0) {
         gDPPipeSync(OVERLAY_DISP++);
         gSPDisplayList(OVERLAY_DISP++, sSetupDL_80125A60);

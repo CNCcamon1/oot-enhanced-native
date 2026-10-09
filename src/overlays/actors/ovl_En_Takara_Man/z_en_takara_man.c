@@ -173,11 +173,7 @@ void func_80B17A6C(EnTakaraMan* this, PlayState* play) {
     if (Actor_HasParent(&this->actor, play)) {
         this->actionFunc = func_80B17AC4;
     } else {
-#if OOT_VERSION < NTSC_1_1
-        Actor_OfferGetItem(&this->actor, play, GI_SMALL_KEY, 2000.0f, 1000.0f);
-#else
         Actor_OfferGetItem(&this->actor, play, GI_DOOR_KEY, 2000.0f, 1000.0f);
-#endif
     }
 }
 

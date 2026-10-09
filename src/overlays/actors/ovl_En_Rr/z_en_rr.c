@@ -97,13 +97,6 @@ ActorProfile En_Rr_Profile = {
     /**/ EnRr_Draw,
 };
 
-#if DEBUG_FEATURES
-static char* sDropNames[] = {
-    T("タイプ７  ", "Type 7    "), T("魔法の壷小", "Small magic jar"), T("矢        ", "Arrow     "),
-    T("妖精      ", "Fairy     "), T("20ルピー  ", "20 rupees "),      T("50ルピー  ", "50 rupees "),
-};
-#endif
-
 static ColliderCylinderInitType1 sCylinderInit1 = {
     {
         COL_MATERIAL_NONE,
@@ -500,16 +493,11 @@ void EnRr_CollisionCheck(EnRr* this, PlayState* play) {
                     if (this->actor.colChkInfo.health == 0) {
                         this->dropType = RR_DROP_RANDOM_RUPEE;
                     }
-#if OOT_VERSION < NTSC_1_1
-                    this->effectTimer = 20;
-                    Actor_SetColorFilter(&this->actor, COLORFILTER_COLORFLAG_BLUE, 255, COLORFILTER_BUFFLAG_XLU, 80);
-#else
                     if (this->actor.colorFilterTimer == 0) {
                         this->effectTimer = 20;
                         Actor_SetColorFilter(&this->actor, COLORFILTER_COLORFLAG_BLUE, 255, COLORFILTER_BUFFLAG_XLU,
                                              80);
                     }
-#endif
                     EnRr_SetupStunned(this);
                     return;
                 case RR_DMG_REACT_LIGHT_MAGIC: // Unused light magic

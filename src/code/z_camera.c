@@ -39,29 +39,13 @@ s32 Camera_UpdateWater(Camera* camera);
 #define CAMERA_CHECK_BTN(input, btn) CHECK_BTN_ALL((input)->press.button, (btn))
 #endif
 
-#if DEBUG_FEATURES
-s32 Camera_QRegInit(void);
-#endif
-
-#if DEBUG_FEATURES
-#define CAM_DEBUG_RELOAD_PREG(camera)        \
-    if (R_RELOAD_CAM_PARAMS) {               \
-        Camera_CopyPREGToModeValues(camera); \
-    }                                        \
-    (void)0
-#else
 #define CAM_DEBUG_RELOAD_PREG(camera) (void)0
-#endif
 
 // Camera will reload its paramData. Usually that means setting the read-only data from what is stored in
 // CameraModeValue arrays. Although sometimes some read-write data is reset as well
 #define RELOAD_PARAMS(camera) (camera->animState == 0 || camera->animState == 10 || camera->animState == 20)
 
-#if DEBUG_FEATURES
-#define CAM_DEBUG_RELOAD_PARAMS R_RELOAD_CAM_PARAMS
-#else
 #define CAM_DEBUG_RELOAD_PARAMS true
-#endif
 
 /**
  * Camera data is stored in both read-only data and OREG as s16, and then converted to the appropriate type during
@@ -74,64 +58,6 @@ s32 Camera_QRegInit(void);
 #define GET_NEXT_RO_DATA(values) ((values++)->val)
 // Load the next value and scale down from camera read-only data stored in CameraModeValue
 #define GET_NEXT_SCALED_RO_DATA(values) CAM_DATA_SCALED(GET_NEXT_RO_DATA(values))
-
-#if DEBUG_FEATURES
-
-#define CAM_GLOBAL_0 OREG(0)
-#define CAM_GLOBAL_1 OREG(1)
-#define CAM_XZ_OFFSET_UPDATE_RATE CAM_DATA_SCALED(R_CAM_XZ_OFFSET_UPDATE_RATE)
-#define CAM_Y_OFFSET_UPDATE_RATE CAM_DATA_SCALED(R_CAM_Y_OFFSET_UPDATE_RATE)
-#define CAM_FOV_UPDATE_RATE CAM_DATA_SCALED(R_CAM_FOV_UPDATE_RATE)
-#define CAM_MAX_PITCH R_CAM_MAX_PITCH
-#define CAM_R_UPDATE_RATE_INV R_CAM_R_UPDATE_RATE_INV
-#define CAM_PITCH_UPDATE_RATE_INV R_CAM_PITCH_UPDATE_RATE_INV
-#define CAM_GLOBAL_8 CAM_DATA_SCALED(OREG(8))
-#define CAM_SLOPE_Y_ADJ_AMOUNT R_CAM_SLOPE_Y_ADJ_AMOUNT
-#define CAM_GLOBAL_10 CAM_DATA_SCALED(OREG(10))
-#define CAM_GLOBAL_11 CAM_DATA_SCALED(OREG(11))
-#define CAM_GLOBAL_12 CAM_DATA_SCALED(OREG(12))
-#define CAM_GLOBAL_13 OREG(13)
-#define CAM_GLOBAL_14 OREG(14)
-#define CAM_GLOBAL_15 OREG(15)
-#define CAM_GLOBAL_16 OREG(16)
-#define CAM_PITCH_FLOOR_CHECK_NEAR_DIST_FAC CAM_DATA_SCALED(R_CAM_PITCH_FLOOR_CHECK_NEAR_DIST_FAC)
-#define CAM_PITCH_FLOOR_CHECK_FAR_DIST_FAC CAM_DATA_SCALED(R_CAM_PITCH_FLOOR_CHECK_FAR_DIST_FAC)
-#define CAM_PITCH_FLOOR_CHECK_OFFSET_Y_FAC CAM_DATA_SCALED(R_CAM_PITCH_FLOOR_CHECK_OFFSET_Y_FAC)
-#define CAM_PITCH_FLOOR_CHECK_NEAR_WEIGHT CAM_DATA_SCALED(R_CAM_PITCH_FLOOR_CHECK_NEAR_WEIGHT)
-#define CAM_GLOBAL_21 OREG(21)
-#define CAM_GLOBAL_22 CAM_DATA_SCALED(OREG(22))
-#define CAM_DEFAULT_ANIM_TIME R_CAM_DEFAULT_ANIM_TIME
-#define CAM_GLOBAL_24 OREG(24)
-#define CAM_UPDATE_RATE_STEP_SCALE_XZ CAM_DATA_SCALED(R_CAM_UPDATE_RATE_STEP_SCALE_XZ)
-#define CAM_UPDATE_RATE_STEP_SCALE_Y CAM_DATA_SCALED(R_CAM_UPDATE_RATE_STEP_SCALE_Y)
-#define CAM_GLOBAL_27 OREG(27)
-#define CAM_GLOBAL_28 CAM_DATA_SCALED(OREG(28))
-#define CAM_GLOBAL_29 CAM_DATA_SCALED(OREG(29))
-#define CAM_GLOBAL_30 CAM_DATA_SCALED(OREG(30))
-#define CAM_JUMP1_EYE_Y_STEP_SCALE CAM_DATA_SCALED(R_CAM_JUMP1_EYE_Y_STEP_SCALE)
-#define CAM_GLOBAL_32 OREG(32)
-#define CAM_GLOBAL_33 OREG(33)
-#define CAM_MIN_PITCH_1 R_CAM_MIN_PITCH_1
-#define CAM_MIN_PITCH_2 R_CAM_MIN_PITCH_2
-#define CAM_BATTLE1_ROLL_TARGET_BASE R_CAM_BATTLE1_ROLL_TARGET_BASE
-#define CAM_BATTLE1_ROLL_STEP_SCALE CAM_DATA_SCALED(R_CAM_BATTLE1_ROLL_STEP_SCALE)
-#define CAM_GLOBAL_38 CAM_DATA_SCALED(OREG(38))
-#define CAM_GLOBAL_39 CAM_DATA_SCALED(OREG(39))
-#define CAM_BATTLE1_XYZ_OFFSET_UPDATE_RATE_TARGET CAM_DATA_SCALED(R_CAM_BATTLE1_XYZ_OFFSET_UPDATE_RATE_TARGET)
-#define CAM_AT_LERP_STEP_SCALE_MIN CAM_DATA_SCALED(R_CAM_AT_LERP_STEP_SCALE_MIN)
-#define CAM_AT_LERP_STEP_SCALE_FAC CAM_DATA_SCALED(R_CAM_AT_LERP_STEP_SCALE_FAC)
-#define CAM_GLOBAL_43 CAM_DATA_SCALED(OREG(43))
-#define CAM_GLOBAL_44 OREG(44)
-#define CAM_GLOBAL_45 OREG(45)
-#define CAM_YOFFSET_NORM CAM_DATA_SCALED(R_CAM_YOFFSET_NORM)
-#define CAM_GLOBAL_47 OREG(47)
-#define CAM_GLOBAL_48 CAM_DATA_SCALED(OREG(48))
-#define CAM_GLOBAL_49 CAM_DATA_SCALED(OREG(49))
-#define CAM_GLOBAL_50 OREG(50)
-#define CAM_GLOBAL_51 OREG(51)
-#define CAM_GLOBAL_52 OREG(52)
-
-#else
 
 #define CAM_GLOBAL_0 0
 #define CAM_GLOBAL_1 1
@@ -186,8 +112,6 @@ s32 Camera_QRegInit(void);
 #define CAM_GLOBAL_50 20
 #define CAM_GLOBAL_51 20
 #define CAM_GLOBAL_52 20
-
-#endif
 
 #define DISTORTION_HOT_ROOM (1 << 0)
 #define DISTORTION_UNDERWATER_WEAK (1 << 1)
@@ -605,12 +529,6 @@ f32 Camera_GetFloorYLayer(Camera* camera, Vec3f* norm, Vec3f* pos, s32* bgId) {
         }
     }
 
-#if DEBUG_FEATURES
-    if (i == 0) {
-        PRINTF(VT_COL(YELLOW, BLACK) "camera: foward check: too many layer!\n" VT_RST);
-    }
-#endif
-
     return floorY;
 }
 
@@ -890,41 +808,8 @@ void Camera_CopyDataToRegs(Camera* camera, s16 mode) {
     CameraModeValue* valueP;
     s32 i;
 
-#if DEBUG_FEATURES
-    if (PREG(82)) {
-        PRINTF("camera: res: stat (%d/%d/%d)\n", camera->camId, camera->setting, mode);
-    }
-
-    values = sCameraSettings[camera->setting].cameraModes[mode].values;
-
-    for (i = 0; i < sCameraSettings[camera->setting].cameraModes[mode].valueCnt; i++) {
-        valueP = &values[i];
-        PREG(valueP->dataType) = valueP->val;
-        if (PREG(82)) {
-            PRINTF("camera: res: PREG(%02d) = %d\n", valueP->dataType, valueP->val);
-        }
-    }
-#endif
-
     camera->animState = 0;
 }
-
-#if DEBUG_FEATURES
-s32 Camera_CopyPREGToModeValues(Camera* camera) {
-    CameraModeValue* values = sCameraSettings[camera->setting].cameraModes[camera->mode].values;
-    CameraModeValue* valueP;
-    s32 i;
-
-    for (i = 0; i < sCameraSettings[camera->setting].cameraModes[camera->mode].valueCnt; i++) {
-        valueP = &values[i];
-        valueP->val = R_CAM_DATA(valueP->dataType);
-        if (PREG(82)) {
-            PRINTF("camera: res: %d = PREG(%02d)\n", valueP->val, valueP->dataType);
-        }
-    }
-    return true;
-}
-#endif
 
 void Camera_UpdateInterface(s16 interfaceField) {
     s16 hudVisibilityMode;
@@ -972,12 +857,6 @@ Vec3f Camera_BGCheckCorner(Vec3f* linePointA, Vec3f* linePointB, CamColChk* poin
     UNUSED_NDEBUG bool result;
 
     result = func_800427B4(pointAColChk->poly, pointBColChk->poly, linePointA, linePointB, &closestPoint);
-#if DEBUG_FEATURES
-    if (!result) {
-        PRINTF(VT_COL(YELLOW, BLACK) "camera: corner check no cross point %x %x\n" VT_RST, pointAColChk, pointBColChk);
-        return pointAColChk->pos;
-    }
-#endif
 
     return closestPoint;
 }
@@ -2746,15 +2625,6 @@ s32 Camera_Jump3(Camera* camera) {
         roData->interfaceField = GET_NEXT_RO_DATA(values);
     }
 
-#if DEBUG_FEATURES
-    if (R_RELOAD_CAM_PARAMS) {
-        prevMode = camera->mode;
-        camera->mode = rwData->mode;
-        Camera_CopyPREGToModeValues(camera);
-        camera->mode = prevMode;
-    }
-#endif
-
     sCameraInterfaceField = roData->interfaceField;
 
     switch (camera->animState) {
@@ -3002,17 +2872,6 @@ s32 Camera_Battle1(Camera* camera) {
         rwData->roll = 0.0f;
         rwData->target = camera->target;
         camera->animState++;
-
-#if DEBUG_FEATURES
-        if (rwData->target->id > 0) {
-            PRINTF("camera: battle: target actor name " VT_FGCOL(BLUE) "%d" VT_RST "\n", rwData->target->id);
-        } else {
-            PRINTF("camera: battle: target actor name " VT_COL(RED, WHITE) "%d" VT_RST "\n", rwData->target->id);
-            camera->target = NULL;
-            Camera_RequestMode(camera, CAM_MODE_Z_PARALLEL);
-            return true;
-        }
-#endif
 
         rwData->animTimer = CAM_DEFAULT_ANIM_TIME + CAM_GLOBAL_24;
         rwData->initialEyeToAtYaw = atToEyeDir.yaw;
@@ -3912,9 +3771,6 @@ s32 Camera_KeepOn4(Camera* camera) {
                     vecGeo.pitch = sCamCheckAroundOffsetsPitch[i] + atToEyeBasePitch;
                     sEyeCandidate = Camera_AddVecGeoToVec3f(&sAtTarget, &vecGeo);
                 }
-#if DEBUG_FEATURES
-                PRINTF("camera: item: BG&collision check %d time(s)\n", i);
-#endif
             }
             rwData->atToEyeTargetStepPitch = (s16)(vecGeo.pitch - atToEyeNextDir.pitch) / (f32)rwData->animTimer;
             rwData->atToEyeTargetStepYaw = (s16)(vecGeo.yaw - atToEyeNextDir.yaw) / (f32)rwData->animTimer;
@@ -4394,10 +4250,6 @@ s32 Camera_Subj3(Camera* camera) {
     }
 
     func_80043ABC(camera);
-
-#if DEBUG_FEATURES
-    Camera_CopyPREGToModeValues(camera);
-#endif
 
     values = sCameraSettings[camera->setting].cameraModes[camera->mode].values;
     roData->eyeNextYOffset = GET_NEXT_SCALED_RO_DATA(values) * playerHeight;
@@ -5767,25 +5619,6 @@ s32 Camera_Unique9(Camera* camera) {
     return true;
 }
 
-#if DEBUG_FEATURES
-void Camera_DebugPrintSplineArray(char* name, s16 length, CutsceneCameraPoint cameraPoints[]) {
-    s32 i;
-
-    PRINTF("static SplinedatZ  %s[] = {\n", name);
-    for (i = 0; i < length; i++) {
-        PRINTF("    /* key frame %2d */ {\n", i);
-        PRINTF("    /*     code     */ %d,\n", cameraPoints[i].continueFlag);
-        PRINTF("    /*     z        */ %d,\n", cameraPoints[i].cameraRoll);
-        PRINTF("    /*     T        */ %d,\n", cameraPoints[i].nextPointFrame);
-        PRINTF("    /*     zoom     */ %f,\n", cameraPoints[i].viewAngle);
-        PRINTF("    /*     pos      */ { %d, %d, %d }\n", cameraPoints[i].pos.x, cameraPoints[i].pos.y,
-               cameraPoints[i].pos.z);
-        PRINTF("    },\n");
-    }
-    PRINTF("};\n\n");
-}
-#endif
-
 /**
  * Copies `src` to `dst`, used in Camera_Demo1
  * Name from AC map: Camera2_SetPos_Demo
@@ -5848,12 +5681,6 @@ s32 Camera_Demo1(Camera* camera) {
             PRINTF(VT_SGR("1") "%06u:" VT_RST " camera: spline demo: start %s \n", camera->play->state.frames,
                    *relativeToPlayer == 0 ? T("絶対", "absolute") : T("相対", "relative"));
 
-#if DEBUG_FEATURES
-            if (PREG(93)) {
-                Camera_DebugPrintSplineArray("CENTER", 5, csAtPoints);
-                Camera_DebugPrintSplineArray("   EYE", 5, csEyePoints);
-            }
-#endif
             FALLTHROUGH;
         case 1:
             // follow CutsceneCameraPoints.  function returns 1 if at the end.
@@ -5869,11 +5696,6 @@ s32 Camera_Demo1(Camera* camera) {
                     Camera_RotateAroundPoint(&curPlayerPosRot, &csEyeUpdate, eyeNext);
                     Camera_RotateAroundPoint(&curPlayerPosRot, &csAtUpdate, at);
                 }
-#if DEBUG_FEATURES
-                else {
-                    PRINTF(VT_COL(RED, WHITE) "camera: spline demo: owner dead\n" VT_RST);
-                }
-#endif
             } else {
                 // simply copy the interpolated values to the eye and at
                 Camera_Vec3fCopy(&csEyeUpdate, eyeNext);
@@ -7480,25 +7302,10 @@ void Camera_Init(Camera* camera, View* view, CollisionContext* colCtx, PlayState
     memset(camera, 0, sizeof(Camera));
     if (sInitRegs) {
         s32 i;
-
-#if DEBUG_FEATURES
-        for (i = 0; i < sOREGInitCnt; i++) {
-            OREG(i) = sOREGInit[i];
-        }
-
-        for (i = 0; i < sCamDataRegsInitCount; i++) {
-            R_CAM_DATA(i) = sCamDataRegsInit[i];
-        }
-
-        DebugCamera_Reset(camera, &D_8015BD80);
-#endif
         sInitRegs = false;
         PREG(88) = -1;
     }
     camera->play = D_8015BD7C = play;
-#if DEBUG_FEATURES
-    DebugCamera_Init(&D_8015BD80, camera);
-#endif
     curUID = sNextUID;
     sNextUID++;
     while (curUID != 0) {
@@ -7551,9 +7358,6 @@ void Camera_Init(Camera* camera, View* view, CollisionContext* colCtx, PlayState
     camera->quakeOffset.z = 0;
     camera->atLERPStepScale = 1;
     sCameraInterfaceField = CAM_INTERFACE_FIELD(CAM_LETTERBOX_IGNORE, CAM_HUD_VISIBILITY_IGNORE, 0);
-#if DEBUG_FEATURES
-    sDbgModeIdx = -1;
-#endif
     sSceneInitLetterboxTimer = 3; // show letterbox for 3 frames at the start of a new scene
     PRINTF(VT_FGCOL(BLUE) "camera: initialize --- " VT_RST " UID %d\n", camera->uid);
 }
@@ -7653,9 +7457,6 @@ void Camera_InitDataUsingPlayer(Camera* camera, Player* player) {
     camera->nextBgCamIndex = -1;
     camera->atLERPStepScale = 1.0f;
     Camera_CopyDataToRegs(camera, camera->mode);
-#if DEBUG_FEATURES
-    Camera_QRegInit();
-#endif
     PRINTF(VT_FGCOL(BLUE) "camera: personalize ---" VT_RST "\n");
 
     if (camera->camId == CAM_ID_MAIN) {
@@ -7668,110 +7469,9 @@ s16 Camera_ChangeStatus(Camera* camera, s16 status) {
     CameraModeValue* valueP;
     s32 i;
 
-#if DEBUG_FEATURES
-    if (PREG(82)) {
-        PRINTF("camera: change camera status: cond %c%c\n", status == CAM_STAT_ACTIVE ? 'o' : 'x',
-               camera->status != CAM_STAT_ACTIVE ? 'o' : 'x');
-    }
-
-    if (PREG(82)) {
-        PRINTF("camera: res: stat (%d/%d/%d)\n", camera->camId, camera->setting, camera->mode);
-    }
-
-    if (status == CAM_STAT_ACTIVE && camera->status != CAM_STAT_ACTIVE) {
-        values = sCameraSettings[camera->setting].cameraModes[camera->mode].values;
-        for (i = 0; i < sCameraSettings[camera->setting].cameraModes[camera->mode].valueCnt; i++) {
-            valueP = &values[i];
-            R_CAM_DATA(valueP->dataType) = valueP->val;
-            if (PREG(82)) {
-                PRINTF("camera: change camera status: PREG(%02d) = %d\n", valueP->dataType, valueP->val);
-            }
-        }
-    }
-#endif
-
     camera->status = status;
     return camera->status;
 }
-
-#if DEBUG_FEATURES
-void Camera_PrintSettings(Camera* camera) {
-    char sp58[8];
-    char sp50[8];
-    char sp48[8];
-    s32 i;
-
-    if ((OREG(0) & 1) && (camera->play->activeCamId == camera->camId) && !gDebugCamEnabled) {
-        for (i = 0; i < NUM_CAMS; i++) {
-            if (camera->play->cameraPtrs[i] == NULL) {
-                sp58[i] = '-';
-                sp48[i] = ' ';
-            } else {
-                switch (camera->play->cameraPtrs[i]->status) {
-                    case 0:
-                        sp58[i] = 'c';
-                        break;
-                    case 1:
-                        sp58[i] = 'w';
-                        break;
-                    case 3:
-                        sp58[i] = 's';
-                        break;
-                    case 7:
-                        sp58[i] = 'a';
-                        break;
-                    case 0x100:
-                        sp58[i] = 'd';
-                        break;
-                    default:
-                        sp58[i] = '*';
-                        break;
-                }
-            }
-            sp48[i] = ' ';
-        }
-        sp58[i] = '\0';
-        sp48[i] = '\0';
-
-        sp48[camera->play->activeCamId] = 'a';
-        DebugCamera_ScreenTextColored(3, 22, DEBUG_CAM_TEXT_WHITE, sp58);
-        DebugCamera_ScreenTextColored(3, 22, DEBUG_CAM_TEXT_PEACH, sp48);
-        DebugCamera_ScreenTextColored(3, 23, DEBUG_CAM_TEXT_WHITE, "S:");
-        DebugCamera_ScreenTextColored(5, 23, DEBUG_CAM_TEXT_GOLD, sCameraSettingNames[camera->setting]);
-        DebugCamera_ScreenTextColored(3, 24, DEBUG_CAM_TEXT_WHITE, "M:");
-        DebugCamera_ScreenTextColored(5, 24, DEBUG_CAM_TEXT_GOLD, sCameraModeNames[camera->mode]);
-        DebugCamera_ScreenTextColored(3, 25, DEBUG_CAM_TEXT_WHITE, "F:");
-        DebugCamera_ScreenTextColored(
-            5, 25, DEBUG_CAM_TEXT_GOLD,
-            sCameraFunctionNames[sCameraSettings[camera->setting].cameraModes[camera->mode].funcIdx]);
-
-        i = 0;
-        if (camera->bgCamIndex < 0) {
-            sp50[i++] = '-';
-        }
-
-        //! @bug this code was clearly meaning to print `abs(camera->bgCamIndex)` as a
-        //! one-or-two-digit number, instead of `i`.
-        // "sp50[i++] = ..." matches here, but is undefined behavior due to conflicting
-        // reads/writes between sequence points, triggering warnings. Work around by
-        // putting i++ afterwards while on the same line.
-        // clang-format off
-        if (camera->bgCamIndex / 10 != 0) {
-            sp50[i] = i / 10 + '0'; i++;
-        }
-        sp50[i] = i % 10 + '0'; i++;
-        // clang-format on
-
-        sp50[i++] = ' ';
-        sp50[i++] = ' ';
-        sp50[i++] = ' ';
-        sp50[i++] = ' ';
-        sp50[i] = '\0';
-        DebugCamera_ScreenTextColored(3, 26, DEBUG_CAM_TEXT_WHITE, "I:");
-        DebugCamera_ScreenTextColored(5, 26, DEBUG_CAM_TEXT_GOLD, sp50);
-    }
-}
-#endif
 
 s32 Camera_UpdateWater(Camera* camera) {
     f32 waterY;
@@ -7911,40 +7611,6 @@ s32 Camera_UpdateHotRoom(Camera* camera) {
     return 1;
 }
 
-#if DEBUG_FEATURES
-s32 Camera_DbgChangeMode(Camera* camera) {
-    static s16 D_8011DAFC[] = {
-        CAM_SET_NORMAL0, CAM_SET_NORMAL1, CAM_SET_NORMAL2, CAM_SET_DUNGEON0, CAM_SET_DUNGEON1, CAM_SET_DUNGEON2,
-    };
-    s32 changeDir = 0;
-
-    if (!gDebugCamEnabled && camera->play->activeCamId == CAM_ID_MAIN) {
-        if (CAMERA_CHECK_BTN(&D_8015BD7C->state.input[2], BTN_CUP)) {
-            PRINTF("attention sound URGENCY\n");
-            Sfx_PlaySfxCentered(NA_SE_SY_ATTENTION_URGENCY);
-        }
-        if (CAMERA_CHECK_BTN(&D_8015BD7C->state.input[2], BTN_CDOWN)) {
-            PRINTF("attention sound NORMAL\n");
-            Sfx_PlaySfxCentered(NA_SE_SY_ATTENTION_ON);
-        }
-
-        if (CAMERA_CHECK_BTN(&D_8015BD7C->state.input[2], BTN_CRIGHT)) {
-            changeDir = 1;
-        }
-        if (CAMERA_CHECK_BTN(&D_8015BD7C->state.input[2], BTN_CLEFT)) {
-            changeDir = -1;
-        }
-        if (changeDir != 0) {
-            sDbgModeIdx = (sDbgModeIdx + changeDir) % 6;
-            if (Camera_RequestSetting(camera, D_8011DAFC[sDbgModeIdx]) > 0) {
-                PRINTF("camera: force change SET to %s!\n", sCameraSettingNames[D_8011DAFC[sDbgModeIdx]]);
-            }
-        }
-    }
-    return true;
-}
-#endif
-
 void Camera_UpdateDistortion(Camera* camera) {
     static s16 depthPhase = 0x3F0;
     static s16 screenPlanePhase = 0x156;
@@ -8030,11 +7696,7 @@ void Camera_UpdateDistortion(Camera* camera) {
     }
 }
 
-#if DEBUG_FEATURES
-#define ENABLE_DEBUG_CAM_UPDATE R_DEBUG_CAM_UPDATE
-#else
 #define ENABLE_DEBUG_CAM_UPDATE false
-#endif
 
 Vec3s Camera_Update(Camera* camera) {
     static s32 sOOBTimer = 0;
@@ -8131,11 +7793,6 @@ Vec3s Camera_Update(Camera* camera) {
         }
     }
 
-#if DEBUG_FEATURES
-    Camera_PrintSettings(camera);
-    Camera_DbgChangeMode(camera);
-#endif
-
     if (camera->status == CAM_STAT_WAIT) {
         if (ENABLE_DEBUG_CAM_UPDATE) {
             PRINTF("camera: wait out %x\n", camera);
@@ -8190,31 +7847,6 @@ Vec3s Camera_Update(Camera* camera) {
                &sCameraFunctionNames[sCameraSettings[camera->setting].cameraModes[camera->mode].funcIdx],
                sCameraSettings[camera->setting].cameraModes[camera->mode].funcIdx);
     }
-
-#if DEBUG_FEATURES
-    // enable/disable debug cam
-    if (CAMERA_CHECK_BTN(&D_8015BD7C->state.input[2], BTN_START)) {
-        gDebugCamEnabled ^= 1;
-        if (gDebugCamEnabled) {
-            DebugCamera_Enable(&D_8015BD80, camera);
-        } else if (camera->play->csCtx.state != CS_STATE_IDLE) {
-            Cutscene_StopManual(camera->play, &camera->play->csCtx);
-        }
-    }
-
-    // Debug cam update
-    if (gDebugCamEnabled) {
-        camera->play->view.fovy = D_8015BD80.fov;
-        DebugCamera_Update(&D_8015BD80, camera);
-        View_LookAt(&camera->play->view, &D_8015BD80.eye, &D_8015BD80.at, &D_8015BD80.unk_1C);
-        if (ENABLE_DEBUG_CAM_UPDATE) {
-            PRINTF("camera: debug out\n");
-        }
-        return D_8015BD80.sub.unk_104A;
-    }
-
-    OREG(0) &= ~8;
-#endif
 
     if (camera->status == CAM_STAT_UNK3) {
         return camera->inputDir;
@@ -8279,12 +7911,6 @@ Vec3s Camera_Update(Camera* camera) {
         PRINTF("real (%d) %d(%f) %d(%f) 0(0) \n", sUpdateCameraDirection, camera->camDir.x,
                CAM_BINANG_TO_DEG(camera->camDir.x), camera->camDir.y, CAM_BINANG_TO_DEG(camera->camDir.y));
     }
-
-#if DEBUG_FEATURES
-    if (camera->timer != -1 && CAMERA_CHECK_BTN(&D_8015BD7C->state.input[0], BTN_DRIGHT)) {
-        camera->timer = 0;
-    }
-#endif
 
     if (ENABLE_DEBUG_CAM_UPDATE) {
         PRINTF("camera: out (%f %f %f) (%f %f %f)\n", camera->at.x, camera->at.y, camera->at.z, camera->eye.x,
@@ -8614,21 +8240,6 @@ s32 Camera_RequestBgCam(Camera* camera, s32 requestedBgCamIndex) {
     if (!(camera->behaviorFlags & CAM_BEHAVIOR_BG_PROCESSED)) {
         requestedCamSetting = Camera_GetBgCamSetting(camera, requestedBgCamIndex);
         camera->behaviorFlags |= CAM_BEHAVIOR_BG_PROCESSED;
-#if DEBUG_FEATURES
-        settingChangeSuccessful = Camera_RequestSettingImpl(camera, requestedCamSetting,
-                                                            CAM_REQUEST_SETTING_PRESERVE_BG_CAM_INDEX |
-                                                                CAM_REQUEST_SETTING_FORCE_CHANGE) >= 0;
-        if ((settingChangeSuccessful != CAM_SET_NONE) || (sCameraSettings[camera->setting].unk_00 & 0x80000000)) {
-            camera->bgCamIndex = requestedBgCamIndex;
-            camera->behaviorFlags |= CAM_BEHAVIOR_BG_SUCCESS;
-            Camera_CopyDataToRegs(camera, camera->mode);
-        } else if (settingChangeSuccessful < -1) {
-            //! @bug: `settingChangeSuccessful` is a bool and is likely checking the wrong value. This can never pass.
-            //! The actual return of Camera_RequestSettingImpl or bgCamIndex would make more sense.
-            PRINTF(VT_COL(RED, WHITE) "camera: error: illegal camera ID (%d) !! (%d|%d|%d)\n" VT_RST,
-                   requestedBgCamIndex, camera->camId, BGCHECK_SCENE, requestedCamSetting);
-        }
-#else
         if ((Camera_RequestSettingImpl(camera, requestedCamSetting,
                                        CAM_REQUEST_SETTING_PRESERVE_BG_CAM_INDEX | CAM_REQUEST_SETTING_FORCE_CHANGE) >=
              0) ||
@@ -8637,18 +8248,12 @@ s32 Camera_RequestBgCam(Camera* camera, s32 requestedBgCamIndex) {
             camera->behaviorFlags |= CAM_BEHAVIOR_BG_SUCCESS;
             Camera_CopyDataToRegs(camera, camera->mode);
         }
-#endif
         return 0x80000000 | requestedBgCamIndex;
     }
     //! @bug Missing return, but the return value is not used.
 }
 
 Vec3s Camera_GetInputDir(Camera* camera) {
-#if DEBUG_FEATURES
-    if (gDebugCamEnabled) {
-        return D_8015BD80.sub.unk_104A;
-    }
-#endif
 
     return camera->inputDir;
 }
@@ -8666,11 +8271,6 @@ s16 Camera_GetInputDirYaw(Camera* camera) {
 }
 
 Vec3s Camera_GetCamDir(Camera* camera) {
-#if DEBUG_FEATURES
-    if (gDebugCamEnabled) {
-        return D_8015BD80.sub.unk_104A;
-    }
-#endif
 
     return camera->camDir;
 }
@@ -8863,11 +8463,7 @@ s32 Camera_Copy(Camera* dstCamera, Camera* srcCamera) {
 }
 
 s32 Camera_IsDebugCamEnabled(void) {
-#if DEBUG_FEATURES
-    return gDebugCamEnabled;
-#else
     return false;
-#endif
 }
 
 Vec3f Camera_GetQuakeOffset(Camera* camera) {
@@ -8895,43 +8491,6 @@ void Camera_SetCameraData(Camera* camera, s16 setDataFlags, void* data0, void* d
         PRINTF(VT_COL(RED, WHITE) "camera: setCameraData: last argument not alive!\n" VT_RST);
     }
 }
-
-#if DEBUG_FEATURES
-s32 Camera_QRegInit(void) {
-    if (!R_RELOAD_CAM_PARAMS) {
-        QREG(2) = 1;
-        QREG(10) = -1;
-        QREG(11) = 100;
-        QREG(12) = 80;
-        QREG(20) = 90;
-        QREG(21) = 10;
-        QREG(22) = 10;
-        QREG(23) = 50;
-        QREG(24) = 6000;
-        QREG(25) = 240;
-        QREG(26) = 40;
-        QREG(27) = 85;
-        QREG(28) = 55;
-        QREG(29) = 87;
-        QREG(30) = 23;
-        QREG(31) = 20;
-        QREG(32) = 4;
-        QREG(33) = 5;
-        QREG(50) = 1;
-        QREG(51) = 20;
-        QREG(52) = 200;
-        QREG(53) = 1;
-        QREG(54) = 15;
-        QREG(55) = 60;
-        QREG(56) = 15;
-        QREG(57) = 30;
-        QREG(58) = 0;
-    }
-
-    QREG(65) = 50;
-    return true;
-}
-#endif
 
 s32 func_8005B198(void) {
     return D_8011D3AC;

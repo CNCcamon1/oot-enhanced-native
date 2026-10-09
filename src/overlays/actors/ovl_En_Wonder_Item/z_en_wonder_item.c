@@ -238,14 +238,6 @@ void EnWonderItem_MultitagFree(EnWonderItem* this, PlayState* play) {
                 this->timer = this->timerMod + 81;
                 return;
             }
-
-#if DEBUG_FEATURES
-            if (BREG(0) != 0) {
-                DebugDisplay_AddObject(sTagPointsFree[i].x, sTagPointsFree[i].y, sTagPointsFree[i].z,
-                                       this->actor.world.rot.x, this->actor.world.rot.y, this->actor.world.rot.z, 1.0f,
-                                       1.0f, 1.0f, 0, 255, 0, 255, 4, play->state.gfxCtx);
-            }
-#endif
         }
     }
     if (this->timer == 1) {
@@ -315,14 +307,6 @@ void EnWonderItem_MultitagOrdered(EnWonderItem* this, PlayState* play) {
                     return;
                 }
             }
-
-#if DEBUG_FEATURES
-            if (BREG(0) != 0) {
-                DebugDisplay_AddObject(sTagPointsOrdered[i].x, sTagPointsOrdered[i].y, sTagPointsOrdered[i].z,
-                                       this->actor.world.rot.x, this->actor.world.rot.y, this->actor.world.rot.z, 1.0f,
-                                       1.0f, 1.0f, 0, 0, 255, 255, 4, play->state.gfxCtx);
-            }
-#endif
         }
     }
     if (this->timer == 1) {

@@ -141,29 +141,12 @@ void BgJyaCobra_InitDynapoly(BgJyaCobra* this, PlayState* play, CollisionHeader*
     CollisionHeader_GetVirtual(collision, &colHeader);
     this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
 
-#if DEBUG_FEATURES
-    if (this->dyna.bgId == BG_ACTOR_MAX) {
-        s32 pad2;
-
-        PRINTF(T("Warning : move BG 登録失敗(%s %d)(name %d)(arg_data 0x%04x)\n",
-                 "Warning : move BG registration failed (%s %d)(name %d)(arg_data 0x%04x)\n"),
-               "../z_bg_jya_cobra.c", 247, this->dyna.actor.id, this->dyna.actor.params);
-    }
-#endif
 }
 
 void BgJyaCobra_SpawnRay(BgJyaCobra* this, PlayState* play) {
     Actor_SpawnAsChild(&play->actorCtx, &this->dyna.actor, play, ACTOR_MIR_RAY, this->dyna.actor.world.pos.x,
                        this->dyna.actor.world.pos.y + 57.0f, this->dyna.actor.world.pos.z, 0, 0, 0, 6);
 
-#if DEBUG_FEATURES
-    if (this->dyna.actor.child == NULL) {
-        PRINTF_COLOR_RED();
-        PRINTF(T("Ｅｒｒｏｒ : Mir Ray 発生失敗 (%s %d)\n", "Error : Mir Ray failed to occur (%s %d)\n"),
-               "../z_bg_jya_cobra.c", 270);
-        PRINTF_RST();
-    }
-#endif
 }
 
 void func_80895A70(BgJyaCobra* this) {

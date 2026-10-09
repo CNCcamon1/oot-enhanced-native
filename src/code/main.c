@@ -77,16 +77,6 @@ AudioMgr sAudioMgr;
 OSMesgQueue sSerialEventQueue;
 OSMesg sSerialMsgBuf[1];
 
-#if DEBUG_FEATURES
-void Main_LogSystemHeap(void) {
-    PRINTF_COLOR_GREEN();
-    PRINTF(
-        T("システムヒープサイズ %08x(%dKB) 開始アドレス %08x\n", "System heap size %08x (%dKB) Start address %08x\n"),
-        gSystemHeapSize, gSystemHeapSize / 1024, _buffersSegmentEnd);
-    PRINTF_RST();
-}
-#endif
-
 void Main(void* arg) {
     IrqMgrClient irqClient;
     OSMesgQueue irqMgrMsgQueue;
@@ -120,35 +110,12 @@ void Main(void* arg) {
            fb, gSystemHeapSize);
     Runtime_Init((void*)systemHeapStart, gSystemHeapSize);
 
-#if DEBUG_FEATURES
-    {
-        void* debugHeapStart;
-        u32 debugHeapSize;
-
-        if (osMemSize >= 0x800000) {
-            debugHeapStart = SysCfb_GetFbEnd();
-            debugHeapSize = PHYS_TO_K0(0x600000) - (uintptr_t)debugHeapStart;
-        } else {
-            debugHeapSize = 0x400;
-            debugHeapStart = SYSTEM_ARENA_MALLOC(debugHeapSize, "../main.c", 565);
-        }
-
-        PRINTF("debug_InitArena(%08x, %08x)\n", debugHeapStart, debugHeapSize);
-        DebugArena_Init(debugHeapStart, debugHeapSize);
-    }
-#endif
-
     Regs_Init();
 
     R_ENABLE_ARENA_DBG = 0;
 
     osCreateMesgQueue(&sSerialEventQueue, sSerialMsgBuf, ARRAY_COUNT(sSerialMsgBuf));
     osSetEventMesg(OS_EVENT_SI, &sSerialEventQueue, NULL);
-
-#if DEBUG_FEATURES
-    Main_LogSystemHeap();
-#endif
-
     osCreateMesgQueue(&irqMgrMsgQueue, irqMgrMsgBuf, ARRAY_COUNT(irqMgrMsgBuf));
     StackCheck_Init(&sIrqMgrStackInfo, sIrqMgrStack, STACK_TOP(sIrqMgrStack), 0, 0x100, "irqmgr");
     IrqMgr_Init(&gIrqMgr, STACK_TOP(sIrqMgrStack), THREAD_PRI_IRQMGR, 1);

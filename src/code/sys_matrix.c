@@ -1,8 +1,5 @@
 #include "libc64/math64.h"
 #include "gfx.h"
-#if DEBUG_FEATURES
-#include "fault.h"
-#endif
 #include "printf.h"
 #include "sys_matrix.h"
 #include "ultra64.h"
@@ -624,17 +621,6 @@ Mtx* Matrix_MtxFToMtx(MtxF* src, Mtx* dest) {
     return dest;
 }
 
-#if DEBUG_FEATURES
-
-Mtx* Matrix_ToMtx(Mtx* dest, const char* file, int line) {
-    return Matrix_MtxFToMtx(MATRIX_CHECK_FLOATS(sCurrentMatrix, file, line), dest);
-}
-
-Mtx* Matrix_Finalize(GraphicsContext* gfxCtx, const char* file, int line) {
-    return Matrix_ToMtx(GRAPH_ALLOC(gfxCtx, sizeof(Mtx)), file, line);
-}
-
-#else
 
 Mtx* Matrix_ToMtx(Mtx* dest) {
     return Matrix_MtxFToMtx(sCurrentMatrix, dest);
@@ -643,8 +629,6 @@ Mtx* Matrix_ToMtx(Mtx* dest) {
 Mtx* Matrix_Finalize(GraphicsContext* gfxCtx) {
     return Matrix_ToMtx(GRAPH_ALLOC(gfxCtx, sizeof(Mtx)));
 }
-
-#endif /* DEBUG_FEATURES */
 
 Mtx* Matrix_MtxFToNewMtx(MtxF* src, GraphicsContext* gfxCtx) {
     return Matrix_MtxFToMtx(src, GRAPH_ALLOC(gfxCtx, sizeof(Mtx)));
@@ -989,29 +973,6 @@ void Matrix_RotateAxis(f32 angle, Vec3f* axis, u8 mode) {
         }
     }
 }
-
-#if DEBUG_FEATURES
-MtxF* Matrix_CheckFloats(MtxF* mf, const char* file, int line) {
-    s32 i, j;
-
-    for (i = 0; i < 4; i++) {
-        for (j = 0; j < 4; j++) {
-            if (!(-32768.0f <= mf->mf[i][j]) || !(mf->mf[i][j] < 32768.0f)) {
-                PRINTF("%s %d: [%s] =\n"
-                       "/ %12.6f %12.6f %12.6f %12.6f \\\n"
-                       "| %12.6f %12.6f %12.6f %12.6f |\n"
-                       "| %12.6f %12.6f %12.6f %12.6f |\n"
-                       "\\ %12.6f %12.6f %12.6f %12.6f /\n",
-                       file, line, "mf", mf->xx, mf->xy, mf->xz, mf->xw, mf->yx, mf->yy, mf->yz, mf->yw, mf->zx, mf->zy,
-                       mf->zz, mf->zw, mf->wx, mf->wy, mf->wz, mf->ww);
-                Fault_AddHungupAndCrash(file, line);
-            }
-        }
-    }
-
-    return mf;
-}
-#endif
 
 void Matrix_SetTranslateUniformScaleMtxF(MtxF* mf, f32 scale, f32 translateX, f32 translateY, f32 translateZ) {
     mf->xx = scale;

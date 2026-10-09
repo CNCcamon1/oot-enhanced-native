@@ -136,11 +136,7 @@ void PauseMapMark_DrawForDungeon(PlayState* play) {
 
                 Matrix_Push();
 
-#if DEBUG_FEATURES
-                Matrix_Translate(markPoint->x + GREG(92), markPoint->y + GREG(93), 0.0f, MTXMODE_APPLY);
-#else
                 Matrix_Translate(markPoint->x, markPoint->y, 0.0f, MTXMODE_APPLY);
-#endif
 
                 Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
                 MATRIX_FINALIZE_AND_LOAD(POLY_OPA_DISP++, play->state.gfxCtx, "../z_lmap_mark.c", 272);

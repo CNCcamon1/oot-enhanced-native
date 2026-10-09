@@ -28,10 +28,8 @@ typedef struct CfbInfo {
     /* 0x10 */ u8 unk_10;           // set to 0, never read
     /* 0x11 */ s8 updateRate;       // how many VIs should elapse before next swap
     /* 0x12 */ s8 updateTimer;      // counts down (in VIs) from updateRate to 0, swaps the framebuffer at 0
-#if OOT_VERSION >= PAL_1_0
     /* 0x14 */ f32 xScale;
     /* 0x18 */ f32 yScale;
-#endif
 } CfbInfo; // size = 0x1C
 
 typedef struct OSScTask {

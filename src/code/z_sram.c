@@ -737,25 +737,7 @@ void Sram_VerifyAndLoadAllSaves(FileSelectState* fileSelect, SramContext* sramCt
                 bzero(&gSaveContext.save.totalDays, sizeof(s32));
                 bzero(&gSaveContext.save.bgsDayCount, sizeof(s32));
 
-#if DEBUG_FEATURES
-                if (!slotNum) {
-                    Sram_InitDebugSave();
-                    gSaveContext.save.info.playerData.newf[0] = 'Z';
-                    gSaveContext.save.info.playerData.newf[1] = 'E';
-                    gSaveContext.save.info.playerData.newf[2] = 'L';
-                    gSaveContext.save.info.playerData.newf[3] = 'D';
-                    gSaveContext.save.info.playerData.newf[4] = 'A';
-                    gSaveContext.save.info.playerData.newf[5] = 'Z';
-                    PRINTF("newf=%x,%x,%x,%x,%x,%x\n", gSaveContext.save.info.playerData.newf[0],
-                           gSaveContext.save.info.playerData.newf[1], gSaveContext.save.info.playerData.newf[2],
-                           gSaveContext.save.info.playerData.newf[3], gSaveContext.save.info.playerData.newf[4],
-                           gSaveContext.save.info.playerData.newf[5]);
-                } else {
-                    Sram_InitNewSave();
-                }
-#else
                 Sram_InitNewSave();
-#endif
 
                 ptr = (u16*)&gSaveContext;
                 PRINTF("\n--------------------------------------------------------------\n");
@@ -846,27 +828,11 @@ void Sram_InitSave(FileSelectState* fileSelect, SramContext* sramCtx) {
     u16 j;
     u16* ptr;
     u16 checksum;
-
-#if DEBUG_FEATURES
-    if (fileSelect->buttonIndex != 0) {
-        Sram_InitNewSave();
-    } else {
-        Sram_InitDebugSave();
-    }
-#else
     Sram_InitNewSave();
-#endif
-
     gSaveContext.save.entranceIndex = ENTR_LINKS_HOUSE_0;
     gSaveContext.save.linkAge = LINK_AGE_CHILD;
     gSaveContext.save.dayTime = CLOCK_TIME(10, 0);
     gSaveContext.save.cutsceneIndex = CS_INDEX_1;
-
-#if DEBUG_FEATURES
-    if (fileSelect->buttonIndex == 0) {
-        gSaveContext.save.cutsceneIndex = CS_INDEX_NONE;
-    }
-#endif
 
     for (offset = 0; offset < 8; offset++) {
 #if !PLATFORM_IQUE
@@ -1044,17 +1010,6 @@ void Sram_InitSram(GameState* gameState, SramContext* sramCtx) {
         gSaveContext.language = LANGUAGE_ENG;
         sramCtx->readBuff[SRAM_HEADER_LANGUAGE] = gSaveContext.language;
         Sram_WriteSramHeader(sramCtx);
-    }
-#endif
-
-#if DEBUG_FEATURES
-    if (CHECK_BTN_ANY(gameState->input[2].cur.button, BTN_DRIGHT)) {
-        bzero(sramCtx->readBuff, SRAM_SIZE);
-        for (i = 0; i < CHECKSUM_SIZE; i++) {
-            sramCtx->readBuff[i] = i;
-        }
-        SRAM_WRITE(OS_K1_TO_PHYSICAL(0xA8000000), sramCtx->readBuff, SRAM_SIZE);
-        PRINTF(T("ＳＲＡＭ破壊！！！！！！\n", "SRAM destruction!!!!!!\n"));
     }
 #endif
 

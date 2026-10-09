@@ -27,66 +27,6 @@ typedef struct CameraSetting {
 /*==================================================================*/
 // Data
 
-#if DEBUG_FEATURES
-s16 sOREGInit[] = {
-    0,     // OREG(0)
-    1,     // OREG(1)
-    5,     // R_CAM_XZ_OFFSET_UPDATE_RATE
-    5,     // R_CAM_Y_OFFSET_UPDATE_RATE
-    5,     // R_CAM_FOV_UPDATE_RATE
-    14500, // R_CAM_MAX_PITCH
-    20,    // R_CAM_R_UPDATE_RATE_INV
-    16,    // R_CAM_PITCH_UPDATE_RATE_INV
-    150,   // OREG(8)
-    25,    // R_CAM_SLOPE_Y_ADJ_AMOUNT
-    150,   // OREG(10)
-    6,     // OREG(11)
-    10,    // OREG(12)
-    10,    // OREG(13)
-    0,     // OREG(14) (unused)
-    0,     // OREG(15) (unused)
-    1,     // OREG(16) (unused)
-    100,   // R_CAM_PITCH_FLOOR_CHECK_NEAR_DIST_FAC
-    250,   // R_CAM_PITCH_FLOOR_CHECK_FAR_DIST_FAC
-    120,   // R_CAM_PITCH_FLOOR_CHECK_OFFSET_Y_FAC
-    80,    // R_CAM_PITCH_FLOOR_CHECK_NEAR_WEIGHT
-    30,    // OREG(21)
-    120,   // OREG(22)
-    4,     // R_CAM_DEFAULT_ANIM_TIME
-    1,     // OREG(24)
-    50,    // R_CAM_UPDATE_RATE_STEP_SCALE_XZ
-    20,    // R_CAM_UPDATE_RATE_STEP_SCALE_Y
-    1800,  // OREG(27)
-    50,    // OREG(28)
-    50,    // OREG(29)
-    50,    // OREG(30)
-    20,    // R_CAM_JUMP1_EYE_Y_STEP_SCALE
-    20,    // OREG(32)
-    -10,   // OREG(33)
-    -5460, // R_CAM_MIN_PITCH_1
-    -9100, // R_CAM_MIN_PITCH_2
-    -6,    // R_CAM_BATTLE1_ROLL_TARGET_BASE
-    8,     // R_CAM_BATTLE1_ROLL_STEP_SCALE
-    15,    // OREG(38)
-    75,    // OREG(39)
-    60,    // R_CAM_BATTLE1_XYZ_OFFSET_UPDATE_RATE_TARGET
-    12,    // R_CAM_AT_LERP_STEP_SCALE_MIN
-    110,   // R_CAM_AT_LERP_STEP_SCALE_FAC
-    40,    // OREG(43)
-    50,    // OREG(44)
-    250,   // OREG(45)
-    -10,   // R_CAM_YOFFSET_NORM
-    30,    // OREG(47) (unused)
-    30,    // OREG(48)
-    70,    // OREG(49)
-    20,    // OREG(50)
-    20,    // OREG(51)
-    20,    // OREG(52)
-};
-
-s16 sOREGInitCnt = ARRAY_COUNT(sOREGInit);
-#endif
-
 s16 sCamDataRegsInit[CAM_DATA_MAX] = {
     -20, // CAM_DATA_Y_OFFSET
     200, // CAM_DATA_EYE_DIST
@@ -118,101 +58,6 @@ s16 sCamDataRegsInit[CAM_DATA_MAX] = {
 };
 
 s16 sCamDataRegsInitCount = ARRAY_COUNT(sCamDataRegsInit);
-
-#if DEBUG_FEATURES
-char sCameraSettingNames[][12] = {
-    "NONE      ",  // CAM_SET_NONE
-    "NORMAL0    ", // CAM_SET_NORMAL0
-    "NORMAL1    ", // CAM_SET_NORMAL1
-    "DUNGEON0   ", // CAM_SET_DUNGEON0
-    "DUNGEON1   ", // CAM_SET_DUNGEON1
-    "NORMAL3    ", // CAM_SET_NORMAL3
-    "HORSE0     ", // CAM_SET_HORSE
-    "BOSS_GOMA  ", // CAM_SET_BOSS_GOHMA
-    "BOSS_DODO  ", // CAM_SET_BOSS_DODONGO
-    "BOSS_BARI  ", // CAM_SET_BOSS_BARINADE
-    "BOSS_FGANON", // CAM_SET_BOSS_PHANTOM_GANON
-    "BOSS_BAL   ", // CAM_SET_BOSS_VOLVAGIA
-    "BOSS_SHADES", // CAM_SET_BOSS_BONGO
-    "BOSS_MOFA  ", // CAM_SET_BOSS_MORPHA
-    "BOSS_TWIN0 ", // CAM_SET_BOSS_TWINROVA_PLATFORM
-    "BOSS_TWIN1 ", // CAM_SET_BOSS_TWINROVA_FLOOR
-    "BOSS_GANON1", // CAM_SET_BOSS_GANONDORF
-    "BOSS_GANON2", // CAM_SET_BOSS_GANON
-    "TOWER0     ", // CAM_SET_TOWER_CLIMB
-    "TOWER1     ", // CAM_SET_TOWER_UNUSED
-    "FIXED0     ", // CAM_SET_MARKET_BALCONY
-    "FIXED1     ", // CAM_SET_CHU_BOWLING
-    "CIRCLE0    ", // CAM_SET_PIVOT_CRAWLSPACE
-    "CIRCLE2    ", // CAM_SET_PIVOT_SHOP_BROWSING
-    "CIRCLE3    ", // CAM_SET_PIVOT_IN_FRONT
-    "PREREND0   ", // CAM_SET_PREREND_FIXED
-    "PREREND1   ", // CAM_SET_PREREND_PIVOT
-    "PREREND3   ", // CAM_SET_PREREND_SIDE_SCROLL
-    "DOOR0      ", // CAM_SET_DOOR0
-    "DOORC      ", // CAM_SET_DOORC
-    "RAIL3      ", // CAM_SET_CRAWLSPACE
-    "START0     ", // CAM_SET_START0
-    "START1     ", // CAM_SET_START1
-    "FREE0      ", // CAM_SET_FREE0
-    "FREE2      ", // CAM_SET_FREE2
-    "CIRCLE4    ", // CAM_SET_PIVOT_CORNER
-    "CIRCLE5    ", // CAM_SET_PIVOT_WATER_SURFACE
-    "DEMO0      ", // CAM_SET_CS_0
-    "DEMO1      ", // CAM_SET_CS_TWISTED_HALLWAY
-    "MORI1      ", // CAM_SET_FOREST_BIRDS_EYE
-    "ITEM0      ", // CAM_SET_SLOW_CHEST_CS
-    "ITEM1      ", // CAM_SET_ITEM_UNUSED
-    "DEMO3      ", // CAM_SET_CS_3
-    "DEMO4      ", // CAM_SET_CS_ATTENTION
-    "UFOBEAN    ", // CAM_SET_BEAN_GENERIC
-    "LIFTBEAN   ", // CAM_SET_BEAN_LOST_WOODS
-    "SCENE0     ", // CAM_SET_SCENE_UNUSED
-    "SCENE1     ", // CAM_SET_SCENE_TRANSITION
-    "HIDAN1     ", // CAM_SET_ELEVATOR_PLATFORM
-    "HIDAN2     ", // CAM_SET_FIRE_STAIRCASE
-    "MORI2      ", // CAM_SET_FOREST_UNUSED
-    "MORI3      ", // CAM_SET_FOREST_DEFEAT_POE
-    "TAKO       ", // CAM_SET_BIG_OCTO
-    "SPOT05A    ", // CAM_SET_MEADOW_BIRDS_EYE
-    "SPOT05B    ", // CAM_SET_MEADOW_UNUSED
-    "HIDAN3     ", // CAM_SET_FIRE_BIRDS_EYE
-    "ITEM2      ", // CAM_SET_TURN_AROUND
-    "CIRCLE6    ", // CAM_SET_PIVOT_VERTICAL
-    "NORMAL2    ", // CAM_SET_NORMAL2
-    "FISHING    ", // CAM_SET_FISHING
-    "DEMOC      ", // CAM_SET_CS_C
-    "UO_FIBER   ", // CAM_SET_JABU_TENTACLE
-    "DUNGEON2   ", // CAM_SET_DUNGEON2
-    "TEPPEN     ", // CAM_SET_DIRECTED_YAW
-    "CIRCLE7    ", // CAM_SET_PIVOT_FROM_SIDE
-    "NORMAL4    ", // CAM_SET_NORMAL4
-};
-
-char sCameraModeNames[][12] = {
-    "NORMAL     ", // CAM_MODE_NORMAL
-    "PARALLEL   ", // CAM_MODE_Z_PARALLEL
-    "KEEPON     ", // CAM_MODE_Z_TARGET_FRIENDLY
-    "TALK       ", // CAM_MODE_TALK
-    "BATTLE     ", // CAM_MODE_Z_TARGET_UNFRIENDLY
-    "CLIMB      ", // CAM_MODE_WALL_CLIMB
-    "SUBJECT    ", // CAM_MODE_FIRST_PERSON
-    "BOWARROW   ", // CAM_MODE_AIM_ADULT
-    "BOWARROWZ  ", // CAM_MODE_Z_AIM
-    "FOOKSHOT   ", // CAM_MODE_HOOKSHOT_FLY
-    "BOOMERANG  ", // CAM_MODE_AIM_BOOMERANG
-    "PACHINCO   ", // CAM_MODE_AIM_CHILD
-    "CLIMBZ     ", // CAM_MODE_Z_WALL_CLIMB
-    "JUMP       ", // CAM_MODE_JUMP
-    "HANG       ", // CAM_MODE_LEDGE_HANG
-    "HANGZ      ", // CAM_MODE_Z_LEDGE_HANG
-    "FREEFALL   ", // CAM_MODE_FREE_FALL
-    "CHARGE     ", // CAM_MODE_CHARGE
-    "STILL      ", // CAM_MODE_STILL
-    "PUSHPULL   ", // CAM_MODE_PUSH_PULL
-    "BOOKEEPON  ", // CAM_MODE_FOLLOW_BOOMERANG
-};
-#endif
 
 /**
  *=====================================================================
@@ -2562,10 +2407,6 @@ s32 sInitRegs = 1;
 
 s32 gDebugCamEnabled = false;
 
-#if DEBUG_FEATURES
-s32 sDbgModeIdx = -1;
-#endif
-
 s16 sNextUID = 0;
 
 s32 sCameraInterfaceField = CAM_INTERFACE_FIELD(CAM_LETTERBOX_NONE, CAM_HUD_VISIBILITY_ALL, 1);
@@ -2590,83 +2431,6 @@ s32 sSceneInitLetterboxTimer = 0;
 
 s32 sDemo5PrevAction12Frame = -16;
 
-#if DEBUG_FEATURES
-char sCameraFunctionNames[][8] = {
-    "NONE   ", // CAM_FUNC_NONE
-    "NORM0()", // CAM_FUNC_NORM0
-    "NORM1()", // CAM_FUNC_NORM1
-    "NORM2()", // CAM_FUNC_NORM2
-    "NORM3()", // CAM_FUNC_NORM3
-    "NORM4()", // CAM_FUNC_NORM4
-    "PARA0()", // CAM_FUNC_PARA0
-    "PARA1()", // CAM_FUNC_PARA1
-    "PARA2()", // CAM_FUNC_PARA2
-    "PARA3()", // CAM_FUNC_PARA3
-    "PARA4()", // CAM_FUNC_PARA4
-    "KEEP0()", // CAM_FUNC_KEEP0
-    "KEEP1()", // CAM_FUNC_KEEP1
-    "KEEP2()", // CAM_FUNC_KEEP2
-    "KEEP3()", // CAM_FUNC_KEEP3
-    "KEEP4()", // CAM_FUNC_KEEP4
-    "SUBJ0()", // CAM_FUNC_SUBJ0
-    "SUBJ1()", // CAM_FUNC_SUBJ1
-    "SUBJ2()", // CAM_FUNC_SUBJ2
-    "SUBJ3()", // CAM_FUNC_SUBJ3
-    "SUBJ4()", // CAM_FUNC_SUBJ4
-    "JUMP0()", // CAM_FUNC_JUMP0
-    "JUMP1()", // CAM_FUNC_JUMP1
-    "JUMP2()", // CAM_FUNC_JUMP2
-    "JUMP3()", // CAM_FUNC_JUMP3
-    "JUMP4()", // CAM_FUNC_JUMP4
-    "BATT0()", // CAM_FUNC_BATT0
-    "BATT1()", // CAM_FUNC_BATT1
-    "BATT2()", // CAM_FUNC_BATT2
-    "BATT3()", // CAM_FUNC_BATT3
-    "BATT4()", // CAM_FUNC_BATT4
-    "FIXD0()", // CAM_FUNC_FIXD0
-    "FIXD1()", // CAM_FUNC_FIXD1
-    "FIXD2()", // CAM_FUNC_FIXD2
-    "FIXD3()", // CAM_FUNC_FIXD3
-    "FIXD4()", // CAM_FUNC_FIXD4
-    "DATA0()", // CAM_FUNC_DATA0
-    "DATA1()", // CAM_FUNC_DATA1
-    "DATA2()", // CAM_FUNC_DATA2
-    "DATA3()", // CAM_FUNC_DATA3
-    "DATA4()", // CAM_FUNC_DATA4
-    "UNIQ0()", // CAM_FUNC_UNIQ0
-    "UNIQ1()", // CAM_FUNC_UNIQ1
-    "UNIQ2()", // CAM_FUNC_UNIQ2
-    "UNIQ3()", // CAM_FUNC_UNIQ3
-    "UNIQ4()", // CAM_FUNC_UNIQ4
-    "UNIQ5()", // CAM_FUNC_UNIQ5
-    "UNIQ6()", // CAM_FUNC_UNIQ6
-    "UNIQ7()", // CAM_FUNC_UNIQ7
-    "UNIQ8()", // CAM_FUNC_UNIQ8
-    "UNIQ9()", // CAM_FUNC_UNIQ9
-    "DEMO0()", // CAM_FUNC_DEMO0
-    "DEMO1()", // CAM_FUNC_DEMO1
-    "DEMO2()", // CAM_FUNC_DEMO2
-    "DEMO3()", // CAM_FUNC_DEMO3
-    "DEMO4()", // CAM_FUNC_DEMO4
-    "DEMO5()", // CAM_FUNC_DEMO5
-    "DEMO6()", // CAM_FUNC_DEMO6
-    "DEMO7()", // CAM_FUNC_DEMO7
-    "DEMO8()", // CAM_FUNC_DEMO8
-    "DEMO9()", // CAM_FUNC_DEMO9
-    "SPEC0()", // CAM_FUNC_SPEC0
-    "SPEC1()", // CAM_FUNC_SPEC1
-    "SPEC2()", // CAM_FUNC_SPEC2
-    "SPEC3()", // CAM_FUNC_SPEC3
-    "SPEC4()", // CAM_FUNC_SPEC4
-    "SPEC5()", // CAM_FUNC_SPEC5
-    "SPEC6()", // CAM_FUNC_SPEC6
-    "SPEC7()", // CAM_FUNC_SPEC7
-    "SPEC8()", // CAM_FUNC_SPEC8
-    "SPEC9()", // CAM_FUNC_SPEC9
-    "",        "", "", "", "",
-};
-#endif
-
 VecSph D_8011D658[] = {
     { 50.0f, 0xEE3A, 0xD558 },
     { 75.0f, 0x0000, 0x8008 },
@@ -2682,9 +2446,5 @@ Vec3f D_8011D678[] = {
 };
 
 PlayState* D_8015BD7C;
-
-#if DEBUG_FEATURES
-DebugCam D_8015BD80;
-#endif
 
 CollisionPoly* playerFloorPoly;

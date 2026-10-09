@@ -15,11 +15,7 @@ typedef struct CtorEntry {
 
 void* sGlobalCtorEntries = NULL;
 
-#if DEBUG_FEATURES
-char sNew[] = "new";
-#else
 char sNew[] = "";
-#endif
 
 void* Runtime_New(u32 size) {
     DECLARE_INTERRUPT_MASK
@@ -31,11 +27,7 @@ void* Runtime_New(u32 size) {
         size = 1;
     }
 
-#if DEBUG_FEATURES
-    ptr = __osMallocDebug(&gSystemArena, size, sNew, 0);
-#else
     ptr = __osMalloc(&gSystemArena, size);
-#endif
 
     RESTORE_INTERRUPTS();
     return ptr;

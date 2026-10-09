@@ -221,10 +221,6 @@ void FileSelect_DrawOptions(GameState* thisx);
 void FileSelect_DrawNameEntry(GameState* thisx);
 void FileSelect_DrawCharacter(GraphicsContext* gfxCtx, void* texture, s16 vtx);
 
-#if OOT_VERSION == PAL_1_1
-extern s16 D_808124C0[];
-#endif
-
 extern Vtx gNameEntryVtx[];
 extern Vtx gOptionsMenuHeadersVtx[];
 extern Vtx gOptionsMenuSettingsVtx[];

@@ -1249,10 +1249,6 @@ extern u8 gSeqCmdWritePos;
 extern u8 gSeqCmdReadPos;
 extern u8 gStartSeqDisabled;
 
-#if DEBUG_FEATURES
-extern u8 gAudioDebugPrintSeqCmd;
-#endif
-
 extern u8 gSoundOutputModes[];
 extern u8 gAudioSpecId;
 extern u8 D_80133418;

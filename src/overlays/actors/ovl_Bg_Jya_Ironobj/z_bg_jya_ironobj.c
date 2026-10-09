@@ -117,14 +117,6 @@ void BgJyaIronobj_SpawnPillarParticles(BgJyaIronobj* this, PlayState* play, EnIk
     f32 sins;
     s32 pad[2];
 
-#if DEBUG_FEATURES
-    if (enIk->unk_2FF <= 0 || enIk->unk_2FF >= 4) {
-        PRINTF(T("Error 攻撃方法が分からない(%s %d)\n", "Error I don't know how to attack(%s %d)\n"),
-               "../z_bg_jya_ironobj.c", 233);
-        return;
-    }
-#endif
-
     PRINTF("¢ attack_type(%d)\n", enIk->unk_2FF);
     rotY = Actor_WorldYawTowardActor(&this->dyna.actor, &enIk->actor) + D_808994D8[enIk->unk_2FF - 1];
 
@@ -183,14 +175,6 @@ void BgJyaIronobj_SpawnThroneParticles(BgJyaIronobj* this, PlayState* play, EnIk
     s16 rotY;
     f32 sins;
     s32 pad[2];
-
-#if DEBUG_FEATURES
-    if (enIk->unk_2FF <= 0 || enIk->unk_2FF >= 4) {
-        PRINTF(T("Error 攻撃方法が分からない(%s %d)\n", "Error I don't know how to attack(%s %d)\n"),
-               "../z_bg_jya_ironobj.c", 362);
-        return;
-    }
-#endif
 
     PRINTF("¢ attack_type(%d)\n", enIk->unk_2FF);
     rotY = Actor_WorldYawTowardActor(&this->dyna.actor, &enIk->actor) + D_808994D8[enIk->unk_2FF - 1];

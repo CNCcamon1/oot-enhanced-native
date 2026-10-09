@@ -171,10 +171,6 @@ s32 func_800C0DB4(PlayState* this, Vec3f* pos);
 void Play_Init(GameState* thisx);
 void Play_Destroy(GameState* thisx);
 
-#if DEBUG_FEATURES
-extern void* gDebugCutsceneScript;
-#endif
-
 extern TransitionTile gTransitionTile;
 extern s32 gTransitionTileState;
 extern struct VisMono gPlayVisMono;

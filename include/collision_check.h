@@ -487,10 +487,6 @@ typedef struct CollisionCheckInfo {
 
 DamageTable* DamageTable_Get(s32 index);
 void DamageTable_Clear(DamageTable* table);
-#if DEBUG_FEATURES
-void Collider_DrawRedPoly(struct GraphicsContext* gfxCtx, Vec3f* vA, Vec3f* vB, Vec3f* vC);
-void Collider_DrawPoly(struct GraphicsContext* gfxCtx, Vec3f* vA, Vec3f* vB, Vec3f* vC, u8 r, u8 g, u8 b);
-#endif
 s32 Collider_InitJntSph(struct PlayState* play, ColliderJntSph* jntSph);
 s32 Collider_FreeJntSph(struct PlayState* play, ColliderJntSph* jntSph);
 s32 Collider_DestroyJntSph(struct PlayState* play, ColliderJntSph* jntSph);
@@ -538,10 +534,6 @@ void CollisionCheck_DestroyContext(struct PlayState* play, CollisionCheckContext
 void CollisionCheck_ClearContext(struct PlayState* play, CollisionCheckContext* colChkCtx);
 void CollisionCheck_EnableSAC(struct PlayState* play, CollisionCheckContext* colChkCtx);
 void CollisionCheck_DisableSAC(struct PlayState* play, CollisionCheckContext* colChkCtx);
-#if DEBUG_FEATURES
-void Collider_Draw(struct PlayState* play, Collider* col);
-void CollisionCheck_DrawCollision(struct PlayState* play, CollisionCheckContext* colChkCtx);
-#endif
 s32 CollisionCheck_SetAT(struct PlayState* play, CollisionCheckContext* colChkCtx, Collider* collider);
 s32 CollisionCheck_SetAT_SAC(struct PlayState* play, CollisionCheckContext* colChkCtx, Collider* collider, s32 index);
 s32 CollisionCheck_SetAC(struct PlayState* play, CollisionCheckContext* colChkCtx, Collider* collider);

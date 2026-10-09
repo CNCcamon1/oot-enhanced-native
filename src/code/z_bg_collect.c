@@ -41,21 +41,6 @@ void DynaPolyActor_UpdateCarriedActorPos(CollisionContext* colCtx, s32 bgId, Act
             SkinMatrix_Vec3fMtxFMultXYZ(&prevTransformInv, &carriedActor->world.pos, &tempPos);
             SkinMatrix_Vec3fMtxFMultXYZ(&curTransform, &tempPos, &pos);
             carriedActor->world.pos = pos;
-
-#if DEBUG_FEATURES
-            if (BGCHECK_XYZ_ABSMAX <= pos.x || pos.x <= -BGCHECK_XYZ_ABSMAX || BGCHECK_XYZ_ABSMAX <= pos.y ||
-                pos.y <= -BGCHECK_XYZ_ABSMAX || BGCHECK_XYZ_ABSMAX <= pos.z || pos.z <= -BGCHECK_XYZ_ABSMAX) {
-
-                PRINTF_COLOR_RED();
-                //! @bug file and line are not passed to PRINTF
-                PRINTF(T("BGCheckCollection_typicalActorPos():位置が妥当ではありません。\n"
-                         "pos (%f,%f,%f) file:%s line:%d\n",
-                         "BGCheckCollection_typicalActorPos(): Position is not valid. \n"
-                         "pos (%f,%f,%f) file:%s line:%d\n"),
-                       pos.x, pos.y, pos.z);
-                PRINTF_RST();
-            }
-#endif
         }
     }
 }

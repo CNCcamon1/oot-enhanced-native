@@ -55,16 +55,7 @@ s32 gTransitionTileState;
 VisMono gPlayVisMono;
 Color_RGBA8_u32 gVisMonoColor;
 
-#if DEBUG_FEATURES
-FaultClient D_801614B8;
-#endif
-
 s16 sTransitionFillTimer;
-
-#if DEBUG_FEATURES
-void* gDebugCutsceneScript = NULL;
-UNK_TYPE D_8012D1F4 = 0; // unused
-#endif
 
 Input* D_8012D1F8 = NULL;
 
@@ -72,16 +63,7 @@ void Play_SpawnScene(PlayState* this, s32 sceneId, s32 spawn);
 
 // This macro prints the number "1" with a file and line number if R_ENABLE_PLAY_LOGS is enabled.
 // For example, it can be used to trace the play state execution at a high level.
-#if DEBUG_FEATURES
-#define PLAY_LOG(line)                            \
-    do {                                          \
-        if (R_ENABLE_PLAY_LOGS) {                 \
-            LOG_NUM("1", 1, "../z_play.c", line); \
-        }                                         \
-    } while (0)
-#else
 #define PLAY_LOG(line) (void)0
-#endif
 
 void Play_RequestViewpointBgCam(PlayState* this) {
     Camera_RequestBgCam(GET_ACTIVE_CAM(this), this->viewpoint - 1);
@@ -280,9 +262,6 @@ void Play_Destroy(GameState* thisx) {
     }
 #endif
 
-#if DEBUG_FEATURES
-    Fault_RemoveClient(&D_801614B8);
-#endif
 }
 
 void Play_Init(GameState* thisx) {
@@ -531,60 +510,12 @@ void Play_Init(GameState* thisx) {
     Actor_InitPlayerHorse(this, GET_PLAYER(this));
     AnimTaskQueue_Update(this, &this->animTaskQueue);
     gSaveContext.respawnFlag = 0;
-
-#if DEBUG_FEATURES
-    if (R_USE_DEBUG_CUTSCENE) {
-        static u64 sDebugCutsceneScriptBuf[0xA00];
-
-        gDebugCutsceneScript = sDebugCutsceneScriptBuf;
-        PRINTF("\nkawauso_data=[%x]", gDebugCutsceneScript);
-
-        // This hardcoded ROM address extends past the end of the ROM file.
-        // Presumably the ROM was larger at a previous point in development when this debug feature was used.
-        DmaMgr_DmaRomToRam(0x03FEB000, gDebugCutsceneScript, sizeof(sDebugCutsceneScriptBuf));
-    }
-#endif
 }
 
 void Play_Update(PlayState* this, int updateLogic) {
     Input* input = this->state.input;
     s32 isPaused;
     s32 pad1;
-
-#if DEBUG_FEATURES
-    if ((SREG(1) < 0) || (DREG(0) != 0)) {
-        SREG(1) = 0;
-#if PLATFORM_GC
-        ZeldaArena_Display();
-#endif
-    }
-
-    if ((R_HREG_MODE == HREG_MODE_PRINT_OBJECT_TABLE) && (R_PRINT_OBJECT_TABLE_TRIGGER < 0)) {
-        u32 i;
-        s32 pad2;
-
-        R_PRINT_OBJECT_TABLE_TRIGGER = 0;
-        PRINTF("object_exchange_rom_address %u\n", gObjectTableSize);
-        PRINTF("RomStart RomEnd   Size\n");
-
-        for (i = 0; i < gObjectTableSize; i++) {
-            s32 size = gObjectTable[i].vromEnd - gObjectTable[i].vromStart;
-
-            PRINTF("%08x-%08x %08x(%8.3fKB)\n", gObjectTable[i].vromStart, gObjectTable[i].vromEnd, size,
-                   size / 1024.0f);
-        }
-
-        PRINTF("\n");
-    }
-
-    // HREG(81) was very likely intended to be HREG(80), which would make more sense given how the
-    // HREG debugging system works. If this condition used HREG(80) instead, `HREG_MODE_PRINT_OBJECT_TABLE`
-    // would also include the actor overlay table and HREG(82) would be used to trigger it instead.
-    if ((HREG(81) == 18) && (HREG(82) < 0)) {
-        HREG(82) = 0;
-        ActorOverlayTable_LogPrint();
-    }
-#endif
 
     gSegments[4] = OS_K0_TO_PHYSICAL(this->objectCtx.slots[this->objectCtx.mainKeepSlot].segment);
     gSegments[5] = OS_K0_TO_PHYSICAL(this->objectCtx.slots[this->objectCtx.subKeepSlot].segment);
@@ -642,15 +573,7 @@ void Play_Update(PlayState* this, int updateLogic) {
                         }
                     }
 
-#if DEBUG_FEATURES
-                    if (!R_TRANS_DBG_ENABLED) {
-                        Play_SetupTransition(this, this->transitionType);
-                    } else {
-                        Play_SetupTransition(this, R_TRANS_DBG_TYPE);
-                    }
-#else
                     Play_SetupTransition(this, this->transitionType);
-#endif
 
                     if (this->transitionMode >= TRANS_MODE_FILL_WHITE_INIT) {
                         // non-instance modes break out of this switch

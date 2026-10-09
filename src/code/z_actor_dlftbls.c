@@ -26,26 +26,6 @@
 #undef DEFINE_ACTOR_UNSET
 
 // Actor Overlay Table definition
-#if DEBUG_FEATURES
-
-#define DEFINE_ACTOR(name, _1, allocType, nameString) \
-    {                                                 \
-        ROM_FILE(ovl_##name),                         \
-        _ovl_##name##SegmentStart,                    \
-        _ovl_##name##SegmentEnd,                      \
-        NULL,                                         \
-        &name##_Profile,                              \
-        nameString,                                   \
-        allocType,                                    \
-        0,                                            \
-    },
-
-#define DEFINE_ACTOR_INTERNAL(name, _1, allocType, nameString)                       \
-    {                                                                                \
-        ROM_FILE_UNSET, NULL, NULL, NULL, &name##_Profile, nameString, allocType, 0, \
-    },
-
-#else
 
 // Actor name is set to NULL in retail builds
 #define DEFINE_ACTOR(name, _1, allocType, _3) \
@@ -65,8 +45,6 @@
         ROM_FILE_UNSET, NULL, NULL, NULL, &name##_Profile, NULL, allocType, 0, \
     },
 
-#endif
-
 #define DEFINE_ACTOR_UNSET(_0) { 0 },
 
 ActorOverlay gActorOverlayTable[] = {
@@ -82,19 +60,6 @@ s32 gMaxActorId = 0;
 static FaultClient sFaultClient;
 
 void ActorOverlayTable_LogPrint(void) {
-#if DEBUG_FEATURES
-    ActorOverlay* overlayEntry;
-    u32 i;
-
-    PRINTF("actor_dlftbls %u\n", gMaxActorId);
-    PRINTF("RomStart RomEnd   SegStart SegEnd   allocp   profile  segname\n");
-
-    for (i = 0, overlayEntry = &gActorOverlayTable[0]; i < (u32)gMaxActorId; i++, overlayEntry++) {
-        PRINTF("%08x %08x %08x %08x %08x %08x %s\n", overlayEntry->file.vromStart, overlayEntry->file.vromEnd,
-               overlayEntry->vramStart, overlayEntry->vramEnd, overlayEntry->loadedRamAddr, &overlayEntry->profile->id,
-               overlayEntry->name != NULL ? overlayEntry->name : "?");
-    }
-#endif
 }
 
 void ActorOverlayTable_FaultPrint(void* arg0, void* arg1) {

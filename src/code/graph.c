@@ -47,102 +47,6 @@ OSTime sGraphPrevUpdateEndTime;
  */
 OSTime sGraphPrevTaskTimeStart;
 
-#if DEBUG_FEATURES
-FaultClient sGraphFaultClient;
-
-UCodeInfo D_8012D230[3] = {
-#ifndef F3DEX_GBI_PL
-    { UCODE_TYPE_F3DZEX, gspF3DZEX2_NoN_fifoTextStart },
-#else
-    { UCODE_TYPE_F3DZEX, gspF3DZEX2_NoN_PosLight_fifoTextStart },
-#endif
-    { UCODE_TYPE_UNK, NULL },
-    { UCODE_TYPE_S2DEX, gspS2DEX2d_fifoTextStart },
-};
-
-UCodeInfo D_8012D248[3] = {
-#ifndef F3DEX_GBI_PL
-    { UCODE_TYPE_F3DZEX, gspF3DZEX2_NoN_fifoTextStart },
-#else
-    { UCODE_TYPE_F3DZEX, gspF3DZEX2_NoN_PosLight_fifoTextStart },
-#endif
-    { UCODE_TYPE_UNK, NULL },
-    { UCODE_TYPE_S2DEX, gspS2DEX2d_fifoTextStart },
-};
-
-void Graph_FaultClient(void) {
-    void* nextFb = osViGetNextFramebuffer();
-    void* newFb = (SysCfb_GetFbPtr(0) != nextFb) ? SysCfb_GetFbPtr(0) : SysCfb_GetFbPtr(1);
-
-    osViSwapBuffer(newFb);
-    Fault_WaitForInput();
-    osViSwapBuffer(nextFb);
-}
-
-// TODO: merge Gfx and GfxMod to make this function's arguments consistent
-void UCodeDisas_Disassemble(UCodeDisas*, Gfx*);
-
-void Graph_DisassembleUCode(Gfx* workBuf) {
-    UCodeDisas disassembler;
-
-    if (R_HREG_MODE == HREG_MODE_UCODE_DISAS && R_UCODE_DISAS_TOGGLE != 0) {
-        UCodeDisas_Init(&disassembler);
-        disassembler.enableLog = R_UCODE_DISAS_LOG_LEVEL;
-
-        UCodeDisas_RegisterUCode(&disassembler, ARRAY_COUNT(D_8012D230), D_8012D230);
-#ifndef F3DEX_GBI_PL
-        UCodeDisas_SetCurUCode(&disassembler, gspF3DZEX2_NoN_fifoTextStart);
-#else
-        UCodeDisas_SetCurUCode(&disassembler, gspF3DZEX2_NoN_PosLight_fifoTextStart);
-#endif
-
-        UCodeDisas_Disassemble(&disassembler, workBuf);
-
-        R_UCODE_DISAS_DL_COUNT = disassembler.dlCnt;
-        R_UCODE_DISAS_TOTAL_COUNT =
-            disassembler.tri2Cnt * 2 + disassembler.tri1Cnt + (disassembler.quadCnt * 2) + disassembler.lineCnt;
-        R_UCODE_DISAS_VTX_COUNT = disassembler.vtxCnt;
-        R_UCODE_DISAS_SPVTX_COUNT = disassembler.spvtxCnt;
-        R_UCODE_DISAS_TRI1_COUNT = disassembler.tri1Cnt;
-        R_UCODE_DISAS_TRI2_COUNT = disassembler.tri2Cnt;
-        R_UCODE_DISAS_QUAD_COUNT = disassembler.quadCnt;
-        R_UCODE_DISAS_LINE_COUNT = disassembler.lineCnt;
-        R_UCODE_DISAS_SYNC_ERROR_COUNT = disassembler.syncErr;
-        R_UCODE_DISAS_LOAD_COUNT = disassembler.loaducodeCnt;
-
-        if (R_UCODE_DISAS_LOG_MODE == 1 || R_UCODE_DISAS_LOG_MODE == 2) {
-            PRINTF("vtx_cnt=%d\n", disassembler.vtxCnt);
-            PRINTF("spvtx_cnt=%d\n", disassembler.spvtxCnt);
-            PRINTF("tri1_cnt=%d\n", disassembler.tri1Cnt);
-            PRINTF("tri2_cnt=%d\n", disassembler.tri2Cnt);
-            PRINTF("quad_cnt=%d\n", disassembler.quadCnt);
-            PRINTF("line_cnt=%d\n", disassembler.lineCnt);
-            PRINTF("sync_err=%d\n", disassembler.syncErr);
-            PRINTF("loaducode_cnt=%d\n", disassembler.loaducodeCnt);
-            PRINTF("dl_depth=%d\n", disassembler.dlDepth);
-            PRINTF("dl_cnt=%d\n", disassembler.dlCnt);
-        }
-
-        UCodeDisas_Destroy(&disassembler);
-    }
-}
-
-void Graph_UCodeFaultClient(Gfx* workBuf) {
-    UCodeDisas disassembler;
-
-    UCodeDisas_Init(&disassembler);
-    disassembler.enableLog = true;
-    UCodeDisas_RegisterUCode(&disassembler, ARRAY_COUNT(D_8012D248), D_8012D248);
-#ifndef F3DEX_GBI_PL
-    UCodeDisas_SetCurUCode(&disassembler, gspF3DZEX2_NoN_fifoTextStart);
-#else
-    UCodeDisas_SetCurUCode(&disassembler, gspF3DZEX2_NoN_PosLight_fifoTextStart);
-#endif
-    UCodeDisas_Disassemble(&disassembler, workBuf);
-    UCodeDisas_Destroy(&disassembler);
-}
-#endif
-
 void Graph_InitTHGA(GraphicsContext* gfxCtx) {
     GfxPool* pool = &gGfxPools[gfxCtx->gfxPoolIdx & 1];
 
@@ -201,24 +105,12 @@ void Graph_Init(GraphicsContext* gfxCtx) {
 #endif
 
     osCreateMesgQueue(&gfxCtx->queue, gfxCtx->msgBuff, ARRAY_COUNT(gfxCtx->msgBuff));
-
-#if DEBUG_FEATURES
-    func_800D31F0();
-    Fault_AddClient(&sGraphFaultClient, Graph_FaultClient, NULL, NULL);
-#endif
 }
 
 void Graph_Destroy(GraphicsContext* gfxCtx) {
-#if DEBUG_FEATURES
-    func_800D3210();
-    Fault_RemoveClient(&sGraphFaultClient);
-#endif
 }
 
 void Graph_TaskSet00(GraphicsContext* gfxCtx) {
-#if DEBUG_FEATURES
-    static Gfx* sPrevTaskWorkBuffer = NULL;
-#endif
     OSTask_t* task = &gfxCtx->task.list.t;
     OSScTask* scTask = &gfxCtx->task;
 
@@ -236,32 +128,11 @@ void Graph_TaskSet00(GraphicsContext* gfxCtx) {
         osStopTimer(&timer);
 
         if (msg == (OSMesg)666) {
-#if DEBUG_FEATURES
-            PRINTF_COLOR_RED();
-            PRINTF(T("RCPが帰ってきませんでした。", "RCP did not return."));
-            PRINTF_RST();
-
-            LogUtils_LogHexDump((void*)PHYS_TO_K1(SP_BASE_REG), 0x20);
-            LogUtils_LogHexDump((void*)PHYS_TO_K1(DPC_BASE_REG), 0x20);
-            LogUtils_LogHexDump(gGfxSPTaskYieldBuffer, sizeof(gGfxSPTaskYieldBuffer));
-
-            SREG(6) = -1;
-            if (sPrevTaskWorkBuffer != NULL) {
-                R_HREG_MODE = HREG_MODE_UCODE_DISAS;
-                R_UCODE_DISAS_TOGGLE = 1;
-                R_UCODE_DISAS_LOG_LEVEL = 2;
-                Graph_DisassembleUCode(sPrevTaskWorkBuffer);
-            }
-#endif
 
             Fault_AddHungupAndCrashImpl("RCP is HUNG UP!!", "Oh! MY GOD!!");
         }
 
         osRecvMesg(&gfxCtx->queue, &msg, OS_MESG_NOBLOCK);
-
-#if DEBUG_FEATURES
-        sPrevTaskWorkBuffer = gfxCtx->workBuffer;
-#endif
     }
 
     if (gfxCtx->callback != NULL) {
@@ -352,30 +223,8 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
     gameState->inPreNMIState = false;
     Graph_InitTHGA(gfxCtx);
 
-#if DEBUG_FEATURES
-    OPEN_DISPS(gfxCtx, "../graph.c", 966);
-
-    gDPNoOpString(WORK_DISP++, T("WORK_DISP 開始", "WORK_DISP start"), 0);
-    gDPNoOpString(POLY_OPA_DISP++, T("POLY_OPA_DISP 開始", "POLY_OPA_DISP start"), 0);
-    gDPNoOpString(POLY_XLU_DISP++, T("POLY_XLU_DISP 開始", "POLY_XLU_DISP start"), 0);
-    gDPNoOpString(OVERLAY_DISP++, T("OVERLAY_DISP 開始", "OVERLAY_DISP start"), 0);
-
-    CLOSE_DISPS(gfxCtx, "../graph.c", 975);
-#endif
-
     GameState_ReqPadData(gameState);
     GameState_Update(gameState);
-
-#if DEBUG_FEATURES
-    OPEN_DISPS(gfxCtx, "../graph.c", 987);
-
-    gDPNoOpString(WORK_DISP++, T("WORK_DISP 終了", "WORK_DISP end"), 0);
-    gDPNoOpString(POLY_OPA_DISP++, T("POLY_OPA_DISP 終了", "POLY_OPA_DISP end"), 0);
-    gDPNoOpString(POLY_XLU_DISP++, T("POLY_XLU_DISP 終了", "POLY_XLU_DISP end"), 0);
-    gDPNoOpString(OVERLAY_DISP++, T("OVERLAY_DISP 終了", "OVERLAY_DISP end"), 0);
-
-    CLOSE_DISPS(gfxCtx, "../graph.c", 996);
-#endif
 
     OPEN_DISPS(gfxCtx, "../graph.c", 999);
 
@@ -387,37 +236,6 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
     gSPEndDisplayList(OVERLAY_DISP++);
 
     CLOSE_DISPS(gfxCtx, "../graph.c", 1028);
-
-#if DEBUG_FEATURES
-    if (R_HREG_MODE == HREG_MODE_PLAY && R_PLAY_ENABLE_UCODE_DISAS == 2) {
-        R_HREG_MODE = HREG_MODE_UCODE_DISAS;
-        R_UCODE_DISAS_TOGGLE = -1;
-        R_UCODE_DISAS_LOG_LEVEL = R_PLAY_UCODE_DISAS_LOG_LEVEL;
-    }
-
-    if (R_HREG_MODE == HREG_MODE_UCODE_DISAS && R_UCODE_DISAS_TOGGLE != 0) {
-        static FaultClient sGraphUcodeFaultClient;
-
-        if (R_UCODE_DISAS_LOG_MODE == 3) {
-            Fault_AddClient(&sGraphUcodeFaultClient, Graph_UCodeFaultClient, gfxCtx->workBuffer, "do_count_fault");
-        }
-
-        Graph_DisassembleUCode(gfxCtx->workBuffer);
-
-        if (R_UCODE_DISAS_LOG_MODE == 3) {
-            Fault_RemoveClient(&sGraphUcodeFaultClient);
-        }
-
-        if (R_UCODE_DISAS_TOGGLE < 0) {
-            LogUtils_LogHexDump((void*)PHYS_TO_K1(SP_BASE_REG), 0x20);
-            LogUtils_LogHexDump((void*)PHYS_TO_K1(DPC_BASE_REG), 0x20);
-        }
-
-        if (R_UCODE_DISAS_TOGGLE < 0) {
-            R_UCODE_DISAS_TOGGLE = 0;
-        }
-    }
-#endif
 
     problem = false;
 
@@ -486,22 +304,6 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
         R_UPDATE_RATE = (u16)(((((f32)OS_CYCLES_TO_USEC(gGraphUpdatePeriod)) / 1000.0f) / 50.0f) * UINT16_MAX / 2);
         sGraphPrevUpdateEndTime = timeNow;
     }
-
-#if DEBUG_FEATURES
-    if (gIsCtrlr2Valid && CHECK_BTN_ALL(gameState->input[0].press.button, BTN_Z) &&
-        CHECK_BTN_ALL(gameState->input[0].cur.button, BTN_L | BTN_R)) {
-        gSaveContext.gameMode = GAMEMODE_NORMAL;
-        SET_NEXT_GAMESTATE(gameState, MapSelect_Init, MapSelectState);
-        gameState->running = false;
-    }
-
-    if (gIsCtrlr2Valid && PreNmiBuff_IsResetting(gAppNmiBufferPtr) && !gameState->inPreNMIState) {
-        PRINTF(VT_COL(YELLOW, BLACK) T("PRE-NMIによりリセットモードに移行します\n",
-                                       "PRE-NMI causes the system to transition to reset mode\n") VT_RST);
-        SET_NEXT_GAMESTATE(gameState, PreNMI_Init, PreNMIState);
-        gameState->running = false;
-    }
-#endif
 }
 
 void Graph_ThreadEntry(void* arg0) {
@@ -524,16 +326,7 @@ void Graph_ThreadEntry(void* arg0) {
         gameState = SYSTEM_ARENA_MALLOC(size, "../graph.c", 1196);
 
         if (gameState == NULL) {
-#if DEBUG_FEATURES
-            char faultMsg[0x50];
-
-            PRINTF(T("確保失敗\n", "Failure to secure\n"));
-
-            sprintf(faultMsg, "CLASS SIZE= %d bytes", size);
-            Fault_AddHungupAndCrashImpl("GAME CLASS MALLOC FAILED", faultMsg);
-#else
             Fault_AddHungupAndCrash("../graph.c", LN4(1067, 1070, 1081, 1197, 1200));
-#endif
         }
 
         GameState_Init(gameState, ovl->init, &gfxCtx);
@@ -570,39 +363,3 @@ void* Graph_Alloc2(GraphicsContext* gfxCtx, size_t size) {
     }
     return THGA_AllocTail(&gfxCtx->polyOpa, ALIGN16(size));
 }
-
-#if DEBUG_FEATURES
-void Graph_OpenDisps(Gfx** dispRefs, GraphicsContext* gfxCtx, const char* file, int line) {
-    if (R_HREG_MODE == HREG_MODE_UCODE_DISAS && R_UCODE_DISAS_LOG_MODE != 4) {
-        dispRefs[0] = gfxCtx->polyOpa.p;
-        dispRefs[1] = gfxCtx->polyXlu.p;
-        dispRefs[2] = gfxCtx->overlay.p;
-
-        gDPNoOpOpenDisp(gfxCtx->polyOpa.p++, file, line);
-        gDPNoOpOpenDisp(gfxCtx->polyXlu.p++, file, line);
-        gDPNoOpOpenDisp(gfxCtx->overlay.p++, file, line);
-    }
-}
-
-void Graph_CloseDisps(Gfx** dispRefs, GraphicsContext* gfxCtx, const char* file, int line) {
-    if (R_HREG_MODE == HREG_MODE_UCODE_DISAS && R_UCODE_DISAS_LOG_MODE != 4) {
-        if (dispRefs[0] + 1 == gfxCtx->polyOpa.p) {
-            gfxCtx->polyOpa.p = dispRefs[0];
-        } else {
-            gDPNoOpCloseDisp(gfxCtx->polyOpa.p++, file, line);
-        }
-
-        if (dispRefs[1] + 1 == gfxCtx->polyXlu.p) {
-            gfxCtx->polyXlu.p = dispRefs[1];
-        } else {
-            gDPNoOpCloseDisp(gfxCtx->polyXlu.p++, file, line);
-        }
-
-        if (dispRefs[2] + 1 == gfxCtx->overlay.p) {
-            gfxCtx->overlay.p = dispRefs[2];
-        } else {
-            gDPNoOpCloseDisp(gfxCtx->overlay.p++, file, line);
-        }
-    }
-}
-#endif

@@ -469,10 +469,6 @@ u16 WaterBox_GetBgCamSetting(CollisionContext* colCtx, WaterBox* waterBox);
 u32 WaterBox_GetLightIndex(CollisionContext* colCtx, WaterBox* waterBox);
 s32 func_80042708(CollisionPoly* polyA, CollisionPoly* polyB, Vec3f* point, Vec3f* closestPoint);
 s32 func_800427B4(CollisionPoly* polyA, CollisionPoly* polyB, Vec3f* pointA, Vec3f* pointB, Vec3f* closestPoint);
-#if DEBUG_FEATURES
-void BgCheck_DrawDynaCollision(struct PlayState*, CollisionContext*);
-void BgCheck_DrawStaticCollision(struct PlayState*, CollisionContext*);
-#endif
 
 void func_80043334(CollisionContext* colCtx, struct Actor* actor, s32 bgId);
 s32 DynaPolyActor_TransformCarriedActor(CollisionContext* colCtx, s32 bgId, struct Actor* carriedActor);

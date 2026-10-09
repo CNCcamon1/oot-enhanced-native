@@ -51,10 +51,8 @@ typedef struct GraphicsContext {
     /* 0x02E8 */ s32 fbIdx;
     /* 0x02EC */ void (*callback)(struct GraphicsContext*, void*);
     /* 0x02F0 */ void* callbackParam;
-#if OOT_VERSION >= PAL_1_0
     /* 0x02F4 */ f32 xScale;
     /* 0x02F8 */ f32 yScale;
-#endif
     /* 0x02FC */ char unk_2FC[0x04];
 } GraphicsContext; // size = 0x300
 
@@ -83,32 +81,6 @@ void* Graph_Alloc2(GraphicsContext* gfxCtx, size_t size);
 #define POLY_XLU_DISP   __gfxCtx->polyXlu.p
 #define OVERLAY_DISP    __gfxCtx->overlay.p
 
-#if DEBUG_FEATURES
-
-void Graph_OpenDisps(Gfx** dispRefs, GraphicsContext* gfxCtx, const char* file, int line);
-void Graph_CloseDisps(Gfx** dispRefs, GraphicsContext* gfxCtx, const char* file, int line);
-
-// __gfxCtx shouldn't be used directly.
-// Use the DISP macros defined above when writing to display buffers.
-#define OPEN_DISPS(gfxCtx, file, line) \
-    {                                  \
-        GraphicsContext* __gfxCtx;     \
-        Gfx* dispRefs[4];              \
-        __gfxCtx = gfxCtx;             \
-        (void)__gfxCtx;                \
-        Graph_OpenDisps(dispRefs, gfxCtx, file, line)
-
-#define CLOSE_DISPS(gfxCtx, file, line)                     \
-        do {                                                \
-            Graph_CloseDisps(dispRefs, gfxCtx, file, line); \
-        } while (0);                                        \
-    }                                                       \
-    (void)0
-
-#define GRAPH_ALLOC(gfxCtx, size) Graph_Alloc(gfxCtx, size)
-
-#else
-
 #define OPEN_DISPS(gfxCtx, file, line)      \
     {                                       \
         GraphicsContext* __gfxCtx = gfxCtx; \
@@ -120,8 +92,6 @@ void Graph_CloseDisps(Gfx** dispRefs, GraphicsContext* gfxCtx, const char* file,
     (void)0
 
 #define GRAPH_ALLOC(gfxCtx, size) ((void*)((gfxCtx)->polyOpa.d = (Gfx*)((u8*)(gfxCtx)->polyOpa.d - ALIGN16(size))))
-
-#endif
 
 void Graph_ThreadEntry(void*);
 

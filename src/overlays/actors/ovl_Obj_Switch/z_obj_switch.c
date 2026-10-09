@@ -207,15 +207,6 @@ void ObjSwitch_InitDynaPoly(ObjSwitch* this, PlayState* play, CollisionHeader* c
     CollisionHeader_GetVirtual(collision, &colHeader);
     this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
 
-#if DEBUG_FEATURES
-    if (this->dyna.bgId == BG_ACTOR_MAX) {
-        s32 pad2;
-
-        PRINTF(T("Warning : move BG 登録失敗(%s %d)(name %d)(arg_data 0x%04x)\n",
-                 "Warning : move BG registration failed (%s %d)(name %d)(arg_data 0x%04x)\n"),
-               "../z_obj_switch.c", 531, this->dyna.actor.id, this->dyna.actor.params);
-    }
-#endif
 }
 
 void ObjSwitch_InitJntSphCollider(ObjSwitch* this, PlayState* play, ColliderJntSphInit* colliderJntSphInit) {

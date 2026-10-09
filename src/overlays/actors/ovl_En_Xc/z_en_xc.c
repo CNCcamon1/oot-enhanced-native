@@ -248,27 +248,6 @@ void func_80B3C7D4(EnXc* this, s32 action1, s32 action2, s32 action3) {
     }
 }
 
-#if DEBUG_FEATURES
-s32 EnXc_NoCutscenePlaying(PlayState* play) {
-    if (play->csCtx.state == CS_STATE_IDLE) {
-        return true;
-    }
-    return false;
-}
-
-void func_80B3C820(EnXc* this) {
-    Animation_Change(&this->skelAnime, &gSheikIdleAnim, 1.0f, 0.0f, Animation_GetLastFrame(&gSheikIdleAnim),
-                     ANIMMODE_LOOP, 0.0f);
-    this->action = SHEIK_ACTION_53;
-}
-
-void func_80B3C888(EnXc* this, PlayState* play) {
-    if (EnXc_NoCutscenePlaying(play) && this->actor.params == SHEIK_TYPE_4) {
-        func_80B3C820(this);
-    }
-}
-#endif
-
 void func_80B3C8CC(EnXc* this, PlayState* play) {
     SkelAnime* skelAnime = &this->skelAnime;
 
@@ -507,12 +486,6 @@ void EnXc_SetColossusWindSFX(PlayState* play) {
 
                 if (D_80B41D90 != 0) {
                     f32 speed = Math3D_Vec3f_DistXYZ(&D_80B42DB0, eye) / 7.058922f;
-#if DEBUG_FEATURES
-                    static f32 sMaxSpeed = 0.0f;
-
-                    sMaxSpeed = CLAMP_MIN(sMaxSpeed, speed);
-                    PRINTF("MAX speed = %f\n", sMaxSpeed);
-#endif
 
                     speed = CLAMP_MAX(speed, 2.0f);
                     func_800F436C(&sPos, NA_SE_EV_FLYING_AIR - SFX_FLAG, 0.6f + (0.4f * speed));
@@ -1713,9 +1686,6 @@ void EnXc_ActionFunc54(EnXc* this, PlayState* play) {
     EnXc_BgCheck(this, play);
     EnXc_SetEyePattern(this);
     EnXc_SetupShowTriforceAction(this, play);
-#if DEBUG_FEATURES
-    func_80B3C888(this, play);
-#endif
 }
 
 void EnXc_ShowTriforce(EnXc* this, PlayState* play) {
@@ -1726,9 +1696,6 @@ void EnXc_ShowTriforce(EnXc* this, PlayState* play) {
     EnXc_CalcTriforce(&this->actor, play);
     func_80B3FAE0(this);
     EnXc_SetupShowTriforceIdleAction(this, animFinished);
-#if DEBUG_FEATURES
-    func_80B3C888(this, play);
-#endif
 }
 
 void EnXc_ShowTriforceIdle(EnXc* this, PlayState* play) {
@@ -1868,10 +1835,6 @@ void EnXc_SetupContortions(EnXc* this, PlayState* play) {
     s32 pad[2];
     SkelAnime* skelAnime = &this->skelAnime;
 
-#if DEBUG_FEATURES
-    Animation_Change(skelAnime, &gSheikIdleAnim, 1.0f, 0.0f, Animation_GetLastFrame(&gSheikIdleAnim), ANIMMODE_LOOP,
-                     0.0f);
-#endif
     func_80B3C588(this, play, 4);
     func_80B3C964(this, play);
     Animation_Change(skelAnime, &gSheikContortionsAnim, 1.0f, 0.0f, Animation_GetLastFrame(&gSheikContortionsAnim),
@@ -2396,11 +2359,6 @@ void EnXc_Init(Actor* thisx, PlayState* play) {
         case SHEIK_TYPE_9:
             EnXc_InitTempleOfTime(this, play);
             break;
-#if DEBUG_FEATURES
-        case SHEIK_TYPE_0:
-            EnXc_DoNothing(this, play);
-            break;
-#endif
         default:
             PRINTF(VT_FGCOL(RED) T(" En_Oa2 の arg_data がおかしい!!!!!!!!!!!!!!!!!!!!!!!!!\n",
                                    " En_Oa2 arg_data is wrong!!!!!!!!!!!!!!!!!!!!!!!!!\n") VT_RST);

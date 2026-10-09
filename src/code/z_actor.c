@@ -47,25 +47,13 @@
 CollisionPoly* sCurCeilingPoly;
 s32 sCurCeilingBgId;
 
-#if DEBUG_FEATURES
-#define ACTOR_DEBUG_PRINTF           \
-    if (R_ENABLE_ACTOR_DEBUG_PRINTF) \
-    PRINTF
-#else
 #define ACTOR_DEBUG_PRINTF \
     if (0)                 \
     PRINTF
-#endif
 
-#if DEBUG_FEATURES
-#define ACTOR_COLOR_WARNING VT_COL(YELLOW, BLACK)
-#define ACTOR_COLOR_ERROR VT_COL(RED, WHITE)
-#define ACTOR_RST VT_RST
-#else
 #define ACTOR_COLOR_WARNING ""
 #define ACTOR_COLOR_ERROR ""
 #define ACTOR_RST ""
-#endif
 
 void ActorShape_Init(ActorShape* shape, f32 yOffset, ActorShadowFunc shadowDraw, f32 shadowScale) {
     shape->yOffset = yOffset;
@@ -970,12 +958,6 @@ void Actor_Destroy(Actor* actor, PlayState* play) {
         actor->destroy(actor, play);
         actor->destroy = NULL;
     } else {
-#if DEBUG_FEATURES
-        overlayEntry = actor->overlayEntry;
-        name = overlayEntry->name != NULL ? overlayEntry->name : "";
-
-        PRINTF(T("Ａｃｔｏｒクラス デストラクトがありません [%s]\n", "No Actor class destruct [%s]\n") ACTOR_RST, name);
-#endif
     }
 }
 
@@ -1535,13 +1517,6 @@ Gfx* func_8002E830(Vec3f* object, Vec3f* eye, Vec3f* lightDir, GraphicsContext* 
 
     *hilite = GRAPH_ALLOC(gfxCtx, sizeof(Hilite));
 
-#if DEBUG_FEATURES
-    if (R_HREG_MODE == HREG_MODE_PRINT_HILITE_INFO) {
-        PRINTF("z_actor.c 3529 eye=[%f(%f) %f %f] object=[%f %f %f] light_direction=[%f %f %f]\n", correctedEyeX,
-               eye->x, eye->y, eye->z, object->x, object->y, object->z, lightDir->x, lightDir->y, lightDir->z);
-    }
-#endif
-
     VIEW_ERROR_CHECK_EYE_POS(correctedEyeX, eye->y, eye->z);
 
     guLookAtHilite(&D_8015BBA8, lookAt, *hilite, correctedEyeX, eye->y, eye->z, object->x, object->y, object->z, 0.0f,
@@ -1586,13 +1561,6 @@ void func_8002EBCC(Actor* actor, PlayState* play, s32 flag) {
     lightDir.x = play->envCtx.dirLight1.params.dir.x;
     lightDir.y = play->envCtx.dirLight1.params.dir.y;
     lightDir.z = play->envCtx.dirLight1.params.dir.z;
-
-#if DEBUG_FEATURES
-    if (R_HREG_MODE == HREG_MODE_PRINT_HILITE_INFO) {
-        PRINTF("z_actor.c 3637 game_play->view.eye=[%f(%f) %f %f]\n", play->view.eye.x, play->view.eye.y,
-               play->view.eye.z);
-    }
-#endif
 
     hilite = func_8002EABC(&actor->world.pos, &play->view.eye, &lightDir, play->state.gfxCtx);
 
@@ -2410,13 +2378,6 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx, int updateLogic) {
 
     player = GET_PLAYER(play);
 
-#if DEBUG_FEATURES
-    if (0) {
-        // This ASSERT is optimized out, but it can be assumed to exist because its string is present in rodata
-        ASSERT(gMaxActorId == ACTOR_ID_MAX, "MaxProfile == ACTOR_DLF_MAX", "../z_actor.c", UNK_LINE);
-    }
-#endif
-
     sp74 = NULL;
     freezeExceptionFlag = 0;
 
@@ -2431,16 +2392,6 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx, int updateLogic) {
     if (actorCtx->unk_02 != 0) {
         actorCtx->unk_02--;
     }
-
-#if DEBUG_FEATURES
-    if (KREG(0) == -100) {
-        Actor* player = &GET_PLAYER(play)->actor;
-
-        KREG(0) = 0;
-        Actor_Spawn(&play->actorCtx, play, ACTOR_EN_CLEAR_TAG, player->world.pos.x, player->world.pos.y + 100.0f,
-                    player->world.pos.z, 0, 0, 0, 1);
-    }
-#endif
 
     categoryFreezeMaskP = &sCategoryFreezeMasks[0];
 
@@ -2555,12 +2506,7 @@ void Actor_FaultPrint(Actor* actor, char* command) {
         Fault_Printf("ACTOR NAME is NULL");
     }
 
-#if DEBUG_FEATURES
-    overlayEntry = actor->overlayEntry;
-    name = overlayEntry->name != NULL ? overlayEntry->name : "";
-#else
     name = "";
-#endif
 
     PRINTF(T("アクターの名前(%08x:%s)\n", "Actor name (%08x:%s)\n"), actor, name);
 
@@ -2910,11 +2856,7 @@ void Actor_DrawAll(PlayState* play, ActorContext* actorCtx) {
             ActorOverlay* overlayEntry = actor->overlayEntry;
             char* actorName;
 
-#if DEBUG_FEATURES
-            actorName = overlayEntry->name != NULL ? overlayEntry->name : "";
-#else
             actorName = "";
-#endif
 
             gDPNoOpString(POLY_OPA_DISP++, actorName, i);
             gDPNoOpString(POLY_XLU_DISP++, actorName, i);
@@ -2995,11 +2937,6 @@ void Actor_DrawAll(PlayState* play, ActorContext* actorCtx) {
         TitleCard_Draw(play, &actorCtx->titleCtx);
     }
 
-#if DEBUG_FEATURES
-    if ((HREG(64) != 1) || (HREG(76) != 0)) {
-        CollisionCheck_DrawCollision(play, &play->colChkCtx);
-    }
-#endif
 
     CLOSE_DISPS(play->state.gfxCtx, "../z_actor.c", 6563);
 }
@@ -3188,9 +3125,6 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
     overlayEntry = &gActorOverlayTable[actorId];
     ASSERT(actorId < ACTOR_ID_MAX, "profile < ACTOR_DLF_MAX", "../z_actor.c", 6883);
 
-#if DEBUG_FEATURES
-    name = overlayEntry->name != NULL ? overlayEntry->name : "";
-#endif
 
     overlaySize = (uintptr_t)overlayEntry->vramEnd - (uintptr_t)overlayEntry->vramStart;
 
@@ -3385,11 +3319,7 @@ Actor* Actor_Delete(ActorContext* actorCtx, Actor* actor, PlayState* play) {
 
     overlayEntry = actor->overlayEntry;
 
-#if DEBUG_FEATURES
-    name = overlayEntry->name != NULL ? overlayEntry->name : "";
-#else
     name = "";
-#endif
 
     ACTOR_DEBUG_PRINTF(T("アクタークラス削除 [%s]\n", "Actor class deleted [%s]\n"), name);
 

@@ -1286,13 +1286,8 @@ Gfx* Gfx_SetupDL_69NoCD(Gfx* gfx) {
     return gfx;
 }
 
-#if DEBUG_FEATURES
-#define HREG_21 HREG(21)
-#define HREG_22 HREG(22)
-#else
 #define HREG_21 0
 #define HREG_22 0
-#endif
 
 Gfx* func_800947AC(Gfx* gfx) {
     gSPDisplayList(gfx++, sSetupDL[SETUPDL_65]);
@@ -1521,51 +1516,6 @@ void Gfx_SetupFrame(GraphicsContext* gfxCtx, u8 r, u8 g, u8 b) {
 
     if ((R_PAUSE_BG_PRERENDER_STATE <= PAUSE_BG_PRERENDER_SETUP) && (gTransitionTileState <= TRANS_TILE_SETUP)) {
         s32 letterboxSize = Letterbox_GetSize();
-
-#if DEBUG_FEATURES
-        if (R_HREG_MODE == HREG_MODE_SETUP_FRAME) {
-            if (R_SETUP_FRAME_INIT != HREG_MODE_SETUP_FRAME) {
-                R_SETUP_FRAME_GET = (SETUP_FRAME_LETTERBOX_SIZE_FLAG | SETUP_FRAME_BASE_COLOR_FLAG);
-                R_SETUP_FRAME_SET = (SETUP_FRAME_LETTERBOX_SIZE_FLAG | SETUP_FRAME_BASE_COLOR_FLAG);
-                R_SETUP_FRAME_LETTERBOX_SIZE = 0;
-                R_SETUP_FRAME_BASE_COLOR_R = 0;
-                R_SETUP_FRAME_BASE_COLOR_G = 0;
-                R_SETUP_FRAME_BASE_COLOR_B = 0;
-
-                // these regs are not used in this mode
-                HREG(87) = 0;
-                HREG(88) = 0;
-                HREG(89) = 0;
-                HREG(90) = 0;
-                HREG(91) = 0;
-                HREG(92) = 0;
-                HREG(93) = 0;
-                HREG(94) = 0;
-
-                R_SETUP_FRAME_INIT = HREG_MODE_SETUP_FRAME;
-            }
-
-            if (R_SETUP_FRAME_GET & SETUP_FRAME_LETTERBOX_SIZE_FLAG) {
-                R_SETUP_FRAME_LETTERBOX_SIZE = letterboxSize;
-            }
-
-            if (R_SETUP_FRAME_GET & SETUP_FRAME_BASE_COLOR_FLAG) {
-                R_SETUP_FRAME_BASE_COLOR_R = r;
-                R_SETUP_FRAME_BASE_COLOR_G = g;
-                R_SETUP_FRAME_BASE_COLOR_B = b;
-            }
-
-            if (R_SETUP_FRAME_SET & SETUP_FRAME_LETTERBOX_SIZE_FLAG) {
-                letterboxSize = R_SETUP_FRAME_LETTERBOX_SIZE;
-            }
-
-            if (R_SETUP_FRAME_SET & SETUP_FRAME_BASE_COLOR_FLAG) {
-                r = R_SETUP_FRAME_BASE_COLOR_R;
-                g = R_SETUP_FRAME_BASE_COLOR_G;
-                b = R_SETUP_FRAME_BASE_COLOR_B;
-            }
-        }
-#endif
 
         // Set the whole z buffer to maximum depth
         // Don't bother with pixels that are being covered by the letterbox

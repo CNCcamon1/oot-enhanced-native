@@ -43,28 +43,6 @@ void FileSelect_DrawCharacterTransition(GraphicsContext* gfxCtx, void* texture1,
 }
 #endif
 
-#if OOT_PAL
-
-#if OOT_VERSION >= PAL_1_1
-s16 D_808124C0[] = {
-    2, 3, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 0, 1, 1, 2, 1, 1, 4, 2, 2, 2, 1, 1, 0, 2, 0, 1, 1, 1, 1, 1, 0,
-    1, 1, 1, 2, 2, 2, 2, 2, 3, 2, 2, 4, 3, 2, 4, 1, 2, 2, 1, 1, 2, 2, 3, 2, 2, 0, 2, 2, 2, 0, 3, 1, 0,
-};
-#endif
-
-s16 D_80812544[] = {
-#if OOT_VERSION < PAL_1_1
-    1, 2, 0, 1, 1, 2, 1, 2, 4, 2, 2, 2, 1, 1, 0, 2, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 2, 2, 2, 2, 2, 3,
-    2, 2, 4, 3, 2, 4, 1, 2, 2, 1, 1, 2, 2, 3, 2, 2, 0, 2, 2, 2, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 3,
-#else
-    // Differs only at index 7
-    1, 2, 0, 1, 1, 2, 1, 1, 4, 2, 2, 2, 1, 1, 0, 2, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 2, 2, 2, 2, 2, 3,
-    2, 2, 4, 3, 2, 4, 1, 2, 2, 1, 1, 2, 2, 3, 2, 2, 0, 2, 2, 2, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 3,
-#endif
-};
-
-#endif
-
 void FileSelect_SetKeyboardVtx(GameState* thisx) {
     FileSelectState* this = (FileSelectState*)thisx;
     s16 phi_t2;
@@ -264,15 +242,9 @@ void FileSelect_SetNameEntryVtx(GameState* thisx) {
             this->nameEntryVtx[phi_t1].v.ob[0] + 0xA;
 #else
         if ((phi_s0 > 0) && (phi_s0 < 9)) {
-#if OOT_VERSION >= PAL_1_1
-            temp = this->fileNames[this->buttonIndex][phi_s0 - 1];
 
             this->nameEntryVtx[phi_t1].v.ob[0] = this->nameEntryVtx[phi_t1 + 2].v.ob[0] =
-                D_808125EC[phi_s0] + this->nameEntryBoxPosX + D_808124C0[temp];
-#else
-            this->nameEntryVtx[phi_t1].v.ob[0] = this->nameEntryVtx[phi_t1 + 2].v.ob[0] =
                 D_808125EC[phi_s0] + this->nameEntryBoxPosX;
-#endif
 
             this->nameEntryVtx[phi_t1 + 1].v.ob[0] = this->nameEntryVtx[phi_t1 + 3].v.ob[0] =
                 this->nameEntryVtx[phi_t1].v.ob[0] + 0xA;

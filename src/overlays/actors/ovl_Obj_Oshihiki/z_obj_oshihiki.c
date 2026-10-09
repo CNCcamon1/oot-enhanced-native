@@ -107,15 +107,6 @@ void ObjOshihiki_InitDynapoly(ObjOshihiki* this, PlayState* play, CollisionHeade
     CollisionHeader_GetVirtual(collision, &colHeader);
     this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
 
-#if DEBUG_FEATURES
-    if (this->dyna.bgId == BG_ACTOR_MAX) {
-        s32 pad2;
-
-        PRINTF(T("Warning : move BG 登録失敗(%s %d)(name %d)(arg_data 0x%04x)\n",
-                 "Warning : move BG registration failed (%s %d)(name %d)(arg_data 0x%04x)\n"),
-               "../z_obj_oshihiki.c", 280, this->dyna.actor.id, this->dyna.actor.params);
-    }
-#endif
 }
 
 void ObjOshihiki_RotateXZ(Vec3f* out, Vec3f* in, f32 sn, f32 cs) {
@@ -662,25 +653,7 @@ void ObjOshihiki_Draw(Actor* thisx, PlayState* play) {
 
     MATRIX_FINALIZE_AND_LOAD(POLY_OPA_DISP++, play->state.gfxCtx, "../z_obj_oshihiki.c", 1308);
 
-#if DEBUG_FEATURES
-    switch (play->sceneId) {
-        case SCENE_DEKU_TREE:
-        case SCENE_DODONGOS_CAVERN:
-        case SCENE_FOREST_TEMPLE:
-        case SCENE_FIRE_TEMPLE:
-        case SCENE_WATER_TEMPLE:
-        case SCENE_SPIRIT_TEMPLE:
-        case SCENE_SHADOW_TEMPLE:
-        case SCENE_GERUDO_TRAINING_GROUND:
-            gDPSetEnvColor(POLY_OPA_DISP++, this->color.r, this->color.g, this->color.b, 255);
-            break;
-        default:
-            gDPSetEnvColor(POLY_OPA_DISP++, mREG(13), mREG(14), mREG(15), 255);
-            break;
-    }
-#else
     gDPSetEnvColor(POLY_OPA_DISP++, this->color.r, this->color.g, this->color.b, 255);
-#endif
 
     gSPDisplayList(POLY_OPA_DISP++, gPushBlockDL);
     CLOSE_DISPS(play->state.gfxCtx, "../z_obj_oshihiki.c", 1334);

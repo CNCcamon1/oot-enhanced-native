@@ -87,12 +87,6 @@ void BgHidanKousi_Init(Actor* thisx, PlayState* play) {
 
     Actor_ProcessInitChain(thisx, sInitChain);
 
-#if DEBUG_FEATURES
-    if (PARAMS_GET_U(thisx->params, 0, 8) < 0 || PARAMS_GET_U(thisx->params, 0, 8) >= 3) {
-        PRINTF(T("arg_data おかしい 【格子】\n", "arg_data is strange [lattice]\n"));
-    }
-#endif
-
     CollisionHeader_GetVirtual(sMetalFencesCollisions[PARAMS_GET_U(thisx->params, 0, 8)], &colHeader);
     this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, thisx, colHeader);
     thisx->world.rot.y = D_80889E7C[PARAMS_GET_U(this->dyna.actor.params, 0, 8)] + thisx->shape.rot.y;

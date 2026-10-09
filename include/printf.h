@@ -12,9 +12,7 @@
 // ensure that these do not use the IDO workaround to avoid errors.
 #define IDO_PRINTF_WORKAROUND (__sgi && !__GNUC__ && !M2CTX)
 
-#if DEBUG_FEATURES
-#define PRINTF osSyncPrintf
-#elif defined(EGCS)
+#if defined(EGCS)
 #define PRINTF(format, args...) while (0) osSyncPrintf(format, ##args)
 #elif IDO_PRINTF_WORKAROUND
 #define PRINTF(args) (void)0
@@ -22,19 +20,6 @@
 #define PRINTF(format, ...) (void)0
 #endif
 
-#if DEBUG_FEATURES
-#define PRINTF_COLOR_BLACK()    PRINTF(VT_FGCOL(BLACK))
-#define PRINTF_COLOR_RED()      PRINTF(VT_FGCOL(RED))
-#define PRINTF_COLOR_GREEN()    PRINTF(VT_FGCOL(GREEN))
-#define PRINTF_COLOR_YELLOW()   PRINTF(VT_FGCOL(YELLOW))
-#define PRINTF_COLOR_BLUE()     PRINTF(VT_FGCOL(BLUE))
-#define PRINTF_COLOR_MAGENTA()  PRINTF(VT_FGCOL(MAGENTA))
-#define PRINTF_COLOR_CYAN()     PRINTF(VT_FGCOL(CYAN))
-#define PRINTF_COLOR_WHITE()    PRINTF(VT_FGCOL(WHITE))
-#define PRINTF_COLOR_WARNING()  PRINTF(VT_COL(YELLOW, BLACK))
-#define PRINTF_COLOR_ERROR()    PRINTF(VT_COL(RED, WHITE))
-#define PRINTF_RST()            PRINTF(VT_RST)
-#else
 #define PRINTF_COLOR_BLACK()    (void)0
 #define PRINTF_COLOR_RED()      (void)0
 #define PRINTF_COLOR_GREEN()    (void)0
@@ -46,6 +31,5 @@
 #define PRINTF_COLOR_WARNING()  (void)0
 #define PRINTF_COLOR_ERROR()    (void)0
 #define PRINTF_RST()            (void)0
-#endif
 
 #endif

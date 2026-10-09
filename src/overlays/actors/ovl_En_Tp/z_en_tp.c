@@ -338,11 +338,7 @@ void EnTp_Die(EnTp* this, PlayState* play) {
             Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos,
                                        COLLECTIBLE_DROP_RANDOM_PARAMS(COLLECTIBLE_DROP_TABLE_5, false));
         } else {
-#if OOT_VERSION < NTSC_1_1
-            for (i = 0; i < 2; i++)
-#else
             for (i = 0; i < 1; i++)
-#endif
             {
                 now =
                     (EnTp*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_TP, this->actor.world.pos.x,

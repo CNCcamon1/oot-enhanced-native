@@ -74,10 +74,6 @@ s32 gPadMgrLogSeverity = LOG_SEVERITY_CRITICAL;
 OSMesgQueue* PadMgr_AcquireSerialEventQueue(PadMgr* padMgr) {
     OSMesgQueue* serialEventQueue;
 
-#if DEBUG_FEATURES
-    serialEventQueue = NULL;
-#endif
-
     if (gPadMgrLogSeverity >= LOG_SEVERITY_VERBOSE) {
         PRINTF(T("%2d %d serialMsgQロック待ち         %08x %08x          %08x\n",
                  "%2d %d serialMsgQ Waiting for lock         %08x %08x          %08x\n"),

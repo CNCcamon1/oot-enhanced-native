@@ -97,16 +97,6 @@ void BgMoriHashigo_InitDynapoly(BgMoriHashigo* this, PlayState* play, CollisionH
     DynaPolyActor_Init(&this->dyna, moveFlag);
     CollisionHeader_GetVirtual(collision, &colHeader);
     this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
-
-#if DEBUG_FEATURES
-    if (this->dyna.bgId == BG_ACTOR_MAX) {
-        s32 pad2;
-
-        PRINTF(T("Warning : move BG 登録失敗(%s %d)(name %d)(arg_data 0x%04x)\n",
-                 "Warning : move BG registration failed (%s %d)(name %d)(arg_data 0x%04x)\n"),
-               "../z_bg_mori_hashigo.c", 164, this->dyna.actor.id, this->dyna.actor.params);
-    }
-#endif
 }
 
 void BgMoriHashigo_InitCollider(BgMoriHashigo* this, PlayState* play) {

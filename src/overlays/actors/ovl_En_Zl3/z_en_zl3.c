@@ -2675,14 +2675,6 @@ void func_80B59DB8(EnZl3* this, PlayState* play) {
     s32 objectSlot = Object_GetSlot(objectCtx, OBJECT_ZL2_ANIME2);
     s32 pad2;
 
-#if DEBUG_FEATURES
-    if (objectSlot < 0) {
-        PRINTF(VT_FGCOL(RED) T("En_Zl3_main_bankアニメーションのバンクを読めない!!!!!!!!!!!!\n",
-                               "En_Zl3_main_bank Can't read animation bank!!!!!!!!!!!!\n") VT_RST);
-        return;
-    }
-#endif
-
     if (Object_IsLoaded(objectCtx, objectSlot)) {
         this->zl2Anime2ObjectSlot = objectSlot;
         func_80B54DE0(this, play);

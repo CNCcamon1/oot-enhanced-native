@@ -16,15 +16,6 @@ void EffectSs_InitInfo(PlayState* play, s32 tableSize) {
     EffectSs* effectSs;
     EffectSsOverlay* overlay;
 
-#if DEBUG_FEATURES
-    for (i = 0; i < ARRAY_COUNT(gEffectSsOverlayTable); i++) {
-        overlay = &gEffectSsOverlayTable[i];
-        PRINTF("effect index %3d:size=%6dbyte romsize=%6dbyte\n", i,
-               (uintptr_t)overlay->vramEnd - (uintptr_t)overlay->vramStart,
-               overlay->file.vromEnd - overlay->file.vromStart);
-    }
-#endif
-
     sEffectSsInfo.table =
         GAME_STATE_ALLOC(&play->state, tableSize * sizeof(EffectSs), "../z_effect_soft_sprite.c", 289);
     ASSERT(sEffectSsInfo.table != NULL, "EffectSS2Info.data_table != NULL", "../z_effect_soft_sprite.c", 290);

@@ -1773,45 +1773,7 @@ SceneDrawConfigFunc sSceneDrawConfigs[SDC_MAX] = {
 };
 
 void Scene_Draw(PlayState* play) {
-#if DEBUG_FEATURES
-    if (R_HREG_MODE == HREG_MODE_SCENE_CONFIG) {
-        if (R_SCENE_CONFIG_INIT != HREG_MODE_SCENE_CONFIG) {
-            R_SCENE_CONFIG_INIT = HREG_MODE_SCENE_CONFIG;
-            R_SCENE_CONFIG_DRAW_DEFAULT_DLIST = 1;
-            R_SCENE_CONFIG_DRAW_SCENE_CONFIG = 1;
-
-            // these regs are not used in this mode
-            HREG(83) = 0;
-            HREG(84) = 0;
-            HREG(85) = 0;
-            HREG(86) = 0;
-            HREG(87) = 0;
-            HREG(88) = 0;
-            HREG(89) = 0;
-            HREG(91) = 0;
-            HREG(92) = 0;
-            HREG(93) = 0;
-            HREG(94) = 0;
-        }
-
-        OPEN_DISPS(play->state.gfxCtx, "../z_scene_table.c", 8104);
-
-        if (R_SCENE_CONFIG_DRAW_DEFAULT_DLIST == 1) {
-            gSPDisplayList(POLY_OPA_DISP++, sDefaultDisplayList);
-            gSPDisplayList(POLY_XLU_DISP++, sDefaultDisplayList);
-        }
-
-        CLOSE_DISPS(play->state.gfxCtx, "../z_scene_table.c", 8109);
-
-        if (R_SCENE_CONFIG_DRAW_SCENE_CONFIG == 1) {
-            sSceneDrawConfigs[play->sceneDrawConfig](play);
-        }
-    } else {
-        sSceneDrawConfigs[play->sceneDrawConfig](play);
-    }
-#else
     sSceneDrawConfigs[play->sceneDrawConfig](play);
-#endif
 }
 
 #endif

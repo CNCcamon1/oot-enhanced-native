@@ -151,11 +151,7 @@ typedef struct SfxParams {
     u16 params;
 } SfxParams;
 
-#if DEBUG_FEATURES
-#define SFX_DIST_SCALING 1.0f
-#else
 #define SFX_DIST_SCALING 10.0f
-#endif
 
 #define SFX_PLAY_CENTERED(sfxId)                                                                              \
     Audio_PlaySfxGeneral(sfxId, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, \
@@ -196,12 +192,6 @@ extern u16 D_801333D0;
 extern Vec3f gSfxDefaultPos;
 extern f32 gSfxDefaultFreqAndVolScale;
 extern s8 gSfxDefaultReverb;
-
-#if DEBUG_FEATURES
-extern u8 D_801333F0;
-extern u8 gAudioSfxSwapOff;
-extern u8 D_801333F8;
-#endif
 
 extern SfxBankEntry D_8016BAD0[9];
 extern SfxBankEntry D_8016BC80[12];

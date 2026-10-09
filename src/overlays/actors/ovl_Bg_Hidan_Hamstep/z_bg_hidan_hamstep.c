@@ -361,15 +361,6 @@ void func_80888A58(BgHidanHamstep* this, PlayState* play) {
     Actor_MoveXZGravity(&this->dyna.actor);
     func_80888694(this, (BgHidanHamstep*)this->dyna.actor.parent);
 
-#if DEBUG_FEATURES
-    if (PARAMS_GET_U(this->dyna.actor.params, 0, 8) <= 0 || PARAMS_GET_U(this->dyna.actor.params, 0, 8) >= 6) {
-        PRINTF(T("【ハンマーステップ】 arg_data おかしい (arg_data = %d)",
-                 "[Hammer Step] arg_data strange (arg_data = %d)"),
-               this->dyna.actor.params);
-        PRINTF("%s %d\n", "../z_bg_hidan_hamstep.c", 696);
-    }
-#endif
-
     if (((this->dyna.actor.world.pos.y - this->dyna.actor.home.pos.y) <=
          sYPosOffsets[PARAMS_GET_U(this->dyna.actor.params, 0, 8) - 1]) &&
         (this->dyna.actor.velocity.y <= 0.0f)) {

@@ -42,19 +42,9 @@ f32 gSfxDefaultFreqAndVolScale = 1.0f;
 // Adds no reverb to the existing reverb
 s8 gSfxDefaultReverb = 0;
 
-#if DEBUG_FEATURES
-u8 D_801333F0 = 0;
-u8 gAudioSfxSwapOff = 0;
-u8 D_801333F8 = 0;
-#endif
-
 u8 gSeqCmdWritePos = 0;
 u8 gSeqCmdReadPos = 0;
 u8 gStartSeqDisabled = false;
-
-#if DEBUG_FEATURES
-u8 gAudioDebugPrintSeqCmd = true;
-#endif
 
 u8 gSoundOutputModes[] = {
     SOUND_OUTPUT_STEREO,

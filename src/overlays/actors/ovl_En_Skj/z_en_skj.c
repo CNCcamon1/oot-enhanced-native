@@ -467,19 +467,6 @@ void EnSkj_Init(Actor* thisx, PlayState* play2) {
             this->actor.gravity = -1.0f;
             EnSkj_CalculateCenter(this);
 
-#if DEBUG_FEATURES
-            {
-                Player* player = GET_PLAYER(play);
-
-                PRINTF("Player_X : %f\n", player->actor.world.pos.x);
-                PRINTF("Player_Z : %f\n", player->actor.world.pos.z);
-                PRINTF("World_X  : %f\n", this->actor.world.pos.x);
-                PRINTF("World_Z  : %f\n", this->actor.world.pos.z);
-                PRINTF("Center_X : %f\n", this->center.x);
-                PRINTF("Center_Z : %f\n\n", this->center.z);
-            }
-#endif
-
             break;
     }
 }
@@ -1613,14 +1600,6 @@ void EnSkj_OcarinaMinigameShortStumpUpdate(Actor* thisx, PlayState* play) {
     this->actor.focus.pos.x = 1230.0f;
     this->actor.focus.pos.y = -90.0f;
     this->actor.focus.pos.z = 450.0f;
-
-#if DEBUG_FEATURES
-    if (BREG(0) != 0) {
-        DebugDisplay_AddObject(this->actor.world.pos.x, this->actor.world.pos.y, this->actor.world.pos.z,
-                               this->actor.world.rot.x, this->actor.world.rot.y, this->actor.world.rot.z, 1.0f, 1.0f,
-                               1.0f, 255, 0, 0, 255, 4, play->state.gfxCtx);
-    }
-#endif
 
     this->actionFunc(this, play);
 
