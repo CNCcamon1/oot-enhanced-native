@@ -1401,14 +1401,8 @@ void func_80A053F0(Actor* thisx, PlayState* play) {
 
     if (player->naviTextId == 0) {
         if (player->focusActor == NULL) {
-#if DEBUG_FEATURES
-            if (((gSaveContext.save.info.playerData.naviTimer >= 600) &&
-                 (gSaveContext.save.info.playerData.naviTimer <= 3000)) ||
-                (nREG(89) != 0))
-#else
             if ((gSaveContext.save.info.playerData.naviTimer >= 600) &&
                 (gSaveContext.save.info.playerData.naviTimer <= 3000))
-#endif
             {
                 player->naviTextId = QuestHint_GetNaviTextId(play);
 
@@ -1444,18 +1438,6 @@ void func_80A053F0(Actor* thisx, PlayState* play) {
     } else {
         this->actionFunc(this, play);
         thisx->shape.rot.y = this->unk_2BC;
-
-#if DEBUG_FEATURES
-        // `gSaveContext.save.info.sceneFlags[127].chest` (like in the debug string) instead of `HIGH_SCORE(HS_HBA)`
-        // matches too, but, with how the `SaveContext` struct is currently defined, it is an out-of-bounds read in the
-        // `sceneFlags` array. It is theorized the original `room_inf` (currently `sceneFlags`) was an array of length
-        // 128, not broken up like currently into structs. Structs are currently used because they're easier to work
-        // with and still match. There is another occurrence of this elsewhere.
-        nREG(80) = HIGH_SCORE(HS_HBA);
-        if ((nREG(81) != 0) && (HIGH_SCORE(HS_HBA) != 0)) {
-            LOG_NUM("z_common_data.memory.information.room_inf[127][ 0 ]", HIGH_SCORE(HS_HBA), "../z_en_elf.c", 2595);
-        }
-#endif
 
         if (!Play_InCsMode(play)) {
             if (gSaveContext.save.info.playerData.naviTimer < 25800) {

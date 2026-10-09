@@ -5266,13 +5266,6 @@ s32 OnePointCutscene_Attention(PlayState* play, Actor* actor) {
     s32 temp2;
     s32 timer;
 
-#if DEBUG_FEATURES
-    if (sDisableAttention) {
-        PRINTF(VT_COL(YELLOW, BLACK) "actor attention demo camera: canceled by other camera\n" VT_RST);
-        return CAM_ID_NONE;
-    }
-#endif
-
     sUnused = -1;
 
     parentCam = play->cameraPtrs[CAM_ID_MAIN];

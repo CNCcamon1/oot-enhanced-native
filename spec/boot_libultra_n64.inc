@@ -1,10 +1,8 @@
     include "$(BUILD_DIR)/src/libultra/io/piacs.o"
     include "$(BUILD_DIR)/src/libultra/os/sendmesg.o"
     include "$(BUILD_DIR)/src/libultra/os/stopthread.o"
-#if OOT_VERSION >= PAL_1_0
     include "$(BUILD_DIR)/src/libultra/io/viextendvstart.o"
     include "$(BUILD_DIR)/src/libultra/io/vimodepallan1.o"
-#endif
     include "$(BUILD_DIR)/src/libultra/os/recvmesg.o"
     include "$(BUILD_DIR)/src/libultra/libc/ll.o"
     include "$(BUILD_DIR)/src/libultra/os/exceptasm.o"
@@ -41,9 +39,7 @@
     include "$(BUILD_DIR)/src/libultra/os/setthreadpri.o"
     include "$(BUILD_DIR)/src/libultra/os/getthreadpri.o"
     include "$(BUILD_DIR)/src/libultra/io/epirawread.o"
-#if OOT_VERSION >= PAL_1_0
     include "$(BUILD_DIR)/src/libultra/io/viswapbuf.o"
-#endif
     include "$(BUILD_DIR)/src/libultra/io/epirawdma.o"
     include "$(BUILD_DIR)/src/libultra/os/gettime.o"
     include "$(BUILD_DIR)/src/libultra/os/timerintr.o"
@@ -53,28 +49,14 @@
     include "$(BUILD_DIR)/src/libultra/libc/bcopy.o"
     include "$(BUILD_DIR)/src/libultra/os/resetglobalintmask.o"
     include "$(BUILD_DIR)/src/libultra/os/interrupt.o"
-#if OOT_NTSC
     include "$(BUILD_DIR)/src/libultra/io/vimodentsclan1.o"
     include "$(BUILD_DIR)/src/libultra/io/vimodempallan1.o"
-#endif
     include "$(BUILD_DIR)/src/libultra/io/vi.o"
-#if OOT_PAL
-    include "$(BUILD_DIR)/src/libultra/io/vimodentsclan1.o"
-    include "$(BUILD_DIR)/src/libultra/io/vimodempallan1.o"
-#endif
-#if OOT_VERSION < PAL_1_0
-    include "$(BUILD_DIR)/src/libultra/io/vimodepallan1.o"
-#endif
     include "$(BUILD_DIR)/src/libultra/io/viswapcontext.o"
     include "$(BUILD_DIR)/src/libultra/io/pigetcmdq.o"
     include "$(BUILD_DIR)/src/libultra/io/epiread.o"
-#if OOT_VERSION >= PAL_1_0
     include "$(BUILD_DIR)/src/libultra/io/visetspecial.o"
-#endif
     include "$(BUILD_DIR)/src/libultra/io/cartrominit.o"
-#if OOT_PAL
-    include "$(BUILD_DIR)/src/libultra/io/vimodefpallan1.o"
-#endif
     include "$(BUILD_DIR)/src/libultra/os/setfpccsr.o"
     include "$(BUILD_DIR)/src/libultra/os/getfpccsr.o"
     include "$(BUILD_DIR)/src/libultra/io/epiwrite.o"
@@ -87,9 +69,7 @@
     include "$(BUILD_DIR)/src/libultra/io/vimgr.o"
     include "$(BUILD_DIR)/src/libultra/io/vigetcurrcontext.o"
     include "$(BUILD_DIR)/src/libultra/os/startthread.o"
-#if OOT_VERSION >= PAL_1_0
     include "$(BUILD_DIR)/src/libultra/io/visetyscale.o"
     include "$(BUILD_DIR)/src/libultra/io/visetxscale.o"
-#endif
     include "$(BUILD_DIR)/src/libultra/os/sethwintrroutine.o"
     include "$(BUILD_DIR)/src/libultra/os/gethwintrroutine.o"

@@ -82,10 +82,6 @@ static void* sMouthTextures[] = {
     gSariaMouthSmilingOpenTex, gSariaMouthFrowningTex,
 };
 
-#if DEBUG_FEATURES
-static u32 D_80990108 = 0;
-#endif
-
 #include "z_demo_sa_cutscene_data.inc.c"
 
 static DemoSaActionFunc sActionFuncs[] = {
@@ -158,32 +154,6 @@ void DemoSa_SetEyes(DemoSa* this, s16 eyeIndex) {
 void DemoSa_SetMouth(DemoSa* this, s16 mouthIndex) {
     this->mouthIndex = mouthIndex;
 }
-
-#if DEBUG_FEATURES
-void func_8098E530(DemoSa* this) {
-    this->action = DEMOSA_ACTION_SAGE_INVISIBLE;
-    this->drawConfig = DEMOSA_DRAW_NOTHING;
-    this->alpha = 0;
-    this->isLightBall = false;
-    this->actor.shape.shadowAlpha = 0;
-    this->fadeTimer = 0.0f;
-}
-
-void func_8098E554(DemoSa* this, PlayState* play) {
-    u32* something = &D_80990108;
-
-    if (play->csCtx.state == CS_STATE_IDLE) {
-        if (*something != 0) {
-            if (this->actor.params == 2) {
-                func_8098E530(this);
-            }
-            *something = 0;
-        }
-    } else if (*something == 0) {
-        *something = 1;
-    }
-}
-#endif
 
 void DemoSa_UpdateBgCheckInfo(DemoSa* this, PlayState* play) {
     Actor_UpdateBgCheckInfo(play, &this->actor, 75.0f, 30.0f, 30.0f, UPDBGCHECKINFO_FLAG_0 | UPDBGCHECKINFO_FLAG_2);
@@ -476,9 +446,6 @@ void DemoSa_SageMagic_CheckFadeOut(DemoSa* this, PlayState* play) {
 
 void DemoSa_Action_SageInvisible(DemoSa* this, PlayState* play) {
     DemoSa_SageMagic_CheckFadeIn(this, play);
-#if DEBUG_FEATURES
-    func_8098E554(this, play);
-#endif
 }
 
 void DemoSa_Action_SageFade(DemoSa* this, PlayState* play) {
@@ -486,9 +453,6 @@ void DemoSa_Action_SageFade(DemoSa* this, PlayState* play) {
     DemoSa_UpdateSkelAnime(this);
     DemoSa_Blink(this);
     DemoSa_SageMagic_Fade(this, play);
-#if DEBUG_FEATURES
-    func_8098E554(this, play);
-#endif
 }
 
 void DemoSa_Action_AwaitLightBall(DemoSa* this, PlayState* play) {
@@ -496,9 +460,6 @@ void DemoSa_Action_AwaitLightBall(DemoSa* this, PlayState* play) {
     DemoSa_UpdateSkelAnime(this);
     DemoSa_SageMagic_LowerEyes(this);
     DemoSa_SageMagic_CheckFadeOut(this, play);
-#if DEBUG_FEATURES
-    func_8098E554(this, play);
-#endif
 }
 
 void DemoSa_DrawXlu(DemoSa* this, PlayState* play) {

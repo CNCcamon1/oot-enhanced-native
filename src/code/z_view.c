@@ -342,23 +342,6 @@ s32 View_ApplyPerspective(View* view) {
         guPerspective(projection, &view->normal, view->fovy, aspect, view->zNear, view->zFar, view->scale);
     }
 
-#if DEBUG_FEATURES
-    if (QREG(88) & 1) {
-        s32 i;
-        MtxF mf;
-
-        PRINTF("fovy %f near %f far %f scale %f aspect %f normal %08x\n", view->fovy, view->zNear, view->zFar,
-               view->scale, aspect, view->normal);
-
-        Matrix_MtxToMtxF(projection, &mf);
-        PRINTF("projection\n");
-        for (i = 0; i < 4; i++) {
-            PRINTF("\t%f\t%f\t%f\t%f\n", mf.mf[i][0], mf.mf[i][1], mf.mf[i][2], mf.mf[i][3]);
-        }
-        PRINTF("\n");
-    }
-#endif
-
     view->projection = *projection;
 
     View_StepDistortion(view, projection);
@@ -385,22 +368,6 @@ s32 View_ApplyPerspective(View* view) {
              view->up.z);
 
     view->viewing = *viewing;
-
-#if DEBUG_FEATURES
-    // Debug print view matrix
-    if (QREG(88) & 2) {
-        s32 i;
-        MtxF mf;
-
-        Matrix_MtxToMtxF(view->viewingPtr, &mf);
-
-        PRINTF("viewing\n");
-        for (i = 0; i < 4; i++) {
-            PRINTF("\t%f\t%f\t%f\t%f\n", mf.mf[i][0], mf.mf[i][1], mf.mf[i][2], mf.mf[i][3]);
-        }
-        PRINTF("\n");
-    }
-#endif
 
     gSPMatrix(POLY_OPA_DISP++, viewing, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
     gSPMatrix(POLY_XLU_DISP++, viewing, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
@@ -635,36 +602,3 @@ s32 View_ApplyTo(View* view, s32 mask, Gfx** gfxP) {
 
     return 1;
 }
-
-#if DEBUG_FEATURES
-/**
- * Logs an error and returns nonzero if camera is too far from the origin.
- */
-s32 View_ErrorCheckEyePosition(f32 eyeX, f32 eyeY, f32 eyeZ) {
-    s32 error = 0;
-
-    if (SQ(eyeX) + SQ(eyeY) + SQ(eyeZ) > SQ(32767.0f)) {
-        error = 3;
-    } else {
-        f32 absEyeX = ABS(eyeX);
-        f32 absEyeY = ABS(eyeY);
-        f32 absEyeZ = ABS(eyeZ);
-
-        if (((18900.0f < absEyeX) || (18900.0f < absEyeY)) || (18900.0f < absEyeZ)) {
-            error = 2;
-        } else if (((16000.0f < absEyeX) || (16000.0f < absEyeY)) || (16000.0f < absEyeZ)) {
-            error = 1;
-        }
-    }
-
-    if (error != 0) {
-        PRINTF_COLOR_RED();
-        PRINTF(T("eye が大きすぎます eye=[%8.3f %8.3f %8.3f] error=%d\n",
-                 "eye is too large eye=[%8.3f %8.3f %8.3f] error=%d\n"),
-               eyeX, eyeY, eyeZ, error);
-        PRINTF_RST();
-    }
-
-    return error;
-}
-#endif

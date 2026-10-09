@@ -998,11 +998,6 @@ void DemoGj_InitDestructableRubble1(DemoGj* this, PlayState* play) {
     DemoGj_InitCylinder(this, play, &this->colliderCylinders[2], &sCylinderInit1);
 }
 
-#if DEBUG_FEATURES
-void DemoGj_DoNothing1(DemoGj* this, PlayState* play) {
-}
-#endif
-
 /*
  * Moves the ColliderCylinder's relative to the actor's position.
  * Used by DEMOGJ_TYPE_DESTRUCTABLE_RUBBLE_1
@@ -1118,9 +1113,6 @@ void DemoGj_Update15(DemoGj* this, PlayState* play) {
 // func_8097B370
 void DemoGj_Update18(DemoGj* this, PlayState* play) {
     func_8097B22C(this, play);
-#if DEBUG_FEATURES
-    DemoGj_DoNothing1(this, play);
-#endif
 }
 
 void DemoGj_DrawDestructableRubble1(DemoGj* this, PlayState* play) {
@@ -1135,10 +1127,6 @@ void DemoGj_InitDestructableRubble2(DemoGj* this, PlayState* play) {
     DemoGj_InitCylinder(this, play, &this->colliderCylinders[2], &sCylinderInit2);
 }
 
-#if DEBUG_FEATURES
-void DemoGj_DoNothing2(DemoGj* this, PlayState* play) {
-}
-#endif
 
 // Moves the ColliderCylinder's relative to the actor's position.
 void func_8097B450(DemoGj* this, PlayState* play) {
@@ -1253,9 +1241,6 @@ void DemoGj_Update16(DemoGj* this, PlayState* play) {
 // func_8097B894
 void DemoGj_Update19(DemoGj* this, PlayState* play) {
     func_8097B750(this, play);
-#if DEBUG_FEATURES
-    DemoGj_DoNothing2(this, play);
-#endif
 }
 
 void DemoGj_DemoGj_InitDestructableRubble2(DemoGj* this, PlayState* play) {
@@ -1268,10 +1253,6 @@ void DemoGj_InitDestructableRubbleTall(DemoGj* this, PlayState* play) {
     DemoGj_InitCylinder(this, play, &this->colliderCylinders[0], &sCylinderInit3);
 }
 
-#if DEBUG_FEATURES
-void DemoGj_DoNothing3(DemoGj* this, PlayState* play) {
-}
-#endif
 
 void DemoGj_DirectedDoubleExplosion(DemoGj* this, PlayState* play, Vec3f* direction) {
     Vec3f pos;
@@ -1342,9 +1323,6 @@ void DemoGj_Update17(DemoGj* this, PlayState* play) {
 // func_8097BBA8
 void DemoGj_Update20(DemoGj* this, PlayState* play) {
     func_8097BA48(this, play);
-#if DEBUG_FEATURES
-    DemoGj_DoNothing3(this, play);
-#endif
 }
 
 void DemoGj_DemoGj_InitDestructableRubbleTall(DemoGj* this, PlayState* play) {

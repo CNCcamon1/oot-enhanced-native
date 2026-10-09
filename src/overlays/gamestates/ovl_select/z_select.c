@@ -265,22 +265,6 @@ static MapSelectEntry sMapSelectEntries[] = {
     // Rupees & Cow Grotto
     { "114:" T(GFXP_HIRAGANA "ｶｸｼﾄﾋﾞｺﾐｱﾅ 13", "Hidden Dive Hole 13"), MapSelect_LoadGame, ENTR_GROTTOS_13 },
     { "115:" T(GFXP_KATAKANA "ﾊｲﾗﾙ ﾃﾞﾓ", "Hyrule Cutscenes"), MapSelect_LoadGame, ENTR_CUTSCENE_MAP_0 },
-#if DEBUG_FEATURES
-    { "116:" T(GFXP_HIRAGANA "ﾍﾞｯｼﾂ (ﾀｶﾗﾊﾞｺ" GFXP_KATAKANA "ﾜｰﾌﾟ)", "Special Room (Treasure Chest Warp)"),
-      MapSelect_LoadGame, ENTR_BESITU_0 },
-    { "117:" T(GFXP_HIRAGANA "ｻｻ" GFXP_KATAKANA "ﾃｽﾄ", "Sasaki Test"), MapSelect_LoadGame, ENTR_SASATEST_0 },
-    { "118:" T(GFXP_KATAKANA "ﾃｽﾄﾏｯﾌﾟ", "Test Map"), MapSelect_LoadGame, ENTR_TEST01_0 },
-    { "119:" T(GFXP_KATAKANA "ﾃｽﾄﾙｰﾑ", "Test Room"), MapSelect_LoadGame, ENTR_TESTROOM_0 },
-    { "120:" T(GFXP_HIRAGANA "ﾁｭｳ" GFXP_KATAKANA "ｽﾀﾛﾌｫｽ" GFXP_HIRAGANA "ﾍﾞﾔ", "Stalfos Miniboss Room"),
-      MapSelect_LoadGame, ENTR_SYOTES_0 },
-    { "121:" T(GFXP_KATAKANA "ﾎﾞｽｽﾀﾛﾌｫｽ" GFXP_HIRAGANA "ﾍﾞﾔ", "Boss Stalfos Room"), MapSelect_LoadGame,
-      ENTR_SYOTES2_0 },
-    { "122:" T("Sutaru", "Stal"), MapSelect_LoadGame, ENTR_SUTARU_0 },
-    { "123:" T("jikkenjyou", "Test Area"), MapSelect_LoadGame, ENTR_TEST_SHOOTING_GALLERY_0 },
-    { "124:depth" T(GFXP_KATAKANA "ﾃｽﾄ", "Test"), MapSelect_LoadGame, ENTR_DEPTH_TEST_0 },
-    { "125:" T(GFXP_KATAKANA "ﾊｲﾗﾙ" GFXP_HIRAGANA "ﾆﾜ" GFXP_KATAKANA "ｹﾞｰﾑ2", "Hyrule Garden Game 2"),
-      MapSelect_LoadGame, ENTR_HAIRAL_NIWA2_0 },
-#endif
     { "title", (void*)MapSelect_LoadTitle, 0 },
 #if PLATFORM_N64
     { "64DD TEST  n64dd_SetDiskVersion(1)", (void*)func_80800AD0_unknown, 0 },

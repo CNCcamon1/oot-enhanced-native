@@ -72,10 +72,6 @@ static void* sEyeTextures[] = {
     gImpaEyeClosedTex,
 };
 
-#if DEBUG_FEATURES
-static u32 D_8098783C = 0;
-#endif
-
 static ColliderCylinderInitType1 sCylinderInit = {
     {
         COL_MATERIAL_HIT0,
@@ -139,34 +135,6 @@ void func_80984BE0(DemoIm* this) {
         *eyeIndex = 0;
     }
 }
-
-#if DEBUG_FEATURES
-void func_80984C68(DemoIm* this) {
-    this->action = 7;
-    this->drawConfig = 0;
-    this->alpha = 0;
-    this->unk_270 = 0;
-    this->actor.shape.shadowAlpha = 0;
-    this->unk_268 = 0.0f;
-}
-
-void func_80984C8C(DemoIm* this, PlayState* play) {
-    u32* something = &D_8098783C;
-
-    if (play->csCtx.state == CS_STATE_IDLE) {
-        if (*something != 0) {
-            if (this->actor.params == 2) {
-                func_80984C68(this);
-            }
-            *something = 0;
-        }
-    } else {
-        if (*something == 0) {
-            *something = 1;
-        }
-    }
-}
-#endif
 
 void DemoIm_InitCollider(Actor* thisx, PlayState* play) {
     DemoIm* this = (DemoIm*)thisx;
@@ -521,9 +489,6 @@ void func_80985B34(DemoIm* this, PlayState* play) {
 
 void func_80985C10(DemoIm* this, PlayState* play) {
     func_80985948(this, play);
-#if DEBUG_FEATURES
-    func_80984C8C(this, play);
-#endif
 }
 
 void func_80985C40(DemoIm* this, PlayState* play) {
@@ -531,9 +496,6 @@ void func_80985C40(DemoIm* this, PlayState* play) {
     DemoIm_UpdateSkelAnime(this);
     func_80984BE0(this);
     func_809859E0(this, play);
-#if DEBUG_FEATURES
-    func_80984C8C(this, play);
-#endif
 }
 
 void func_80985C94(DemoIm* this, PlayState* play) {
@@ -541,9 +503,6 @@ void func_80985C94(DemoIm* this, PlayState* play) {
     DemoIm_UpdateSkelAnime(this);
     func_80984BE0(this);
     func_80985B34(this, play);
-#if DEBUG_FEATURES
-    func_80984C8C(this, play);
-#endif
 }
 
 void DemoIm_DrawTranslucent(DemoIm* this, PlayState* play) {
@@ -958,13 +917,6 @@ void func_80986CFC(DemoIm* this, PlayState* play) {
 }
 
 void func_80986D40(DemoIm* this, PlayState* play) {
-#if DEBUG_FEATURES
-    if (gSaveContext.sceneLayer == 6) {
-        this->action = 19;
-        this->drawConfig = 1;
-        return;
-    }
-#endif
 
     if (GET_EVENTCHKINF(EVENTCHKINF_80)) {
         Actor_Kill(&this->actor);

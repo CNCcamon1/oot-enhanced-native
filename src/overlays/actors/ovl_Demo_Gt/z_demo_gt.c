@@ -545,11 +545,7 @@ void func_8097F0AC(DemoGt* this, PlayState* play) {
     u16 csCurFrame = play->csCtx.curFrame;
     s32 pad2;
 
-#if DEBUG_FEATURES
-    if (csCurFrame == 140 || kREG(1) == 19)
-#else
     if (csCurFrame == 140)
-#endif
     {
         sp38.x = this->dyna.actor.world.pos.x + 260.0f;
         sp38.y = this->dyna.actor.world.pos.y + 340.0f;
@@ -811,11 +807,7 @@ void func_8097FCE4(DemoGt* this, PlayState* play) {
     Vec3f vec;
     u16 csCurFrame = play->csCtx.curFrame;
 
-#if DEBUG_FEATURES
-    if (csCurFrame == 503 || kREG(1) == 4)
-#else
     if (csCurFrame == 503)
-#endif
     {
         vec.x = this->dyna.actor.world.pos.x + 300.0f;
         vec.y = this->dyna.actor.world.pos.y + 560.0f;

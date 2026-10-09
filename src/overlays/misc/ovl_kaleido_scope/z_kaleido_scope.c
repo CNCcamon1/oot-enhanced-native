@@ -1101,9 +1101,6 @@ void KaleidoScope_SetupPageSwitch(PauseContext* pauseCtx, u8 pt) {
 
 void KaleidoScope_HandlePageToggles(PauseContext* pauseCtx, Input* input) {
     if ((pauseCtx->debugState == PAUSE_DEBUG_STATE_CLOSED) && CHECK_BTN_ALL(input->press.button, BTN_L)) {
-#if DEBUG_FEATURES
-        pauseCtx->debugState = PAUSE_DEBUG_STATE_INVENTORY_EDITOR_OPENING;
-#endif
         return;
     }
 
@@ -1926,22 +1923,6 @@ void KaleidoScope_DrawUIOverlay(PlayState* play) {
             POLY_OPA_DISP = KaleidoScope_QuadTextureIA4(POLY_OPA_DISP, pauseCtx->nameSegment, ITEM_NAME_TEX_WIDTH,
                                                         ITEM_NAME_TEX_HEIGHT, 0);
         }
-
-#if DEBUG_FEATURES
-        if (pauseCtx->pageIndex == PAUSE_MAP) {
-            if (YREG(7) != 0) {
-                PRINTF_COLOR_YELLOW();
-                PRINTF(T("キンスタ数(%d) Get_KIN_STA=%x (%x)  (%x)\n", "Kinsta Count(%d) Get_KIN_STA=%x (%x)  (%x)\n"),
-                       YREG(6), GET_GS_FLAGS(YREG(6)), gAreaGsFlags[YREG(6)],
-                       gSaveContext.save.info.gsFlags[YREG(6) >> 2]);
-                PRINTF_RST();
-
-                YREG(7) = 0;
-                SET_GS_FLAGS(D_8082AE30[pauseCtx->cursorPoint[PAUSE_WORLD_MAP]],
-                             gAreaGsFlags[D_8082AE30[pauseCtx->cursorPoint[PAUSE_WORLD_MAP]]]);
-            }
-        }
-#endif
 
         if ((pauseCtx->pageIndex == PAUSE_MAP) && !sInDungeonScene) {
             if (GET_GS_FLAGS(D_8082AE30[pauseCtx->cursorPoint[PAUSE_WORLD_MAP]]) ==

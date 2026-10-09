@@ -3168,9 +3168,6 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
             case MSGMODE_OCARINA_PLAYING:
                 msgCtx->ocarinaStaff = AudioOcarina_GetPlayingStaff();
                 if (msgCtx->ocarinaStaff->pos) {
-#if DEBUG_FEATURES
-                    PRINTF("locate=%d  onpu_pt=%d\n", msgCtx->ocarinaStaff->pos, sOcarinaButtonIndexBufPos);
-#endif
 #if OOT_VERSION >= PAL_1_0
                     if (msgCtx->ocarinaStaff->pos == 1 && sOcarinaButtonIndexBufPos == 8) {
                         sOcarinaButtonIndexBufPos = 0;
@@ -3998,84 +3995,15 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
     *p = gfx;
 }
 
-#if DEBUG_FEATURES
-/**
- * If the s16 variable pointed to by `var` changes in value, a black bar and white box
- * are briefly drawn onto the screen. It can only watch one variable per build due to
- * the last value being saved in a static variable.
- */
-void Message_DrawDebugVariableChanged(s16* var, GraphicsContext* gfxCtx) {
-    static s16 sVarLastValue = 0;
-    static s16 sFillTimer = 0;
-    s32 pad;
-
-    OPEN_DISPS(gfxCtx, "../z_message_PAL.c", 3485);
-
-    if (sVarLastValue != *var) {
-        sVarLastValue = *var;
-        sFillTimer = 30;
-    }
-    if (sFillTimer != 0) {
-        sFillTimer--;
-        gDPPipeSync(POLY_OPA_DISP++);
-        gDPSetCycleType(POLY_OPA_DISP++, G_CYC_FILL);
-        gDPSetRenderMode(POLY_OPA_DISP++, G_RM_NOOP, G_RM_NOOP2);
-        gDPSetFillColor(POLY_OPA_DISP++, GPACK_RGBA5551(0, 0, 0, 1) << 0x10 | GPACK_RGBA5551(0, 0, 0, 1));
-        gDPFillRectangle(POLY_OPA_DISP++, 0, 110, SCREEN_WIDTH - 1, 150); // 40x319 black bar
-        gDPPipeSync(POLY_OPA_DISP++);
-        gDPPipeSync(POLY_OPA_DISP++);
-        gDPSetCycleType(POLY_OPA_DISP++, G_CYC_FILL);
-        gDPSetRenderMode(POLY_OPA_DISP++, G_RM_NOOP, G_RM_NOOP2);
-        gDPSetFillColor(POLY_OPA_DISP++, GPACK_RGBA5551(255, 255, 255, 1) << 0x10 | GPACK_RGBA5551(255, 255, 255, 1));
-        gDPFillRectangle(POLY_OPA_DISP++, 40, 120, 60, 140); // 20x20 white box
-        gDPPipeSync(POLY_OPA_DISP++);
-    }
-    CLOSE_DISPS(gfxCtx, "../z_message_PAL.c", 3513);
-}
-
-void Message_DrawDebugText(PlayState* play, Gfx** p) {
-    s32 pad;
-    GfxPrint printer;
-    s32 pad1;
-
-    GfxPrint_Init(&printer);
-    GfxPrint_Open(&printer, *p);
-    GfxPrint_SetPos(&printer, 6, 26);
-    GfxPrint_SetColor(&printer, 255, 60, 0, 255);
-    GfxPrint_Printf(&printer, "%s", "MESSAGE");
-    GfxPrint_SetPos(&printer, 14, 26);
-    GfxPrint_Printf(&printer, "%s", "=");
-    GfxPrint_SetPos(&printer, 16, 26);
-    GfxPrint_Printf(&printer, "%x", play->msgCtx.textId);
-    *p = GfxPrint_Close(&printer);
-    GfxPrint_Destroy(&printer);
-}
-#endif
-
 void Message_Draw(PlayState* play) {
     Gfx* plusOne;
     Gfx* polyOpaP;
 #if OOT_VERSION < GC_US
     s32 pad;
 #endif
-#if DEBUG_FEATURES
-    s16 watchVar;
-#endif
 
     OPEN_DISPS(play->state.gfxCtx, "../z_message_PAL.c", 3554);
 
-#if DEBUG_FEATURES
-    watchVar = gSaveContext.save.info.scarecrowLongSongSet;
-    Message_DrawDebugVariableChanged(&watchVar, play->state.gfxCtx);
-    if (BREG(0) != 0 && play->msgCtx.textId != 0) {
-        plusOne = Gfx_Open(polyOpaP = POLY_OPA_DISP);
-        gSPDisplayList(OVERLAY_DISP++, plusOne);
-        Message_DrawDebugText(play, &plusOne);
-        gSPEndDisplayList(plusOne++);
-        Gfx_Close(polyOpaP, plusOne);
-        POLY_OPA_DISP = plusOne;
-    }
-#endif
 
     plusOne = Gfx_Open(polyOpaP = POLY_OPA_DISP);
     gSPDisplayList(OVERLAY_DISP++, plusOne);
@@ -4127,36 +4055,6 @@ void Message_Update(PlayState* play) {
 #endif
 #if OOT_NTSC && OOT_VERSION < GC_US
     s32 pad2;
-#endif
-
-#if DEBUG_FEATURES
-    if (BREG(0) != 0) {
-        static u16 sMessageDebuggerTextboxCount = 0;
-
-        if (CHECK_BTN_ALL(input->press.button, BTN_DDOWN) && CHECK_BTN_ALL(input->cur.button, BTN_L)) {
-            PRINTF("msgno=%d\n", sMessageDebuggerTextboxCount);
-            Message_StartTextbox(play, R_MESSAGE_DEBUGGER_TEXTID, NULL);
-            sMessageDebuggerTextboxCount = (sMessageDebuggerTextboxCount + 1) % 10;
-        }
-        if (R_MESSAGE_DEBUGGER_SELECT != 0) {
-            while (R_MESSAGE_DEBUGGER_TEXTID != 0x8000) {
-                MessageTableEntry* entry = &sNesMessageEntryTablePtr[0];
-
-                while (entry->textId != 0xFFFD) {
-                    if (entry->textId == R_MESSAGE_DEBUGGER_TEXTID) {
-                        PRINTF(T(" メッセージが,見つかった！！！ = %x\n", "The message was found!!! = %x\n"),
-                               R_MESSAGE_DEBUGGER_TEXTID);
-                        Message_StartTextbox(play, R_MESSAGE_DEBUGGER_TEXTID, NULL);
-                        R_MESSAGE_DEBUGGER_TEXTID++;
-                        R_MESSAGE_DEBUGGER_SELECT = 0;
-                        return;
-                    }
-                    entry++;
-                }
-                R_MESSAGE_DEBUGGER_TEXTID++;
-            }
-        }
-    }
 #endif
 
     if (msgCtx->msgLength != 0) {

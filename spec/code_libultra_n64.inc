@@ -21,9 +21,6 @@
     include "$(BUILD_DIR)/src/libultra/libc/xprintf.o"
     include "$(BUILD_DIR)/src/libultra/libc/string.o"
     include "$(BUILD_DIR)/src/libultra/io/sp.o"
-#if OOT_VERSION < PAL_1_0
-    include "$(BUILD_DIR)/src/libultra/io/viswapbuf.o"
-#endif
     include "$(BUILD_DIR)/src/libultra/gu/position.o"
     include "$(BUILD_DIR)/src/libultra/io/sptaskyielded.o"
     include "$(BUILD_DIR)/src/libultra/gu/rotate.o"
@@ -35,9 +32,6 @@
     include "$(BUILD_DIR)/src/libultra/gu/ortho.o"
     include "$(BUILD_DIR)/src/libultra/gu/cosf.o"
     include "$(BUILD_DIR)/src/libultra/gu/libm_vals.o"
-#if OOT_VERSION < PAL_1_0
-    include "$(BUILD_DIR)/src/libultra/io/visetspecial.o"
-#endif
     include "$(BUILD_DIR)/src/libultra/gu/coss.o"
     include "$(BUILD_DIR)/src/libultra/gu/sincoss.o"
     include "$(BUILD_DIR)/src/libultra/os/settime.o"
@@ -48,9 +42,7 @@
     include "$(BUILD_DIR)/src/libultra/io/aigetlen.o"
     include "$(BUILD_DIR)/src/libultra/gu/translate.o"
     include "$(BUILD_DIR)/src/libultra/io/contramwrite.o"
-#if OOT_VERSION == NTSC_1_2
     include "$(BUILD_DIR)/src/libultra/io/vimodefpallan1.o"
-#endif
     include "$(BUILD_DIR)/src/libultra/io/pfsgetstatus.o"
     include "$(BUILD_DIR)/src/libultra/io/contpfs.o"
     include "$(BUILD_DIR)/src/libultra/libc/bcmp.o"

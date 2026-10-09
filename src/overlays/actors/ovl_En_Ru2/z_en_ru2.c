@@ -114,10 +114,6 @@ static void* sEyeTextures[] = {
     gAdultRutoEyeClosedTex,
 };
 
-#if DEBUG_FEATURES
-static UNK_TYPE D_80AF4118 = 0;
-#endif
-
 #include "z_en_ru2_cutscene_data.inc.c"
 
 static EnRu2ActionFunc sActionFuncs[] = {
@@ -207,36 +203,6 @@ s32 EnRu2_GetType(EnRu2* this) {
 
     return type;
 }
-
-#if DEBUG_FEATURES
-void func_80AF26AC(EnRu2* this) {
-    this->action = ENRU2_WATER_TRIAL_INVISIBLE;
-    this->drawConfig = ENRU2_DRAW_NOTHING;
-    this->alpha = 0;
-    this->isLightBall = false;
-    this->actor.shape.shadowAlpha = 0;
-    this->fadeTimer = 0.0f;
-}
-
-void func_80AF26D0(EnRu2* this, PlayState* play) {
-    s32 one; // Needed to match
-
-    if (play->csCtx.state == CS_STATE_IDLE) {
-        if (D_80AF4118 != 0) {
-            if (this->actor.params == 2) {
-                func_80AF26AC(this);
-            }
-            D_80AF4118 = 0;
-            return;
-        }
-    } else {
-        one = 1;
-        if (D_80AF4118 == 0) {
-            D_80AF4118 = one;
-        }
-    }
-}
-#endif
 
 void EnRu2_UpdateBgCheckInfo(EnRu2* this, PlayState* play) {
     Actor_UpdateBgCheckInfo(play, &this->actor, 75.0f, 30.0f, 30.0f, UPDBGCHECKINFO_FLAG_2);
@@ -579,9 +545,6 @@ void EnRu2_CheckFadeOut(EnRu2* this, PlayState* play) {
 
 void EnRu2_WaterTrialInvisible(EnRu2* this, PlayState* play) {
     EnRu2_CheckFadeIn(this, play);
-#if DEBUG_FEATURES
-    func_80AF26D0(this, play);
-#endif
 }
 
 void EnRu2_WaterTrialFade(EnRu2* this, PlayState* play) {
@@ -589,9 +552,6 @@ void EnRu2_WaterTrialFade(EnRu2* this, PlayState* play) {
     EnRu2_UpdateSkelAnime(this);
     EnRu2_UpdateEyes(this);
     EnRu2_Fade(this, play);
-#if DEBUG_FEATURES
-    func_80AF26D0(this, play);
-#endif
 }
 
 void EnRu2_AwaitSpawnLightBall(EnRu2* this, PlayState* play) {
@@ -599,9 +559,6 @@ void EnRu2_AwaitSpawnLightBall(EnRu2* this, PlayState* play) {
     EnRu2_UpdateSkelAnime(this);
     EnRu2_UpdateEyes(this);
     EnRu2_CheckFadeOut(this, play);
-#if DEBUG_FEATURES
-    func_80AF26D0(this, play);
-#endif
 }
 
 void EnRu2_DrawXlu(EnRu2* this, PlayState* play) {

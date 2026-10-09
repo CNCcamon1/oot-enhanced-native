@@ -171,15 +171,6 @@ static s16 sItemShelfRot[] = { 0xEAAC, 0xEAAC, 0xEAAC, 0xEAAC, 0x1554, 0x1554, 0
 // unused values?
 static s16 D_80AC8904[] = { 0x001E, 0x001F, 0x0020, 0x0021, 0x0022, 0x0023, 0x0024, 0x0025 };
 
-#if DEBUG_FEATURES
-static char* sShopkeeperPrintName[] = {
-    T("コキリの店  ", "Kokiri Shop"),     T("薬屋        ", "Potion Shop"), T("夜の店      ", "Night Shop"),
-    T("路地裏の店  ", "Back Alley Shop"), T("盾の店      ", "Shield Shop"), T("大人の店    ", "Adult Shop"),
-    T("タロンの店  ", "Talon Shop"),      T("ゾーラの店  ", "Zora Shop"),   T("ゴロン夜の店", "Goron Night Shop"),
-    T("インゴーの店", "Ingo Store"),      T("お面屋      ", "Mask Shop"),
-};
-#endif
-
 typedef struct ShopkeeperObjInfo {
     /* 0x00 */ s16 objId;
     /* 0x02 */ s16 unk_02;

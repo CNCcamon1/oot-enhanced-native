@@ -378,15 +378,6 @@ void Environment_Init(PlayState* play2, EnvironmentContext* envCtx, s32 unused) 
     envCtx->sceneTimeSpeed = 0;
     gTimeSpeed = envCtx->sceneTimeSpeed;
 
-#if DEBUG_FEATURES
-    R_ENV_TIME_SPEED_OLD = gTimeSpeed;
-    R_ENV_DISABLE_DBG = true;
-
-    if (CREG(3) != 0) {
-        gSaveContext.chamberCutsceneNum = CREG(3) - 1;
-    }
-#endif
-
     play->envCtx.precipitation[PRECIP_RAIN_MAX] = 0;
     play->envCtx.precipitation[PRECIP_RAIN_CUR] = 0;
     play->envCtx.precipitation[PRECIP_SNOW_CUR] = 0;
@@ -449,23 +440,6 @@ void Environment_Init(PlayState* play2, EnvironmentContext* envCtx, s32 unused) 
     gLightConfigAfterUnderwater = 0;
     gSkyboxIsChanging = false;
     gSaveContext.retainWeatherMode = false;
-
-#if DEBUG_FEATURES
-    R_ENV_LIGHT1_DIR(0) = 80;
-    R_ENV_LIGHT1_DIR(1) = 80;
-    R_ENV_LIGHT1_DIR(2) = 80;
-
-    R_ENV_LIGHT2_DIR(0) = -80;
-    R_ENV_LIGHT2_DIR(1) = -80;
-    R_ENV_LIGHT2_DIR(2) = -80;
-
-    cREG(9) = 10;
-    cREG(10) = 0;
-    cREG(11) = 0;
-    cREG(12) = 0;
-    cREG(13) = 0;
-    cREG(14) = 0;
-#endif
 
     gUseCutsceneCam = true;
 
@@ -747,13 +721,6 @@ void Environment_UpdateSkybox(u8 skyboxId, EnvironmentContext* envCtx, SkyboxCon
             }
         }
 
-#if DEBUG_FEATURES
-        if (newSkybox1Index == 0xFF) {
-            PRINTF(VT_COL(RED, WHITE) T("\n環境ＶＲデータ取得失敗！ ささきまでご報告を！",
-                                        "\nEnvironment VR data acquisition failed! Report to Sasaki!") VT_RST);
-        }
-#endif
-
         if ((envCtx->skybox1Index != newSkybox1Index) && (envCtx->skyboxDmaState == SKYBOX_DMA_INACTIVE)) {
             envCtx->skyboxDmaState = SKYBOX_DMA_TEXTURE1_START;
             size = gNormalSkyFiles[newSkybox1Index].file.vromEnd - gNormalSkyFiles[newSkybox1Index].file.vromStart;
@@ -864,63 +831,6 @@ void Environment_DisableUnderwaterLights(PlayState* play) {
     }
 }
 
-#if DEBUG_FEATURES
-void Environment_PrintDebugInfo(PlayState* play, Gfx** gfx) {
-    GfxPrint printer;
-    s32 pad[2];
-
-    GfxPrint_Init(&printer);
-    GfxPrint_Open(&printer, *gfx);
-
-    GfxPrint_SetPos(&printer, 22, 7);
-    GfxPrint_SetColor(&printer, 155, 155, 255, 64);
-    GfxPrint_Printf(&printer, "T%03d ", ((void)0, gSaveContext.save.totalDays));
-    GfxPrint_Printf(&printer, "E%03d", ((void)0, gSaveContext.save.bgsDayCount));
-
-    GfxPrint_SetColor(&printer, 255, 255, 55, 64);
-    GfxPrint_SetPos(&printer, 22, 8);
-    GfxPrint_Printf(&printer, "%s", "ZELDATIME ");
-
-    GfxPrint_SetColor(&printer, 255, 255, 255, 64);
-    GfxPrint_Printf(&printer, "%02d", (u8)(24 * 60 / (f32)0x10000 * ((void)0, gSaveContext.save.dayTime) / 60.0f));
-
-    if ((gSaveContext.save.dayTime & 0x1F) >= 0x10 || gTimeSpeed >= 6) {
-        GfxPrint_Printf(&printer, "%s", ":");
-    } else {
-        GfxPrint_Printf(&printer, "%s", " ");
-    }
-
-    GfxPrint_Printf(&printer, "%02d", (s16)(24 * 60 / (f32)0x10000 * ((void)0, gSaveContext.save.dayTime)) % 60);
-
-    GfxPrint_SetColor(&printer, 255, 255, 55, 64);
-    GfxPrint_SetPos(&printer, 22, 9);
-    GfxPrint_Printf(&printer, "%s", "VRBOXTIME ");
-
-    GfxPrint_SetColor(&printer, 255, 255, 255, 64);
-    GfxPrint_Printf(&printer, "%02d", (u8)(24 * 60 / (f32)0x10000 * ((void)0, gSaveContext.skyboxTime) / 60.0f));
-
-    if ((((void)0, gSaveContext.skyboxTime) & 0x1F) >= 0x10 || gTimeSpeed >= 6) {
-        GfxPrint_Printf(&printer, "%s", ":");
-    } else {
-        GfxPrint_Printf(&printer, "%s", " ");
-    }
-
-    GfxPrint_Printf(&printer, "%02d", (s16)(24 * 60 / (f32)0x10000 * ((void)0, gSaveContext.skyboxTime)) % 60);
-
-    GfxPrint_SetColor(&printer, 55, 255, 255, 64);
-    GfxPrint_SetPos(&printer, 22, 6);
-
-    if (!IS_DAY) {
-        GfxPrint_Printf(&printer, "%s", T("YORU", "NIGHT"));
-    } else {
-        GfxPrint_Printf(&printer, "%s", T("HIRU", "DAY"));
-    }
-
-    *gfx = GfxPrint_Close(&printer);
-    GfxPrint_Destroy(&printer);
-}
-#endif
-
 void Environment_PlayTimeBasedSequence(PlayState* play);
 void Environment_UpdateRain(PlayState* play);
 
@@ -1007,24 +917,6 @@ void Environment_Update(PlayState* play, EnvironmentContext* envCtx, LightContex
         } else {
             gSaveContext.save.nightFlag = 0;
         }
-
-#if DEBUG_FEATURES
-        if (R_ENABLE_ARENA_DBG != 0 || CREG(2) != 0) {
-            Gfx* displayList;
-            Gfx* prevDisplayList;
-
-            OPEN_DISPS(play->state.gfxCtx, "../z_kankyo.c", 1682);
-
-            prevDisplayList = POLY_OPA_DISP;
-            displayList = Gfx_Open(POLY_OPA_DISP);
-            gSPDisplayList(OVERLAY_DISP++, displayList);
-            Environment_PrintDebugInfo(play, &displayList);
-            gSPEndDisplayList(displayList++);
-            Gfx_Close(prevDisplayList, displayList);
-            POLY_OPA_DISP = displayList;
-            CLOSE_DISPS(play->state.gfxCtx, "../z_kankyo.c", 1690);
-        }
-#endif
 
         if ((envCtx->lightSettingOverride != LIGHT_SETTING_OVERRIDE_NONE) &&
             (envCtx->lightBlendOverride != LIGHT_BLEND_OVERRIDE_FULL_CONTROL) &&
@@ -1175,19 +1067,6 @@ void Environment_Update(PlayState* play, EnvironmentContext* envCtx, LightContex
 
                     envCtx->lightSettings.zFar = LERP16(blend16[0], blend16[1], configChangeBlend);
 
-#if DEBUG_FEATURES
-                    if (sTimeBasedLightConfigs[envCtx->changeLightNextConfig][i].nextLightSetting >=
-                        envCtx->numLightSettings) {
-                        PRINTF(VT_COL(RED, WHITE) T("\nカラーパレットの設定がおかしいようです！",
-                                                    "\nThe color palette setting seems to be wrong!") VT_RST);
-
-                        PRINTF(VT_COL(RED, WHITE) T("\n設定パレット＝[%d] 最後パレット番号＝[%d]\n",
-                                                    "\nPalette setting = [%d] Last palette number = [%d]\n") VT_RST,
-                               sTimeBasedLightConfigs[envCtx->changeLightNextConfig][i].nextLightSetting,
-                               envCtx->numLightSettings - 1);
-                    }
-#endif
-
                     break;
                 }
             }
@@ -1254,17 +1133,6 @@ void Environment_Update(PlayState* play, EnvironmentContext* envCtx, LightContex
                 envCtx->lightSettings.zFar = LERP16(lightSettingsList[envCtx->prevLightSetting].zFar,
                                                     lightSettingsList[envCtx->lightSetting].zFar, envCtx->lightBlend);
             }
-
-#if DEBUG_FEATURES
-            if (envCtx->lightSetting >= envCtx->numLightSettings) {
-                PRINTF("\n" VT_FGCOL(RED)
-                           T("カラーパレットがおかしいようです！", "The color palette seems to be wrong!"));
-
-                PRINTF("\n" VT_FGCOL(YELLOW) T("設定パレット＝[%d] パレット数＝[%d]\n",
-                                               "Palette setting = [%d] Last palette number = [%d]\n") VT_RST,
-                       envCtx->lightSetting, envCtx->numLightSettings);
-            }
-#endif
         }
 
         envCtx->lightBlendEnabled = true;
@@ -1328,89 +1196,6 @@ void Environment_Update(PlayState* play, EnvironmentContext* envCtx, LightContex
         } else {
             lightCtx->zFar = ENV_ZFAR_MAX;
         }
-
-#if DEBUG_FEATURES
-        // When environment debug is enabled, various environment related variables can be configured via the reg editor
-        if (R_ENV_DISABLE_DBG) {
-            R_ENV_AMBIENT_COLOR(0) = lightCtx->ambientColor[0];
-            R_ENV_AMBIENT_COLOR(1) = lightCtx->ambientColor[1];
-            R_ENV_AMBIENT_COLOR(2) = lightCtx->ambientColor[2];
-
-            R_ENV_LIGHT1_COLOR(0) = envCtx->dirLight1.params.dir.color[0];
-            R_ENV_LIGHT1_COLOR(1) = envCtx->dirLight1.params.dir.color[1];
-            R_ENV_LIGHT1_COLOR(2) = envCtx->dirLight1.params.dir.color[2];
-
-            R_ENV_LIGHT2_COLOR(0) = envCtx->dirLight2.params.dir.color[0];
-            R_ENV_LIGHT2_COLOR(1) = envCtx->dirLight2.params.dir.color[1];
-            R_ENV_LIGHT2_COLOR(2) = envCtx->dirLight2.params.dir.color[2];
-
-            R_ENV_FOG_COLOR(0) = lightCtx->fogColor[0];
-            R_ENV_FOG_COLOR(1) = lightCtx->fogColor[1];
-            R_ENV_FOG_COLOR(2) = lightCtx->fogColor[2];
-
-            R_ENV_Z_FAR = lightCtx->zFar;
-            R_ENV_FOG_NEAR = lightCtx->fogNear;
-
-            R_ENV_LIGHT1_DIR(0) = envCtx->dirLight1.params.dir.x;
-            R_ENV_LIGHT1_DIR(1) = envCtx->dirLight1.params.dir.y;
-            R_ENV_LIGHT1_DIR(2) = envCtx->dirLight1.params.dir.z;
-
-            R_ENV_LIGHT2_DIR(0) = envCtx->dirLight2.params.dir.x;
-            R_ENV_LIGHT2_DIR(1) = envCtx->dirLight2.params.dir.y;
-            R_ENV_LIGHT2_DIR(2) = envCtx->dirLight2.params.dir.z;
-
-            R_ENV_WIND_DIR(0) = envCtx->windDirection.x;
-            R_ENV_WIND_DIR(1) = envCtx->windDirection.y;
-            R_ENV_WIND_DIR(2) = envCtx->windDirection.z;
-            R_ENV_WIND_SPEED = envCtx->windSpeed;
-        } else {
-            lightCtx->ambientColor[0] = R_ENV_AMBIENT_COLOR(0);
-            lightCtx->ambientColor[1] = R_ENV_AMBIENT_COLOR(1);
-            lightCtx->ambientColor[2] = R_ENV_AMBIENT_COLOR(2);
-
-            envCtx->dirLight1.params.dir.color[0] = R_ENV_LIGHT1_COLOR(0);
-            envCtx->dirLight1.params.dir.color[1] = R_ENV_LIGHT1_COLOR(1);
-            envCtx->dirLight1.params.dir.color[2] = R_ENV_LIGHT1_COLOR(2);
-
-            envCtx->dirLight2.params.dir.color[0] = R_ENV_LIGHT2_COLOR(0);
-            envCtx->dirLight2.params.dir.color[1] = R_ENV_LIGHT2_COLOR(1);
-            envCtx->dirLight2.params.dir.color[2] = R_ENV_LIGHT2_COLOR(2);
-            lightCtx->fogColor[0] = R_ENV_FOG_COLOR(0);
-            lightCtx->fogColor[1] = R_ENV_FOG_COLOR(1);
-            lightCtx->fogColor[2] = R_ENV_FOG_COLOR(2);
-            lightCtx->fogNear = R_ENV_FOG_NEAR;
-            lightCtx->zFar = R_ENV_Z_FAR;
-
-            if (cREG(14)) {
-                R_ENV_LIGHT1_DIR(0) = Math_CosS(cREG(10)) * Math_CosS(cREG(11)) * 120.0f;
-                envCtx->dirLight1.params.dir.x = R_ENV_LIGHT1_DIR(0);
-                R_ENV_LIGHT1_DIR(1) = Math_SinS(cREG(10)) * Math_CosS(cREG(11)) * 120.0f;
-                envCtx->dirLight1.params.dir.y = R_ENV_LIGHT1_DIR(1);
-                R_ENV_LIGHT1_DIR(2) = Math_SinS(cREG(11)) * 120.0f;
-                envCtx->dirLight1.params.dir.z = R_ENV_LIGHT1_DIR(2);
-
-                R_ENV_LIGHT2_DIR(0) = Math_CosS(cREG(12)) * Math_CosS(cREG(13)) * 120.0f;
-                envCtx->dirLight2.params.dir.x = R_ENV_LIGHT2_DIR(0);
-                R_ENV_LIGHT2_DIR(1) = Math_SinS(cREG(12)) * Math_CosS(cREG(13)) * 120.0f;
-                envCtx->dirLight2.params.dir.y = R_ENV_LIGHT2_DIR(1);
-                R_ENV_LIGHT2_DIR(2) = Math_SinS(cREG(13)) * 120.0f;
-                envCtx->dirLight2.params.dir.z = R_ENV_LIGHT2_DIR(2);
-            } else {
-                envCtx->dirLight1.params.dir.x = R_ENV_LIGHT1_DIR(0);
-                envCtx->dirLight1.params.dir.y = R_ENV_LIGHT1_DIR(1);
-                envCtx->dirLight1.params.dir.z = R_ENV_LIGHT1_DIR(2);
-
-                envCtx->dirLight2.params.dir.x = R_ENV_LIGHT2_DIR(0);
-                envCtx->dirLight2.params.dir.y = R_ENV_LIGHT2_DIR(1);
-                envCtx->dirLight2.params.dir.z = R_ENV_LIGHT2_DIR(2);
-            }
-
-            envCtx->windDirection.x = R_ENV_WIND_DIR(0);
-            envCtx->windDirection.y = R_ENV_WIND_DIR(1);
-            envCtx->windDirection.z = R_ENV_WIND_DIR(2);
-            envCtx->windSpeed = R_ENV_WIND_SPEED;
-        }
-#endif
 
         if ((envCtx->dirLight1.params.dir.x == 0) && (envCtx->dirLight1.params.dir.y == 0) &&
             (envCtx->dirLight1.params.dir.z == 0)) {

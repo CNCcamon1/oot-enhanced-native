@@ -101,11 +101,6 @@ static void* sEyeTextures[] = {
     gNabooruEyeHalfTex,
     gNabooruEyeClosedTex,
 };
-
-#if DEBUG_FEATURES
-static s32 D_80AB4318 = 0;
-#endif
-
 #include "z_en_nb_cutscene_data.inc.c"
 
 s32 EnNb_GetPath(EnNb* this) {
@@ -213,36 +208,6 @@ void EnNb_UpdateEyes(EnNb* this) {
         *eyeIdx = 0;
     }
 }
-
-#if DEBUG_FEATURES
-void func_80AB11EC(EnNb* this) {
-    this->action = NB_ACTION_7;
-    this->drawMode = NB_DRAW_NOTHING;
-    this->alpha = 0;
-    this->flag = 0;
-    this->actor.shape.shadowAlpha = 0;
-    this->alphaTimer = 0.0f;
-}
-
-void func_80AB1210(EnNb* this, PlayState* play) {
-    s32 one; // required to match
-
-    if (play->csCtx.state == CS_STATE_IDLE) {
-        if (D_80AB4318) {
-            if (this->actor.params == NB_TYPE_DEMO02) {
-                func_80AB11EC(this);
-            }
-
-            D_80AB4318 = 0;
-        }
-    } else {
-        one = 1;
-        if (!D_80AB4318) {
-            D_80AB4318 = one;
-        }
-    }
-}
-#endif
 
 void func_80AB1284(EnNb* this, PlayState* play) {
     Actor_UpdateBgCheckInfo(play, &this->actor, 75.0f, 30.0f, 30.0f, UPDBGCHECKINFO_FLAG_2);
@@ -553,9 +518,6 @@ void EnNb_SetupLightOrb(EnNb* this, PlayState* play) {
 
 void EnNb_Hide(EnNb* this, PlayState* play) {
     EnNb_SetupHide(this, play);
-#if DEBUG_FEATURES
-    func_80AB1210(this, play);
-#endif
 }
 
 void EnNb_Fade(EnNb* this, PlayState* play) {
@@ -563,9 +525,6 @@ void EnNb_Fade(EnNb* this, PlayState* play) {
     EnNb_UpdateSkelAnime(this);
     EnNb_UpdateEyes(this);
     EnNb_CheckToFade(this, play);
-#if DEBUG_FEATURES
-    func_80AB1210(this, play);
-#endif
 }
 
 void EnNb_CreateLightOrb(EnNb* this, PlayState* play) {
@@ -573,9 +532,6 @@ void EnNb_CreateLightOrb(EnNb* this, PlayState* play) {
     EnNb_UpdateSkelAnime(this);
     EnNb_UpdateEyes(this);
     EnNb_SetupLightOrb(this, play);
-#if DEBUG_FEATURES
-    func_80AB1210(this, play);
-#endif
 }
 
 void EnNb_DrawTransparency(EnNb* this, PlayState* play) {

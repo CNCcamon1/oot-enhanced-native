@@ -82,33 +82,6 @@ void DemoDu_SetMouthTexIndex(DemoDu* this, s16 mouthTexIndex) {
     this->mouthTexIndex = mouthTexIndex;
 }
 
-#if DEBUG_FEATURES
-// Resets all the values used in this cutscene.
-void DemoDu_CsAfterGanon_Reset(DemoDu* this) {
-    this->updateIndex = CS_CHAMBERAFTERGANON_SUBSCENE(0);
-    this->drawIndex = 0;
-    this->shadowAlpha = 0;
-    this->demo6KSpawned = 0;
-    this->actor.shape.shadowAlpha = 0;
-    this->unk_1A4 = 0.0f;
-}
-
-void DemoDu_CsAfterGanon_CheckIfShouldReset(DemoDu* this, PlayState* play) {
-    static s32 D_8096CE94 = false;
-
-    if (play->csCtx.state == CS_STATE_IDLE) {
-        if (D_8096CE94) {
-            if (this->actor.params == DEMO_DU_CS_CHAMBER_AFTER_GANON) {
-                DemoDu_CsAfterGanon_Reset(this);
-            }
-            D_8096CE94 = false;
-        }
-    } else if (!D_8096CE94) {
-        D_8096CE94 = true;
-    }
-}
-#endif
-
 s32 DemoDu_UpdateSkelAnime(DemoDu* this) {
     return SkelAnime_Update(&this->skelAnime);
 }
@@ -789,9 +762,6 @@ void DemoDu_CsAfterGanon_BackTo01(DemoDu* this, PlayState* play) {
 
 void DemoDu_UpdateCs_AG_00(DemoDu* this, PlayState* play) {
     DemoDu_CsAfterGanon_AdvanceTo01(this, play);
-#if DEBUG_FEATURES
-    DemoDu_CsAfterGanon_CheckIfShouldReset(this, play);
-#endif
 }
 
 void DemoDu_UpdateCs_AG_01(DemoDu* this, PlayState* play) {
@@ -799,9 +769,6 @@ void DemoDu_UpdateCs_AG_01(DemoDu* this, PlayState* play) {
     DemoDu_UpdateSkelAnime(this);
     DemoDu_UpdateEyes(this);
     DemoDu_CsAfterGanon_AdvanceTo02(this, play);
-#if DEBUG_FEATURES
-    DemoDu_CsAfterGanon_CheckIfShouldReset(this, play);
-#endif
 }
 
 void DemoDu_UpdateCs_AG_02(DemoDu* this, PlayState* play) {
@@ -809,9 +776,6 @@ void DemoDu_UpdateCs_AG_02(DemoDu* this, PlayState* play) {
     DemoDu_UpdateSkelAnime(this);
     DemoDu_UpdateEyes(this);
     DemoDu_CsAfterGanon_BackTo01(this, play);
-#if DEBUG_FEATURES
-    DemoDu_CsAfterGanon_CheckIfShouldReset(this, play);
-#endif
 }
 
 // Similar to DemoDu_Draw_01, but this uses POLY_XLU_DISP. Also uses this->shadowAlpha for setting the env color.

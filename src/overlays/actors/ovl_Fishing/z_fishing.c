@@ -45,11 +45,7 @@
 
 #define WATER_SURFACE_Y(play) play->colCtx.colHeader->waterBoxes->ySurface
 
-#if DEBUG_FEATURES
-#define KREG_DEBUG(i) KREG(i)
-#else
 #define KREG_DEBUG(i) 0
-#endif
 
 void Fishing_Init(Actor* thisx, PlayState* play2);
 void Fishing_Destroy(Actor* thisx, PlayState* play2);
@@ -853,15 +849,7 @@ void Fishing_Init(Actor* thisx, PlayState* play2) {
     Actor_ProcessInitChain(thisx, sInitChain);
     ActorShape_Init(&thisx->shape, 0.0f, NULL, 0.0f);
 
-#if DEBUG_FEATURES
-    if (KREG(5) != 0) {
-        sLinkAge = LINK_AGE_CHILD;
-    } else {
-        sLinkAge = gSaveContext.save.linkAge;
-    }
-#else
     sLinkAge = gSaveContext.save.linkAge;
-#endif
 
     if (thisx->params < EN_FISH_PARAM) {
         s32 pad;
@@ -938,20 +926,9 @@ void Fishing_Init(Actor* thisx, PlayState* play2) {
             sFishingFoggy = 0;
         }
 
-#if DEBUG_FEATURES
-        if (((sFishGameNumber & 7) == 6) || (KREG(3) != 0))
-#else
         if ((sFishGameNumber & 7) == 6)
-#endif
         {
             sStormChanceTimer = 100;
-#if DEBUG_FEATURES
-            if (KREG(3) != 0) {
-                KREG(3) = 0;
-                HIGH_SCORE(HS_FISHING) &= ~(HS_FISH_PLAYED * 255);
-                HIGH_SCORE(HS_FISHING) |= (HS_FISH_PLAYED * 6);
-            }
-#endif
         } else {
             sStormChanceTimer = 0;
         }
@@ -1002,11 +979,7 @@ void Fishing_Init(Actor* thisx, PlayState* play2) {
                            ENKANBAN_FISHING);
         Actor_Spawn(&play->actorCtx, play, ACTOR_FISHING, 0.0f, 0.0f, 0.0f, 0, 0, 0, 200);
 
-#if DEBUG_FEATURES
-        if ((KREG(1) == 1) || ((sFishGameNumber & 3) == 3))
-#else
         if ((sFishGameNumber & 3) == 3)
-#endif
         {
             if (sLinkAge != LINK_AGE_CHILD) {
                 fishCount = 16;
@@ -1055,12 +1028,6 @@ void Fishing_Init(Actor* thisx, PlayState* play2) {
         if ((this->fishLength >= 65.0f) && (Rand_ZeroOne() < 0.05f)) {
             this->fishLength += Rand_ZeroFloat(7.99999f);
         }
-
-#if DEBUG_FEATURES
-        if (KREG(6) != 0) {
-            this->fishLength = KREG(6) + 80.0f;
-        }
-#endif
 
         // "Come back when you get older! The fish will be bigger, too!"
         if (sLinkAge == LINK_AGE_CHILD) {
@@ -2220,16 +2187,6 @@ void Fishing_UpdateLure(Fishing* this, PlayState* play) {
         case 0:
             sSinkingLureSegmentIndex = 0;
 
-#if DEBUG_FEATURES
-            if (KREG(14) != 0) {
-                KREG(14) = 0;
-                sLureEquipped = FS_LURE_SINKING - sLureEquipped;
-                if (sLureEquipped != FS_LURE_STOCK) {
-                    sPondOwnerTextIdIndex = 0;
-                }
-            }
-#endif
-
             Math_ApproachF(&sRodLineSpooled, 195.0f, 1.0f, 1.0f);
 
             if (player->stateFlags1 & PLAYER_STATE1_27) {
@@ -3156,14 +3113,6 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                     this->timerArray[3] = (s16)Rand_ZeroFloat(150.0f) + 200;
                 }
             }
-
-#if DEBUG_FEATURES
-            if (KREG(15) != 0) {
-                KREG(15) = 0;
-                this->fishState = 7;
-                this->timerArray[3] = (s16)Rand_ZeroFloat(150.0f) + 2000;
-            }
-#endif
             break;
 
         case 0:
@@ -3260,9 +3209,6 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                 this->fishState = 10;
                 this->fishStateNext = 10;
             } else if ((KREG_DEBUG(2) != 0) || (((this->unk_1A4 & 0x7FF) == 0) && (this->unk_1A4 < 15000))) {
-#if DEBUG_FEATURES
-                KREG(2) = 0;
-#endif
                 this->fishState = -2;
                 this->actor.world.rot.x = this->actor.shape.rot.x = 0;
                 this->fishTargetPos.y = WATER_SURFACE_Y(play) + 10.0f;
@@ -3423,13 +3369,8 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                 chance *= 5.0f;
             }
 
-#if DEBUG_FEATURES
-            if (((this->timerArray[0] == 1) || (Rand_ZeroOne() < chance)) &&
-                ((Rand_ZeroOne() < (this->perception * multiplier)) || ((this->isLoach + 1) == KREG(69))))
-#else
             if (((this->timerArray[0] == 1) || (Rand_ZeroOne() < chance)) &&
                 (Rand_ZeroOne() < (this->perception * multiplier)))
-#endif
             {
                 if (this->isLoach == 0) {
                     this->fishState = 3;
@@ -5091,9 +5032,6 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
             break;
 
         case 22:
-#if DEBUG_FEATURES
-            if (play) {}
-#endif
 
             if (Message_GetState(&play->msgCtx) == TEXT_STATE_NONE) {
                 this->stateAndTimer = 0;
@@ -5156,17 +5094,6 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
     Player* player = GET_PLAYER(play);
     Input* input = &play->state.input[0];
 
-#if DEBUG_FEATURES
-    if (0) {
-        // Strings existing only in rodata
-        PRINTF_COLOR_GREEN();
-        PRINTF_COLOR_YELLOW();
-        PRINTF("plays %x\n");
-        PRINTF("ys %x\n");
-        PRINTF_RST();
-    }
-#endif
-
     playerShadowAlpha = player->actor.shape.shadowAlpha;
 
     if ((SQ(player->actor.world.pos.x) + SQ(player->actor.world.pos.z)) < SQ(920.0f)) {
@@ -5221,9 +5148,6 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
         f32 dz = sOwnerHeadPos.z - sLurePos.z;
 
         if ((sqrtf(SQ(dx) + SQ(dy) + SQ(dz)) < 25.0f) || (KREG_DEBUG(77) > 0)) {
-#if DEBUG_FEATURES
-            KREG(77) = 0;
-#endif
             sOwnerHair = FS_OWNER_BALD;
             sIsOwnersHatHooked = true;
             Message_StartTextbox(play, 0x4087, NULL);
@@ -5236,13 +5160,6 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
     } else if (sOwnerHair == FS_OWNER_CAPPED) {
         HIGH_SCORE(HS_FISHING) &= ~HS_FISH_STOLE_HAT;
     }
-
-#if DEBUG_FEATURES
-    if (KREG(77) < 0) {
-        KREG(77) = 0;
-        sIsOwnersHatSunk = true;
-    }
-#endif
 
     if (sFishingCaughtTextDelay != 0) {
         sFishingCaughtTextDelay--;
@@ -5285,19 +5202,6 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
         Sfx_PlaySfxCentered(NA_SE_SY_TRE_BOX_APPEAR);
         SEQCMD_STOP_SEQUENCE(SEQ_PLAYER_BGM_MAIN, 20);
     }
-
-#if DEBUG_FEATURES
-    if (KREG(0) != 0) {
-        s32 pad[3];
-
-        KREG(0) = 0;
-        sLureEquipped = FS_LURE_STOCK;
-        sFishingPlayerCinematicState = 20;
-        Rumble_Override(0.0f, 150, 10, 10);
-        Sfx_PlaySfxCentered(NA_SE_SY_TRE_BOX_APPEAR);
-        SEQCMD_STOP_SEQUENCE(SEQ_PLAYER_BGM_MAIN, 20);
-    }
-#endif
 
     if (sFishingCinematicTimer != 0) {
         sFishingCinematicTimer--;
@@ -5641,33 +5545,6 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
         }
     }
 
-#if DEBUG_FEATURES
-    if (sREG(15) != 0) {
-        if (sStormStrengthTarget != (sREG(15) - 1)) {
-            if (sStormStrengthTarget == 0) {
-                play->envCtx.stormRequest = STORM_REQUEST_START;
-            } else {
-                play->envCtx.stormRequest = STORM_REQUEST_STOP;
-            }
-        }
-
-        sStormStrengthTarget = sREG(15) - 1;
-    }
-
-    if (sREG(14) == 1) {
-        play->envCtx.stormRequest = STORM_REQUEST_START;
-    }
-    if (sREG(14) == -1) {
-        play->envCtx.stormRequest = STORM_REQUEST_STOP;
-    }
-
-    sREG(14) = 0;
-
-    PRINTF_COLOR_GREEN();
-    PRINTF("zelda_time %x\n", ((void)0, gSaveContext.save.dayTime));
-    PRINTF_RST();
-#endif
-
     if (sStormChanceTimer >= 2) {
         sStormChanceTimer--;
     }
@@ -5761,15 +5638,6 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
 #else
     // Same as above, but for PAL
     gSaveContext.minigameScore = (SQ((f32)sFishLengthToWeigh) * 0.0036f) + 0.5f;
-#endif
-
-#if DEBUG_FEATURES
-    if (BREG(26) != 0) {
-        BREG(26) = 0;
-        Message_StartTextbox(play, 0x407B + BREG(27), NULL);
-    }
-
-    PRINTF("HI_SCORE = %x\n", HIGH_SCORE(HS_FISHING));
 #endif
 }
 

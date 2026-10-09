@@ -15,11 +15,7 @@
  *    - Argument 3: Cache load policy for the sequence (AudioCacheLoadType)
  *    - Argument 4: Sequence flags
  */
-#if OOT_VERSION < PAL_1_0 || !PLATFORM_N64
-#define SEQ_0_FLAGS     SEQ_FLAG_FANFARE
-#else
 #define SEQ_0_FLAGS     SEQ_FLAG_FANFARE | SEQ_FLAG_ENEMY
-#endif
 DEFINE_SEQUENCE    (Sequence_0,         NA_BGM_GENERAL_SFX,      MEDIUM_CART, CACHE_LOAD_PERMANENT,  SEQ_0_FLAGS                            ) // general_sfx
 DEFINE_SEQUENCE    (Sequence_1,         NA_BGM_NATURE_AMBIENCE,  MEDIUM_CART, CACHE_LOAD_TEMPORARY,  SEQ_FLAG_ENEMY                         ) // nature_ambience
 DEFINE_SEQUENCE    (Sequence_2,         NA_BGM_FIELD_LOGIC,      MEDIUM_CART, CACHE_LOAD_TEMPORARY,  0                                      ) // field_logic

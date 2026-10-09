@@ -1289,9 +1289,7 @@ void EnWf_UpdateDamage(EnWf* this, PlayState* play) {
             if (this->actor.colChkInfo.damageReaction != ENWF_DMG_REACT_ICE_MAGIC) {
                 this->damageReaction = this->actor.colChkInfo.damageReaction;
                 Actor_SetDropFlag(&this->actor, &this->bodyColliderCylinder.elem, true);
-#if OOT_VERSION >= PAL_1_0
                 this->slashStatus = 0;
-#endif
 
                 if ((this->actor.colChkInfo.damageReaction == ENWF_DMG_REACT_STUN) ||
                     (this->actor.colChkInfo.damageReaction == ENWF_DMG_REACT_UNDEF)) {

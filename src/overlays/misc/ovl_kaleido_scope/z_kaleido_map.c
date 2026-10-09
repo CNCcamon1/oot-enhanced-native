@@ -644,68 +644,6 @@ void KaleidoScope_DrawWorldMap(PlayState* play, GraphicsContext* gfxCtx) {
 
     gDPPipeSync(POLY_OPA_DISP++);
 
-#if PLATFORM_N64 && OOT_VERSION != NTSC_1_2
-    if (0) {
-        s32 pad[3];
-    }
-#endif
-
-#if DEBUG_FEATURES
-    if (HREG(15) == 0) {
-        gDPSetTextureFilter(POLY_OPA_DISP++, G_TF_POINT);
-
-        gDPLoadTLUT_pal256(POLY_OPA_DISP++, gWorldMapImageTLUT);
-        gDPSetTextureLUT(POLY_OPA_DISP++, G_TT_RGBA16);
-
-        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
-        gSPVertex(POLY_OPA_DISP++, &pauseCtx->mapPageVtx[(PAGE_BG_QUADS + WORLD_MAP_QUAD_IMAGE_FIRST) * 4], 32, 0);
-
-        for (j = t = i = 0; i < 8; i++, t++, j += 4) {
-            gDPLoadTextureBlock(
-                POLY_OPA_DISP++, (u8*)gWorldMapImageTex + t * WORLD_MAP_IMAGE_WIDTH * WORLD_MAP_IMAGE_FRAG_HEIGHT,
-                G_IM_FMT_CI, G_IM_SIZ_8b, WORLD_MAP_IMAGE_WIDTH, WORLD_MAP_IMAGE_FRAG_HEIGHT, 0,
-                G_TX_WRAP | G_TX_NOMIRROR, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-
-            gSP1Quadrangle(POLY_OPA_DISP++, j, j + 2, j + 3, j + 1, 0);
-        }
-
-        gSPVertex(POLY_OPA_DISP++, &pauseCtx->mapPageVtx[(PAGE_BG_QUADS + WORLD_MAP_QUAD_IMAGE_FIRST + 8) * 4], 28, 0);
-
-        for (j = i = 0; i < 6; i++, t++, j += 4) {
-            gDPLoadTextureBlock(
-                POLY_OPA_DISP++, (u8*)gWorldMapImageTex + t * WORLD_MAP_IMAGE_WIDTH * WORLD_MAP_IMAGE_FRAG_HEIGHT,
-                G_IM_FMT_CI, G_IM_SIZ_8b, WORLD_MAP_IMAGE_WIDTH, WORLD_MAP_IMAGE_FRAG_HEIGHT, 0,
-                G_TX_WRAP | G_TX_NOMIRROR, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-
-            gSP1Quadrangle(POLY_OPA_DISP++, j, j + 2, j + 3, j + 1, 0);
-        }
-
-        gDPLoadTextureBlock(
-            POLY_OPA_DISP++, (u8*)gWorldMapImageTex + t * WORLD_MAP_IMAGE_WIDTH * WORLD_MAP_IMAGE_FRAG_HEIGHT,
-            G_IM_FMT_CI, G_IM_SIZ_8b, WORLD_MAP_IMAGE_WIDTH, WORLD_MAP_IMAGE_HEIGHT % WORLD_MAP_IMAGE_FRAG_HEIGHT, 0,
-            G_TX_WRAP | G_TX_NOMIRROR, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-
-        gSP1Quadrangle(POLY_OPA_DISP++, j, j + 2, j + 3, j + 1, 0);
-    } else if (HREG(15) == 1) {
-        Gfx* gfx = POLY_OPA_DISP;
-
-        gSPLoadUcodeL(gfx++, gspS2DEX2d_fifo);
-
-        Room_DrawBackground2D(&gfx, gWorldMapImageTex, gWorldMapImageTLUT, WORLD_MAP_IMAGE_WIDTH,
-                              WORLD_MAP_IMAGE_HEIGHT, G_IM_FMT_CI, G_IM_SIZ_8b, G_TT_RGBA16, 256, HREG(13) / 100.0f,
-                              HREG(14) / 100.0f);
-
-        gSPLoadUcode(gfx++, SysUcode_GetUCode(), SysUcode_GetUCodeData());
-
-        POLY_OPA_DISP = gfx;
-    }
-
-    if (HREG(15) == 2) {
-        HREG(15) = 1;
-        HREG(14) = 6100;
-        HREG(13) = 5300;
-    }
-#else
     // Same as `HREG(15) == 0` case above
     gDPSetTextureFilter(POLY_OPA_DISP++, G_TF_POINT);
 
@@ -741,7 +679,6 @@ void KaleidoScope_DrawWorldMap(PlayState* play, GraphicsContext* gfxCtx) {
         G_TX_WRAP | G_TX_NOMIRROR, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
     gSP1Quadrangle(POLY_OPA_DISP++, j, j + 2, j + 3, j + 1, 0);
-#endif
 
     if (ZREG(38) == 0) {
         gDPPipeSync(POLY_OPA_DISP++);

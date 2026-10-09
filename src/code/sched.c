@@ -95,36 +95,6 @@ void Sched_SwapFrameBufferImpl(CfbInfo* cfbInfo) {
 
             Fault_SetFrameBuffer(cfbInfo->swapBuffer, width, 16);
         }
-
-#if DEBUG_FEATURES
-        if (R_HREG_MODE == HREG_MODE_SCHED && R_SCHED_INIT != HREG_MODE_SCHED) {
-            R_SCHED_TOGGLE_SPECIAL_FEATURES = 0;
-            R_SCHED_GAMMA_ON = 0;
-            R_SCHED_DITHER_FILTER_ON = 1;
-            R_SCHED_GAMMA_DITHER_ON = 0;
-            R_SCHED_DIVOT_ON = 1;
-
-            // these regs are not used in this mode
-            HREG(86) = 0;
-            HREG(87) = 0;
-            HREG(88) = 0;
-            HREG(89) = 0;
-            HREG(90) = 0;
-            HREG(91) = 0;
-            HREG(92) = 0;
-            HREG(93) = 0;
-            HREG(94) = 0;
-
-            R_SCHED_INIT = HREG_MODE_SCHED;
-        }
-
-        if (R_HREG_MODE == HREG_MODE_SCHED && R_SCHED_TOGGLE_SPECIAL_FEATURES == 2) {
-            osViSetSpecialFeatures(R_SCHED_GAMMA_ON ? OS_VI_GAMMA_ON : OS_VI_GAMMA_OFF);
-            osViSetSpecialFeatures(R_SCHED_DITHER_FILTER_ON ? OS_VI_DITHER_FILTER_ON : OS_VI_DITHER_FILTER_OFF);
-            osViSetSpecialFeatures(R_SCHED_GAMMA_DITHER_ON ? OS_VI_GAMMA_DITHER_ON : OS_VI_GAMMA_DITHER_OFF);
-            osViSetSpecialFeatures(R_SCHED_DIVOT_ON ? OS_VI_DIVOT_ON : OS_VI_DIVOT_OFF);
-        }
-#endif
     }
 
 #if OOT_VERSION < PAL_1_0
@@ -162,34 +132,6 @@ void Sched_SwapFrameBuffer(Scheduler* sc, CfbInfo* cfbInfo) {
 }
 
 void Sched_HandlePreNMI(Scheduler* sc) {
-#if DEBUG_FEATURES
-    OSTime now;
-
-    if (sc->curRSPTask != NULL) {
-        now = osGetTime();
-
-        if (sc->curRSPTask->framebuffer == NULL) {
-            // audio and jpeg tasks end up in here
-            LOG_TIME("(((u64)(now - audio_rsp_start_time)*(1000000LL/15625LL))/((62500000LL*3/4)/15625LL))",
-                     OS_CYCLES_TO_USEC(now - sRSPAudioTimeStart), "../sched.c", 421);
-        } else if (OS_CYCLES_TO_USEC(now - sRSPGfxTimeStart) > 1000000 ||
-                   OS_CYCLES_TO_USEC(now - sRDPTimeStart) > 1000000) {
-            // More than 1 second since the RSP or RDP tasks began, halt the RSP and RDP
-            RcpUtils_Reset();
-            // Manually send RSP/RDP done messages to the scheduler interrupt queue if appropriate
-            if (sc->curRSPTask != NULL) {
-                LOG_TIME("(((u64)(now - graph_rsp_start_time)*(1000000LL/15625LL))/((62500000LL*3/4)/15625LL))",
-                         OS_CYCLES_TO_USEC(now - sRSPGfxTimeStart), "../sched.c", 427);
-                osSendMesg(&sc->interruptQueue, (OSMesg)RSP_DONE_MSG, OS_MESG_NOBLOCK);
-            }
-            if (sc->curRDPTask != NULL) {
-                LOG_TIME("(((u64)(now - rdp_start_time)*(1000000LL/15625LL))/((62500000LL*3/4)/15625LL))",
-                         OS_CYCLES_TO_USEC(now - sRDPTimeStart), "../sched.c", 431);
-                osSendMesg(&sc->interruptQueue, (OSMesg)RDP_DONE_MSG, OS_MESG_NOBLOCK);
-            }
-        }
-    }
-#endif
 }
 
 void Sched_HandleNMI(Scheduler* sc) {

@@ -67,23 +67,6 @@ static InitChainEntry sInitChain[] = {
 u32 BgMizuWater_GetWaterLevelActionIndex(s16 switchFlag, PlayState* play) {
     u32 ret;
 
-#if DEBUG_FEATURES
-    if (bREG(0) != 0) {
-        switch (bREG(1)) {
-            case 0:
-                Flags_SetSwitch(play, WATER_TEMPLE_WATER_F1_FLAG);
-                break;
-            case 1:
-                Flags_SetSwitch(play, WATER_TEMPLE_WATER_F2_FLAG);
-                break;
-            case 2:
-                Flags_SetSwitch(play, WATER_TEMPLE_WATER_F3_FLAG);
-                break;
-        }
-        bREG(0) = 0;
-    }
-#endif
-
     if (Flags_GetSwitch(play, WATER_TEMPLE_WATER_F1_FLAG) && (switchFlag != WATER_TEMPLE_WATER_F1_FLAG)) {
         ret = 3;
     } else if (Flags_GetSwitch(play, WATER_TEMPLE_WATER_F2_FLAG) && (switchFlag != WATER_TEMPLE_WATER_F2_FLAG)) {
@@ -314,13 +297,6 @@ void BgMizuWater_Update(Actor* thisx, PlayState* play) {
     s32 unk0;
     s32 unk1;
     s32 pad;
-
-#if DEBUG_FEATURES
-    if (bREG(15) == 0) {
-        PRINTF("%x %x %x\n", Flags_GetSwitch(play, WATER_TEMPLE_WATER_F1_FLAG),
-               Flags_GetSwitch(play, WATER_TEMPLE_WATER_F2_FLAG), Flags_GetSwitch(play, WATER_TEMPLE_WATER_F3_FLAG));
-    }
-#endif
 
     if (this->type == 0) {
         posY = this->actor.world.pos.y;

@@ -420,26 +420,6 @@ s32 EnRu1_IsTextboxClosing(PlayState* play) {
     return Message_GetState(&play->msgCtx) == TEXT_STATE_CLOSING;
 }
 
-#if DEBUG_FEATURES
-void func_80AEB1D8(EnRu1* this) {
-    this->action = ENRU1_ACTION_THROWN_ONTO_SAPPHIRE_PLATFORM;
-    this->drawConfig = ENRU1_DRAW_NOTHING;
-    this->actor.velocity.x = 0.0f;
-    this->actor.velocity.y = 0.0f;
-    this->actor.velocity.z = 0.0f;
-    this->actor.speed = 0.0f;
-    this->actor.gravity = 0.0f;
-    this->actor.minVelocityY = 0.0f;
-    EnRu1_SetPlatformCamSetting(this, 0);
-}
-
-void func_80AEB220(EnRu1* this, PlayState* play) {
-    if ((EnRu1_IsCsStateIdle(play)) && (this->actor.params == 0xA)) {
-        func_80AEB1D8(this);
-    }
-}
-#endif
-
 void EnRu1_AnimationChange(EnRu1* this, AnimationHeader* animation, u8 mode, f32 morphFrames, s32 playReversed) {
     s32 pad[2];
     AnimationHeader* animHeader = SEGMENTED_TO_VIRTUAL(animation);
@@ -2173,9 +2153,6 @@ void EnRu1_SapphireRoom_ThrownOntoPlatform(EnRu1* this, PlayState* play) {
     EnRu1_UpdateSkelAnime(this);
     EnRu1_UpdateEyes(this);
     EnRu1_SetupRetrievingSapphireAnimation(this, play);
-#if DEBUG_FEATURES
-    func_80AEB220(this, play);
-#endif
 }
 
 void EnRu1_SapphireRoom_Retrieving(EnRu1* this, PlayState* play) {
@@ -2189,9 +2166,6 @@ void EnRu1_SapphireRoom_Retrieving(EnRu1* this, PlayState* play) {
     EnRu1_LookUpAtSapphire(this);
     EnRu1_PlayStepSoundNearSapphire(this);
     EnRu1_HoldUpSapphire(this, animFinished);
-#if DEBUG_FEATURES
-    func_80AEB220(this, play);
-#endif
 }
 
 void EnRu1_SapphireRoom_Holding(EnRu1* this, PlayState* play) {
@@ -2199,9 +2173,6 @@ void EnRu1_SapphireRoom_Holding(EnRu1* this, PlayState* play) {
     EnRu1_UpdateBgCheckInfo(this, play);
     EnRu1_UpdateSkelAnime(this);
     EnRu1_BringHandsDown(this, play);
-#if DEBUG_FEATURES
-    func_80AEB220(this, play);
-#endif
 }
 
 void EnRu1_SapphireRoom_DoneHolding(EnRu1* this, PlayState* play) {
@@ -2212,9 +2183,6 @@ void EnRu1_SapphireRoom_DoneHolding(EnRu1* this, PlayState* play) {
     animFinished = EnRu1_UpdateSkelAnime(this);
     EnRu1_UpdateEyes(this);
     EnRu1_KeepArmsDown(this, animFinished);
-#if DEBUG_FEATURES
-    func_80AEB220(this, play);
-#endif
 }
 
 void EnRu1_SapphireRoom_MissionAccomplished(EnRu1* this, PlayState* play) {
@@ -2223,9 +2191,6 @@ void EnRu1_SapphireRoom_MissionAccomplished(EnRu1* this, PlayState* play) {
     EnRu1_UpdateSkelAnime(this);
     EnRu1_UpdateEyes(this);
     EnRu1_EndRetrievalCutscene(this, play);
-#if DEBUG_FEATURES
-    func_80AEB220(this, play);
-#endif
 }
 
 void EnRu1_SapphireRoom_ReadyToGoHome(EnRu1* this, PlayState* play) {
@@ -2349,16 +2314,6 @@ void EnRu1_InitBesideDoorSwitch(EnRu1* this, PlayState* play) {
     }
 }
 
-#if DEBUG_FEATURES
-void func_80AF0050(EnRu1* this, PlayState* play) {
-    EnRu1_AnimationChange(this, &gRutoChildWait2Anim, ANIMMODE_LOOP, 0, false);
-    this->action = ENRU1_ACTION_THROWN_ONTO_SAPPHIRE_PLATFORM;
-    this->roomNum1 = this->actor.room;
-    this->bigOctoPlatform = EnRu1_FindBigOctoPlatform(play);
-    this->actor.room = -1;
-}
-#endif
-
 void EnRu1_Update(Actor* thisx, PlayState* play) {
     EnRu1* this = (EnRu1*)thisx;
 
@@ -2400,11 +2355,6 @@ void EnRu1_Init(Actor* thisx, PlayState* play) {
         case ENRU1_TYPE_BESIDE_DOOR_SWITCH:
             EnRu1_InitBesideDoorSwitch(this, play);
             break;
-#if DEBUG_FEATURES
-        case ENRU1_TYPE_DEBUG:
-            func_80AF0050(this, play);
-            break;
-#endif
         default:
             Actor_Kill(&this->actor);
             PRINTF(T("該当 arge_data = %d 無し\n", "Relevant arge_data = %d unacceptable\n"), EnRu1_GetType(this));

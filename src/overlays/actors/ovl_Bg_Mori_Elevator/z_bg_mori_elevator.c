@@ -102,16 +102,6 @@ void BgMoriElevator_Init(Actor* thisx, PlayState* play) {
     this->unk_172 = sIsSpawned;
     this->moriTexObjectSlot = Object_GetSlot(&play->objectCtx, OBJECT_MORI_TEX);
 
-#if DEBUG_FEATURES
-    if (this->moriTexObjectSlot < 0) {
-        Actor_Kill(thisx);
-        PRINTF(T("Error : 森の神殿 obj elevator バンク危険！(%s %d)\n",
-                 "Error : Forest Temple obj elevator bank danger! (%s %d)\n"),
-               "../z_bg_mori_elevator.c", 277);
-        return;
-    }
-#endif
-
     switch (sIsSpawned) {
         case false:
             PRINTF(T("森の神殿 elevator CT\n", "Forest Temple elevator CT\n"));

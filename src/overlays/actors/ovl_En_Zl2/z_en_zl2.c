@@ -1597,11 +1597,6 @@ void func_80B52114(EnZl2* this, PlayState* play) {
         case 4:
             func_80B51D0C(this, play);
             break;
-#if DEBUG_FEATURES
-        case 0:
-            func_80B4FD90(this, play);
-            break;
-#endif
         default:
             PRINTF(VT_FGCOL(RED) T(" En_Oa2 の arg_data がおかしい!!!!!!!!!!!!!!!!!!!!!!!!!\n",
                                    " En_Oa2 arg_data is wrong!!!!!!!!!!!!!!!!!!!!!!!!!\n") VT_RST);
@@ -1614,14 +1609,6 @@ void func_80B521A0(EnZl2* this, PlayState* play) {
     ObjectContext* objectCtx = &play->objectCtx;
     s32 objectSlot = Object_GetSlot(objectCtx, OBJECT_ZL2_ANIME1);
     s32 pad2;
-
-#if DEBUG_FEATURES
-    if (objectSlot < 0) {
-        PRINTF(VT_FGCOL(RED) T("En_Zl2_main_bankアニメーションのバンクを読めない!!!!!!!!!!!!\n",
-                               "En_Zl2_main_bank Can't read animation bank!!!!!!!!!!!!\n") VT_RST);
-        return;
-    }
-#endif
 
     if (Object_IsLoaded(objectCtx, objectSlot)) {
         this->zl2Anime1ObjectSlot = objectSlot;

@@ -153,14 +153,7 @@ s32 func_80A4E3EC(EnGs* this, PlayState* play) {
 void func_80A4E470(EnGs* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-#if DEBUG_FEATURES
-    bREG(15) = 0;
-#endif
-
     if (this->actor.xzDistToPlayer <= 100.0f) {
-#if DEBUG_FEATURES
-        bREG(15) = 1;
-#endif
 
         if (this->unk_19D == 0) {
             player->stateFlags2 |= PLAYER_STATE2_23;

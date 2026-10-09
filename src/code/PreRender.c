@@ -611,13 +611,6 @@ void PreRender_AntiAliasFilter(PreRender* this, s32 x, s32 y) {
         buffCvg[i] = this->cvgSave[xi + yi * this->width] >> 5;
     }
 
-#if DEBUG_FEATURES
-    if (buffCvg[7] == 7) {
-        PRINTF("Error, should not be in here \n");
-        return;
-    }
-#endif
-
     pmaxR = pminR = buffR[7];
     pmaxG = pminG = buffG[7];
     pmaxB = pminB = buffB[7];
@@ -706,11 +699,7 @@ void PreRender_AntiAliasFilter(PreRender* this, s32 x, s32 y) {
     (((a2) >= (a1)) ? (((a3) >= (a2)) ? (a2) : (((a1) >= (a3)) ? (a1) : (a3))) \
                     : (((a2) >= (a3)) ? (a2) : (((a3) >= (a1)) ? (a1) : (a3))))
 
-#if DEBUG_FEATURES
-#define R_HREG_MODE_DEBUG R_HREG_MODE
-#else
 #define R_HREG_MODE_DEBUG ((void)0, 0)
-#endif
 
 #define PRERENDER_DIVOT_CONTROL (R_HREG_MODE_DEBUG == HREG_MODE_PRERENDER ? R_PRERENDER_DIVOT_CONTROL : 0)
 

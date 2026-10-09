@@ -15,24 +15,6 @@ void GameAlloc_Log(GameAlloc* this) {
     }
 }
 
-#if DEBUG_FEATURES
-void* GameAlloc_MallocDebug(GameAlloc* this, u32 size, const char* file, int line) {
-    GameAllocEntry* ptr = SystemArena_MallocDebug(size + sizeof(GameAllocEntry), file, line);
-
-    if (ptr != NULL) {
-        ptr->size = size;
-        ptr->prev = this->head;
-        this->head->next = ptr;
-        this->head = ptr;
-        ptr->next = &this->base;
-        this->base.prev = this->head;
-        return ptr + 1;
-    } else {
-        return NULL;
-    }
-}
-#endif
-
 void* GameAlloc_Malloc(GameAlloc* this, u32 size) {
     GameAllocEntry* ptr = SYSTEM_ARENA_MALLOC(size + sizeof(GameAllocEntry), "../gamealloc.c", 93);
 

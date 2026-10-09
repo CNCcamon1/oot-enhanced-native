@@ -123,9 +123,6 @@ typedef enum EnRu1Type {
     /*  4 */ ENRU1_TYPE_SAPPHIRE_ROOM,
     /*  5 */ ENRU1_TYPE_BESIDE_KZ,
     /*  6 */ ENRU1_TYPE_BESIDE_DOOR_SWITCH,
-#if DEBUG_FEATURES
-    /* 10 */ ENRU1_TYPE_DEBUG = 10,
-#endif
 } EnRu1Type;
 
 typedef enum EnRu1Eyes {
